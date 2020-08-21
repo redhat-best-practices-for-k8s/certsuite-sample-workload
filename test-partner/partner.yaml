@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: partner
+  name: partner
+spec:
+  containers:
+    - command:
+        - tail
+        - -f
+        - /dev/null
+      image: quay.io/rgoulding/cnf-test-partner:latest
+      name: ubi
+      resources:
+        limits:
+          memory: 1Gi
+          cpu: 1
+  restartPolicy: Always
+  nodeSelector:
+    role: partner
