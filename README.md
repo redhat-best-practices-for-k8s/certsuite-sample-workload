@@ -23,7 +23,6 @@ Test dependency requirements:
 
 ### TODO
 
-* Move to a more centralized container repository instead of relying on rgoulding's development repository.
 * Create an OpenShift Operator for partner.yaml.  This has very little merit for our use-case, but does align with the
   best practices Red Hat recommends.
 * Consider a transition to UBI 8.
@@ -33,13 +32,13 @@ Test dependency requirements:
 In order to build the container image, issue the following command:
 
 ```shell script
-docker build --no-cache -f Dockerfile -t rgoulding/cnf-test-partner .
+docker build --no-cache -f Dockerfile -t testnetworkfunction/cnf-test-partner .
 ```
 
 In order to push the container image, issue the following command:
 
 ```shell script
-docker push rgoulding/cnf-test-partner
+docker push testnetworkfunction/cnf-test-partner
 ```
 
 ### Installing the partner pod

@@ -11,7 +11,7 @@ spec:
         - tail
         - -f
         - /dev/null
-      image: quay.io/rgoulding/cnf-test-partner:latest
+      image: quay.io/testnetworkfunction/cnf-test-partner:latest
       name: ubi
       resources:
         limits:
