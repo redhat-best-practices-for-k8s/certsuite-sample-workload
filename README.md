@@ -3,7 +3,7 @@
 This repository contains two main sections:
 * test-partner:  A partner pod definition for use on a K8S CNF Certification cluster.
 * local-test-infra:  A trivial example cluster, primarily intended to be used to run
-[test-network-function](https://github.com/redhat-nfvpe/test-network-function) test suites on a development machine.
+[test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 This is the basic infrastructure required for "testing the tester".
 
 # Glossary
@@ -43,7 +43,7 @@ docker push testnetworkfunction/cnf-test-partner
 First, clone this repository:
 
 ```shell-script
-git clone git@github.com:redhat-nfvpe/cnf-certification-test-partner.git
+git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
 
 Next, create the OpenShift resources:
@@ -92,7 +92,7 @@ make install
 ```
 
 This will create a PUT named "test", and a TPP named "partner" which can be used to run `generic` test suite. The
-example `test-configuration.yaml` in [`test-network-function`](https://github.com/redhat-nfvpe/test-network-function)
+example `test-configuration.yaml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
 To verify `partner` and `test` pods are running: 
