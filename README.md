@@ -79,9 +79,20 @@ In order to run the local test setup, the following dependencies are needed:
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ## Setup
+
 To start minikube, issue the following command:
+
 ```shell-script
-minikube start --driver="virtualbox"
+minikube start --embed-certs --driver="virtualbox"
+```
+
+The `--embed-certs` flag will cause minikube to embed certificates directly in its kubeconfig file.  
+This will allow the minikube cluster to be reached directly from the container without the need of binding additional volumes for certificates.
+
+To avoid having to specify this flag, set the `embed-certs` configuration key:
+
+```shell-script
+minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
