@@ -5,6 +5,7 @@ metadata:
   labels:
     app: test
   name: test
+  namespace: tnf
 spec:
   containers:
     - command:
