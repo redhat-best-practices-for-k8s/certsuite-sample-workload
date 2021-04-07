@@ -50,11 +50,19 @@ Next, create the OpenShift resources:
 
 ```shell-script
 cd cnf-certification-test-partner/test-partner
+oc create -f ./namespace.yaml
 oc create -f ./partner.yaml
 ```
 
-This will create a Pod named "partner" in the default namespace.  This Pod is the test partner for running Generic CNF
+This will create a Pod named "partner" in the `tnf` namespace.  This Pod is the test partner for running Generic CNF
 tests.
+
+*Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
+
+To add the label to a selected node, issue the following command: 
+```shell-script:
+oc label nodes <node-name> role=partner
+```
 
 ## TODO
 
@@ -96,7 +104,7 @@ minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
-To create the PUT and TPP, issue the following command:
+To create the PUT and TPP in the `tnf` namespace, issue the following command:
 
 ```shell-script
 make install
@@ -109,7 +117,7 @@ will use this local infrastructure by default.
 To verify `partner` and `test` pods are running: 
 
 ```shell-script
-oc get pods -o wide
+oc get pods -n tnf -o wide
 ```
 
 You should see something like this:
@@ -119,6 +127,11 @@ partner   1/1     Running   0          22m   172.17.0.3   minikube   <none>     
 test      1/1     Running   0          22m   172.17.0.4   minikube   <none>           <none>
 ```
 
+To avoid having to specify the `tnf` namespace with the `-n` option, set the namespace for the current context:
+
+```shell-script
+oc config set-context $(oc config current-context) --namespace=tnf
+```
 
 ## Stop local-test-infra
 
