@@ -1,0 +1,47 @@
+name: start-minikube
+description: Creates and configures a minikube cluster for all things TNF-related
+inputs:
+  minikube_version:
+    default: v1.18.1
+  minikube_driver:
+    default: docker
+  minikube_extra_options:
+    default: '--embed-certs'
+  oc_kcm_timeout:
+    default: 90s
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download minikube debian package
+      run: |
+        curl -Lo minikube.deb https://storage.googleapis.com/minikube/releases/${{ inputs.minikube_version }}/minikube_latest_amd64.deb
+      shell: bash
+
+    - name: Install minikube
+      run: sudo dpkg -i minikube.deb
+      shell: bash
+
+    - name: Set the default VM driver
+      run: minikube config set vm-driver ${{ inputs.minikube_driver }}
+      shell: bash
+
+    - name: Start the minikube cluster
+      run: minikube start ${{ inputs.minikube_extra_options }}
+      shell: bash
+
+    # The waiting is performed to allow the `kube-controller-manager` to start all required controllers,
+    # such as the `service-account-controller` responsible for managing and creating Service Accounts.
+    - name: Wait for kube-controller-manager
+      run: |
+        echo "Waiting for kube-controller-manager... (timeout: ${{ inputs.oc_kcm_timeout }})" && \
+        oc wait -n kube-system --for=condition=ready pod/kube-controller-manager-minikube --timeout=${{ inputs.oc_kcm_timeout }}
+      shell: bash
+
+    - name: Display kube-system pods
+      run: oc get pods -n kube-system -o wide
+      shell: bash
+
+    - name: Display a friendly summary message
+      run: echo "TNF-compatible minikube cluster is ready to go! Have fun!"
+      shell: bash

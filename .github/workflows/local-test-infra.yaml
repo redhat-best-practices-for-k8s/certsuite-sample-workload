@@ -1,0 +1,63 @@
+name: 'Test the `local-test-infra` config'
+on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-local-test-infra:
+    name: 'Test the `local-test-infra` configuration on minikube'
+    runs-on: ubuntu-20.04
+    env:
+      TNF_NAMESPACE: tnf
+      PUT_RESOURCE_NAME: test
+      TPP_RESOURCE_NAME: partner
+      DEFAULT_TIMEOUT: 90s
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Start the minikube cluster
+        uses: ./.github/actions/start-minikube
+
+      - name: Create OpenShift resources
+        run: make install
+
+      - name: Set the current context to use the correct TNF namespace
+        run: oc config set-context $(oc config current-context) --namespace=$TNF_NAMESPACE
+
+      # Tests for the test pod (PUT)
+
+      - name: Wait for the test pod to be ready
+        run: oc wait --for=condition=ready pod/$PUT_RESOURCE_NAME --timeout=$DEFAULT_TIMEOUT
+
+      - name: '(test pod) Test: Check if ping is installed'
+        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ping
+
+      - name: '(test pod) Test: Check if ip is installed'
+        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ip
+
+      - name: '(test pod) Test: Check if ssh is installed'
+        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ssh
+
+      # Tests for the partner pod (TPP)
+
+      - name: Wait for the partner pod to be ready
+        run: oc wait --for=condition=ready pod/$TPP_RESOURCE_NAME --timeout=$DEFAULT_TIMEOUT
+
+      - name: '(partner pod) Test: Check if ping is installed'
+        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ping
+
+      - name: '(partner pod) Test: Check if ip is installed'
+        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ip
+
+      - name: '(partner pod) Test: Check if ssh is installed'
+        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ssh
+
+      # Cleanup
+
+      - name: Delete OpenShift resources
+        run: make clean
+
+      - name: 'Test: Check if `make clean` removed all TNF pods'
+        run: '[[ "$(oc get pods -o name | wc -l)" -eq "0" ]]'
