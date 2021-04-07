@@ -1,0 +1,41 @@
+name: Test the partner pod installation
+on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
+    working-directory: test-partner
+
+jobs:
+  test-local-test-infra:
+    name: 'Test the partner pod on minikube'
+    runs-on: ubuntu-20.04
+    env:
+      TNF_NAMESPACE: tnf
+      TPP_RESOURCE_NAME: partner
+      DEFAULT_TIMEOUT: 90s
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Start the minikube cluster
+        uses: ./.github/actions/start-minikube
+
+      - name: Add a proper label to the minikube node
+        run: oc label nodes minikube role=partner
+
+      - name: Create the partner pod using the instructions in the README
+        run: |
+          oc create -f ./namespace.yaml
+          oc create -f ./partner.yaml
+
+      - name: Wait for the partner pod to be ready
+        run: oc wait -n $TNF_NAMESPACE --for=condition=ready pod/$TPP_RESOURCE_NAME --timeout=$DEFAULT_TIMEOUT
+
+      - name: '(partner pod) Test: Check if ping is installed'
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ping
+
+      - name: '(partner pod) Test: Check if ip is installed'
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ip
+
+      - name: '(partner pod) Test: Check if ssh is installed'
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ssh
