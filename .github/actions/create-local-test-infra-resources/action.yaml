@@ -1,0 +1,33 @@
+name: create-local-test-infra-resources
+description: Creates `local-test-infra` OpenShift resources
+inputs:
+  working_directory:
+    default: .
+  oc_namespace:
+    default: tnf
+  oc_pod_timeout:
+    default: 90s
+  put_resource_name:
+    default: test
+  tpp_resource_name:
+    default: partner
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create `local-test-infra` OpenShift resources
+      run: make install
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Set the current context to use the correct TNF namespace
+      run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
+      shell: bash
+
+    - name: Wait for the test pod (PUT) to be ready
+      run: oc wait --for=condition=ready pod/${{ inputs.put_resource_name }} --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
+
+    - name: Wait for the partner pod (TPP) to be ready
+      run: oc wait --for=condition=ready pod/${{ inputs.tpp_resource_name }} --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
