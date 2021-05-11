@@ -4,6 +4,9 @@ kind: Pod
 metadata:
   labels:
     app: partner
+    test-network-function.com/generic: orchestrator
+  annotations:
+    test-network-function.com/defaultnetworkinterface: "\"eth0\""
   name: partner
   namespace: tnf
 spec:
