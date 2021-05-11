@@ -4,6 +4,9 @@ kind: Pod
 metadata:
   labels:
     app: test
+    test-network-function.com/generic: target
+  annotations:
+    test-network-function.com/defaultnetworkinterface: "\"eth0\""
   name: test
   namespace: tnf
 spec:
