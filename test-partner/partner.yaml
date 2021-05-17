@@ -1,23 +1,30 @@
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  labels:
-    app: partner
   name: partner
   namespace: tnf
 spec:
-  containers:
-    - command:
-        - tail
-        - -f
-        - /dev/null
-      image: quay.io/testnetworkfunction/cnf-test-partner:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: partner
+  template:
+    metadata:
+      labels:
+        app: partner
       name: partner
-      resources:
-        limits:
-          memory: 1Gi
-          cpu: 1
-  restartPolicy: Always
-  nodeSelector:
-    role: partner
+    spec:
+      containers:
+        - command:
+            - tail
+            - -f
+            - /dev/null
+          image: quay.io/testnetworkfunction/cnf-test-partner:latest
+          name: partner
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 1
+      nodeSelector:
+        role: partner
