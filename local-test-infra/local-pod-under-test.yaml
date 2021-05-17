@@ -1,26 +1,33 @@
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  labels:
-    app: test
-    test-network-function.com/generic: target
-    test-network-function.com/container: target
-  annotations:
-    test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
-    test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
   name: test
   namespace: tnf
 spec:
-  containers:
-    - command:
-        - tail
-        - -f
-        - /dev/null
-      image: quay.io/testnetworkfunction/cnf-test-partner:latest
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+        test-network-function.com/generic: target
+        test-network-function.com/container: target
+      annotations:
+        test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
+        test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
       name: test
-      resources:
-        limits:
-          memory: 512Mi
-          cpu: 0.25
-  restartPolicy: Always
+    spec:
+      containers:
+        - command:
+            - tail
+            - -f
+            - /dev/null
+          image: quay.io/testnetworkfunction/cnf-test-partner:latest
+          name: test
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 0.25
