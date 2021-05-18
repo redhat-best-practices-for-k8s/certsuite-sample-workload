@@ -6,7 +6,7 @@ metadata:
     app: partner
     test-network-function.com/generic: orchestrator
   annotations:
-    test-network-function.com/defaultnetworkinterface: "\"eth0\""
+    test-network-function.com/defaultnetworkinterface: "\"eth0\"" # optional
   name: partner
   namespace: tnf
 spec:
