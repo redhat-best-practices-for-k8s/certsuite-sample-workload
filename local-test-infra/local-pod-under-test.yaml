@@ -7,8 +7,8 @@ metadata:
     test-network-function.com/generic: target
     test-network-function.com/container: target
   annotations:
-    test-network-function.com/container_tests: "[\"PRIVILEGED_POD\",\"PRIVILEGED_ROLE\"]" # optional
-    test-network-function.com/defaultnetworkinterface: "\"eth0\"" # optional
+    test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
+    test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
   name: test
   namespace: tnf
 spec:
