@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       TNF_NAMESPACE: tnf
-      TPP_RESOURCE_NAME: partner
+      TPP_CONTAINER_NAME: partner
       DEFAULT_TIMEOUT: 90s
 
     steps:
@@ -28,14 +28,21 @@ jobs:
           oc create -f ./namespace.yaml
           oc create -f ./partner.yaml
 
+      - name: Ensure only one partner pod with the label is present
+        run: '[[ $(oc get pods -n $TNF_NAMESPACE -l "app=partner" -o name | wc -l) -eq "1" ]]'
+
+      - name: Discover the name of the partner pod
+        run: |
+          echo "TPP_POD_NAME=$(oc get pods -n $TNF_NAMESPACE -l 'app=partner' -o jsonpath='{.items[0].metadata.name}')" >> $GITHUB_ENV
+
       - name: Wait for the partner pod to be ready
-        run: oc wait -n $TNF_NAMESPACE --for=condition=ready pod/$TPP_RESOURCE_NAME --timeout=$DEFAULT_TIMEOUT
+        run: oc wait -n $TNF_NAMESPACE --for=condition=ready pod/$TPP_POD_NAME --timeout=$DEFAULT_TIMEOUT
 
       - name: '(partner pod) Test: Check if ping is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ping
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ping
 
       - name: '(partner pod) Test: Check if ip is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ip
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ip
 
       - name: '(partner pod) Test: Check if ssh is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ssh
+        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ssh

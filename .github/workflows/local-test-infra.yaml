@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       TNF_NAMESPACE: tnf
-      PUT_RESOURCE_NAME: test
-      TPP_RESOURCE_NAME: partner
+      PUT_CONTAINER_NAME: test
+      TPP_CONTAINER_NAME: partner
       DEFAULT_TIMEOUT: 90s
 
     steps:
@@ -23,27 +23,30 @@ jobs:
       - name: Create `local-test-infra` OpenShift resources
         uses: ./.github/actions/create-local-test-infra-resources
 
+      # $PUT_POD_NAME and $TPP_POD_NAME environment variables are set
+      # during the execution of `create-local-test-infra-resources`
+
       # Tests for the test pod (PUT)
 
       - name: '(test pod) Test: Check if ping is installed'
-        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ping
+        run: oc exec -i $PUT_POD_NAME -c $PUT_CONTAINER_NAME -- which ping
 
       - name: '(test pod) Test: Check if ip is installed'
-        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ip
+        run: oc exec -i $PUT_POD_NAME -c $PUT_CONTAINER_NAME -- which ip
 
       - name: '(test pod) Test: Check if ssh is installed'
-        run: oc exec -i $PUT_RESOURCE_NAME -c $PUT_RESOURCE_NAME -- which ssh
+        run: oc exec -i $PUT_POD_NAME -c $PUT_CONTAINER_NAME -- which ssh
 
       # Tests for the partner pod (TPP)
 
       - name: '(partner pod) Test: Check if ping is installed'
-        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ping
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ping
 
       - name: '(partner pod) Test: Check if ip is installed'
-        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ip
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ip
 
       - name: '(partner pod) Test: Check if ssh is installed'
-        run: oc exec -i $TPP_RESOURCE_NAME -c $TPP_RESOURCE_NAME -- which ssh
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ssh
 
       # Cleanup
 
