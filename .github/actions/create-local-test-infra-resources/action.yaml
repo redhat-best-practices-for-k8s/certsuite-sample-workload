@@ -6,11 +6,20 @@ inputs:
   oc_namespace:
     default: tnf
   oc_pod_timeout:
+    description: "Timeout for the `oc wait` command"
     default: 90s
-  put_resource_name:
+  put_pod_label_app:
+    description: "The expected value of the test pod's `app` label"
     default: test
-  tpp_resource_name:
+  put_pod_name_env_var:
+    description: "The environment variable the test pod's name will be saved to"
+    default: PUT_POD_NAME
+  tpp_pod_label_app:
+    description: "The expected value of the partner pod's `app` label"
     default: partner
+  tpp_pod_name_env_var:
+    description: "The environment variable the partner pod's name will be saved to"
+    default: TPP_POD_NAME
 
 runs:
   using: 'composite'
@@ -24,10 +33,36 @@ runs:
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
       shell: bash
 
-    - name: Wait for the test pod (PUT) to be ready
-      run: oc wait --for=condition=ready pod/${{ inputs.put_resource_name }} --timeout=${{ inputs.oc_pod_timeout }}
+    - name: (PUT) Ensure only one pod with the label is present
+      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
       shell: bash
 
-    - name: Wait for the partner pod (TPP) to be ready
-      run: oc wait --for=condition=ready pod/${{ inputs.tpp_resource_name }} --timeout=${{ inputs.oc_pod_timeout }}
+    - name: (TPP) Ensure only one pod with the label is present
+      run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
+      shell: bash
+
+    - name: (PUT) Discover the name of the test pod
+      run: |
+        PUT_POD_NAME=$(oc get pods -l 'app=${{ inputs.put_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        echo "${{ inputs.put_pod_name_env_var }}=$PUT_POD_NAME" >> $GITHUB_ENV
+      shell: bash
+
+    - name: (TPP) Discover the name of the partner pod
+      run: |
+        TPP_POD_NAME=$(oc get pods -l 'app=${{ inputs.tpp_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        echo "${{ inputs.tpp_pod_name_env_var }}=$TPP_POD_NAME" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Display auto-discovered pod names
+      run: |
+        echo "(PUT) test pod name: $${{ inputs.put_pod_name_env_var }}"
+        echo "(TPP) partner pod name: $${{ inputs.tpp_pod_name_env_var }}"
+      shell: bash
+
+    - name: (PUT) Wait for the test pod to be ready
+      run: oc wait --for=condition=ready pod/$${{ inputs.put_pod_name_env_var }} --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
+
+    - name: (TPP) Wait for the partner pod to be ready
+      run: oc wait --for=condition=ready pod/$${{ inputs.tpp_pod_name_env_var }} --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
