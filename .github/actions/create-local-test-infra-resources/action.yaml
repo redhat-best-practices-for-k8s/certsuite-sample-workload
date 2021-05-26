@@ -33,6 +33,14 @@ runs:
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
       shell: bash
 
+    - name: (PUT) Wait for the test pod to be ready
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.put_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
+
+    - name: (TPP) Wait for the partner pod to be ready
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
+
     - name: (PUT) Ensure only one pod with the label is present
       run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
       shell: bash
@@ -57,12 +65,4 @@ runs:
       run: |
         echo "(PUT) test pod name: $${{ inputs.put_pod_name_env_var }}"
         echo "(TPP) partner pod name: $${{ inputs.tpp_pod_name_env_var }}"
-      shell: bash
-
-    - name: (PUT) Wait for the test pod to be ready
-      run: oc wait --for=condition=ready pod/$${{ inputs.put_pod_name_env_var }} --timeout=${{ inputs.oc_pod_timeout }}
-      shell: bash
-
-    - name: (TPP) Wait for the partner pod to be ready
-      run: oc wait --for=condition=ready pod/$${{ inputs.tpp_pod_name_env_var }} --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
