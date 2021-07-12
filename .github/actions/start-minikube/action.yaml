@@ -6,7 +6,7 @@ inputs:
   minikube_driver:
     default: docker
   minikube_extra_options:
-    default: '--embed-certs'
+    default: '--embed-certs --nodes 2'
   oc_kcm_timeout:
     default: 5m
 
@@ -40,6 +40,10 @@ runs:
 
     - name: Display kube-system pods
       run: oc get pods -n kube-system -o wide
+      shell: bash
+      
+    - name: Display cluster nodes
+      run: oc get nodes
       shell: bash
 
     - name: Display a friendly summary message
