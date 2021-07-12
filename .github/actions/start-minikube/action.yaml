@@ -6,7 +6,7 @@ inputs:
   minikube_driver:
     default: docker
   minikube_extra_options:
-    default: '--embed-certs'
+    default: '--embed-certs --nodes 2'
   oc_kcm_timeout:
     default: 5m
 
