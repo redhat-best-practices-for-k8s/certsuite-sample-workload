@@ -41,6 +41,10 @@ runs:
     - name: Display kube-system pods
       run: oc get pods -n kube-system -o wide
       shell: bash
+      
+    - name: Display cluster nodes
+      run: oc get nodes
+      shell: bash
 
     - name: Display a friendly summary message
       run: echo "TNF-compatible minikube cluster is ready to go! Have fun!"
