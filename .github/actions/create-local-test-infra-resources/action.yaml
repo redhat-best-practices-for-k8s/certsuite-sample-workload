@@ -33,7 +33,11 @@ runs:
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
       shell: bash
 
-    - name: (PUT) Wait for the test pod to be ready
+    - name: (PUT) Wait for the test1 pod to be ready
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.put_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash
+
+    - name: (PUT) Wait for the test2 pod to be ready
       run: oc wait pod --for=condition=ready -l "app=${{ inputs.put_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
 
@@ -42,14 +46,14 @@ runs:
       shell: bash
 
     - name: (PUT) Ensure only one pod with the label is present
-      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
+      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "2" ]]'
       shell: bash
 
     - name: (TPP) Ensure only one pod with the label is present
       run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
       shell: bash
 
-    - name: (PUT) Discover the name of the test pod
+    - name: (PUT) Discover the name of the main test pod
       run: |
         PUT_POD_NAME=$(oc get pods -l 'app=${{ inputs.put_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
         echo "${{ inputs.put_pod_name_env_var }}=$PUT_POD_NAME" >> $GITHUB_ENV
