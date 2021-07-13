@@ -44,6 +44,10 @@ runs:
       run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
 
+    - name: Display all pods in namespace
+      run: oc get pods -o wide
+      shell: bash
+
     - name: (PUT) Ensure that two pods with the label are present
       run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "2" ]]'
       shell: bash
