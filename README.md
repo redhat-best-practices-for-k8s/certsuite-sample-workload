@@ -122,7 +122,7 @@ To verify `partner` and `test` pods are running:
 oc get pods -n tnf -o wide
 ```
 
-You should see something like this (note that the test pods are running on different nodes due to a anti affinity rule):
+You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
 NAME                       READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
 partner-68cf756959-tp2c5   1/1     Running   0          110s   10.244.1.7   minikube-m02   <none>           <none>
