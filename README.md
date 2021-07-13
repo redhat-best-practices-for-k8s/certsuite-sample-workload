@@ -91,11 +91,13 @@ In order to run the local test setup, the following dependencies are needed:
 To start minikube, issue the following command:
 
 ```shell-script
-minikube start --embed-certs --driver="virtualbox"
+minikube start --embed-certs --driver="virtualbox" --nodes 2
 ```
 
 The `--embed-certs` flag will cause minikube to embed certificates directly in its kubeconfig file.  
 This will allow the minikube cluster to be reached directly from the container without the need of binding additional volumes for certificates.
+
+The `--nodes 2` flag creates a cluster with one master node and one worker node. This is to support anti-affinity test cases.
 
 To avoid having to specify this flag, set the `embed-certs` configuration key:
 
@@ -120,11 +122,12 @@ To verify `partner` and `test` pods are running:
 oc get pods -n tnf -o wide
 ```
 
-You should see something like this:
+You should see something like this (note that the test pods are running on different nodes due to a anti affinity rule):
 ```shell-script
-NAME      READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
-partner   1/1     Running   0          22m   172.17.0.3   minikube   <none>           <none>
-test      1/1     Running   0          22m   172.17.0.4   minikube   <none>           <none>
+NAME                       READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
+partner-68cf756959-tp2c5   1/1     Running   0          110s   10.244.1.7   minikube-m02   <none>           <none>
+test-7799cc9677-6d8qz      1/1     Running   0          110s   10.244.1.8   minikube-m02   <none>           <none>
+test-7799cc9677-rv8nv      1/1     Running   0          110s   10.244.0.5   minikube       <none>           <none>
 ```
 
 To avoid having to specify the `tnf` namespace with the `-n` option, set the namespace for the current context:
