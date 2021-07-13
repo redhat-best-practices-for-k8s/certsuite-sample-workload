@@ -8,6 +8,9 @@ inputs:
   oc_pod_timeout:
     description: "Timeout for the `oc wait` command"
     default: 90s
+  put_deployment_name:
+    description: "The expected value of the test deployment name"
+    default: test
   put_pod_label_app:
     description: "The expected value of the test pod's `app` label"
     default: test
@@ -34,14 +37,14 @@ runs:
       shell: bash
 
     - name: (PUT) Wait for the test deployment to be available
-      run: oc wait deployment --for=condition=available -l "app=${{ inputs.put_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      run: oc wait deployment ${{ inputs.put_deployment_name }} --for=condition=available --timeout=${{ inputs.oc_pod_timeout }} 
       shell: bash
 
     - name: (TPP) Wait for the partner pod to be ready
       run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
 
-    - name: (PUT) Ensure only one pod with the label is present
+    - name: (PUT) Ensure that two pods with the label are present
       run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "2" ]]'
       shell: bash
 
@@ -49,7 +52,7 @@ runs:
       run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
       shell: bash
 
-    - name: (PUT) Discover the name of the main test pod
+    - name: (PUT) Discover the name of the first test pod
       run: |
         PUT_POD_NAME=$(oc get pods -l 'app=${{ inputs.put_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
         echo "${{ inputs.put_pod_name_env_var }}=$PUT_POD_NAME" >> $GITHUB_ENV
