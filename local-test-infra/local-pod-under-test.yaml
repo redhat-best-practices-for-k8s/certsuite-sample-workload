@@ -5,7 +5,7 @@ metadata:
   name: test
   namespace: tnf
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: test
@@ -28,3 +28,14 @@ spec:
             limits:
               memory: 512Mi
               cpu: 0.25
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - test
+            topologyKey: "kubernetes.io/hostname"
+
