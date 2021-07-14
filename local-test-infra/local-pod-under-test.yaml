@@ -28,6 +28,10 @@ spec:
             limits:
               memory: 512Mi
               cpu: 0.25
+          lifecycle:
+            preStop:
+               exec:
+                 command: ["/bin/sh","-c","killall -0 tail"]
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -38,4 +42,3 @@ spec:
                 values:
                 - test
             topologyKey: "kubernetes.io/hostname"
-
