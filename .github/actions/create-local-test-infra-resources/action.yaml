@@ -31,6 +31,8 @@ runs:
       run: make install
       working-directory: ${{ inputs.working_directory }}
       shell: bash
+      env:
+        NAMESPACE_TO_GENERATE: ${{ inputs.oc_namespace }} 
 
     - name: Set the current context to use the correct TNF namespace
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
