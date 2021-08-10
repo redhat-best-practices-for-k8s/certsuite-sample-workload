@@ -1,10 +1,8 @@
 .PHONY: install \
         clean
 
-install:
-	oc create -f local-test-infra/namespace.yaml
-	oc create -f local-test-infra/local-partner-pod.yaml
-	oc create -f local-test-infra/local-pod-under-test.yaml
-
+install: 
+	bash ./deploy-all.sh
+	
 clean:
-	oc delete -f local-test-infra/namespace.yaml
+	bash ./clean-all.sh
