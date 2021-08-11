@@ -23,6 +23,12 @@ inputs:
   tpp_pod_name_env_var:
     description: "The environment variable the partner pod's name will be saved to"
     default: TPP_POD_NAME
+  fsdiff_pod_label_app:
+    description: "The expected value of the fsdiff partner pod's `app` label"
+    default: node-master
+  fsdiff_pod_name_env_var:
+    description: "The environment variable the fsdiff partner pod's name will be saved to"
+    default: FSDIFF_POD_NAME    
 
 runs:
   using: 'composite'
@@ -45,6 +51,10 @@ runs:
     - name: (TPP) Wait for the partner pod to be ready
       run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
       shell: bash
+
+    - name: (TPP) Wait for the fsdiff pod to be ready
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.fsdiff_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      shell: bash      
 
     - name: Display all pods in namespace
       run: oc get pods -o wide
@@ -70,8 +80,15 @@ runs:
         echo "${{ inputs.tpp_pod_name_env_var }}=$TPP_POD_NAME" >> $GITHUB_ENV
       shell: bash
 
+    - name: (fsdiff) Discover the name of the fsdiff partner pod
+      run: |
+        FSDIFF_POD_NAME=$(oc get pods -l 'app=${{ inputs.fsdiff_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        echo "${{ inputs.fsdiff_pod_name_env_var }}=$FSDIFF_POD_NAME" >> $GITHUB_ENV
+      shell: bash
+      
     - name: Display auto-discovered pod names
       run: |
         echo "(PUT) test pod name: $${{ inputs.put_pod_name_env_var }}"
         echo "(TPP) partner pod name: $${{ inputs.tpp_pod_name_env_var }}"
+        echo "(fsdiff) partner pod name: $${{ inputs.fsdiff_pod_name_env_var }}"
       shell: bash
