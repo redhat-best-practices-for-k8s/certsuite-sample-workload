@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   name: node-master
   namespace: {{ NAMESPACE_TO_GENERATE }}
+  test-network-function.com/generic: fs_diff_master
 spec:
   replicas: 1
   selector:
