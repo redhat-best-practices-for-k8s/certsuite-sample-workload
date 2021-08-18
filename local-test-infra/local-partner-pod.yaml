@@ -4,6 +4,8 @@ kind: Deployment
 metadata:
   name: partner
   namespace: {{ NAMESPACE_TO_GENERATE }}
+  labels:
+    test-network-function.com/generic: orchestrator
 spec:
   replicas: 1
   selector:

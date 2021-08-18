@@ -24,6 +24,12 @@ image to fulfill CNF Test dependency requirements:
 If you are using a different test partner pod, please ensure you provide these or the image will be unable to run all CNF
 Certification tests.
 
+## test-parner deployment label
+
+It is mandatory for the test-parner pod deployment to contain the next label in its metadata section:
+- test-network-function.com/generic: orchestrator
+
+The label is needed by [test-network-function](https://github.com/test-network-function/test-network-function) so its autodiscover function can filter out non-CNF deployments.
 ## (Re)Building the container image
 
 In order to build the test-partner image, use the following:
