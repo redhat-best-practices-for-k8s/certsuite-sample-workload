@@ -106,7 +106,7 @@ minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
-To create the pods with the namespace that you want, use the follwoing command:
+To create the pods with the a specific namespace, issue the followoing command:
 ```shell-script
 export NAMESPACE_TO_GENERATE="tnf" #tnf for example
 ```
@@ -125,6 +125,7 @@ To verify `partner` and `test` pods are running:
 ```shell-script
 oc get pods -n tnf -o wide
 ```
+If there are existing tnf deployed pods the script will recreate the fs_diff pod in case of running the tests under oc.
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
@@ -139,8 +140,6 @@ To avoid having to specify the `tnf` namespace with the `-n` option, set the nam
 ```shell-script
 oc config set-context $(oc config current-context) --namespace=tnf
 ```
-If there are existing tnf deployed pods the script will recreate the fs_diff pod in case of running the tests under oc.
-
 ## Stop local-test-infra
 
 To tear down the local test cluster use the following command. It may take some time to completely stop both pods:
