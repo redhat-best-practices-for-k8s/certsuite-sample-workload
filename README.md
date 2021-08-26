@@ -106,7 +106,11 @@ minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
-To create the PUT and TPP in the `tnf` namespace, issue the following command:
+To create the pods with the namespace that you want, use the follwoing command:
+```shell-script
+export NAMESPACE_TO_GENERATE="tnf" ## tnf for example
+```
+To create the PUT and TPP in the `NAMESPACE_TO_GENERATE` namespace, issue the following command:
 
 ```shell-script
 make install
@@ -135,6 +139,7 @@ To avoid having to specify the `tnf` namespace with the `-n` option, set the nam
 ```shell-script
 oc config set-context $(oc config current-context) --namespace=tnf
 ```
+If there is an existing deployed pods the script will recreate the fs_diff pods in case of running the tests under oc
 
 ## Stop local-test-infra
 
@@ -143,4 +148,3 @@ To tear down the local test cluster use the following command. It may take some 
 ```shell-script
 make clean
 ```
-
