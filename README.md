@@ -139,7 +139,7 @@ To avoid having to specify the `tnf` namespace with the `-n` option, set the nam
 ```shell-script
 oc config set-context $(oc config current-context) --namespace=tnf
 ```
-If there are an existing deployed pods the script will recreate the fs_diff pod in case of running the tests under oc.
+If there are existing deployed pods the script will recreate the fs_diff pod in case of running the tests under oc.
 
 ## Stop local-test-infra
 
