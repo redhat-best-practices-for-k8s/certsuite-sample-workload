@@ -108,7 +108,7 @@ minikube config set embed-certs true
 ## Start local-test-infra
 To create the pods with the namespace that you want, use the follwoing command:
 ```shell-script
-export NAMESPACE_TO_GENERATE="tnf" ## tnf for example
+export NAMESPACE_TO_GENERATE="tnf" #tnf for example
 ```
 To create the PUT and TPP in the `NAMESPACE_TO_GENERATE` namespace, issue the following command:
 
