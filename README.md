@@ -106,7 +106,7 @@ minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
-To create the pods with the a specific namespace, issue the followoing command:
+To create the pods with a specific namespace, issue the followoing command:
 ```shell-script
 export NAMESPACE_TO_GENERATE="tnf" #tnf for example
 ```
