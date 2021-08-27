@@ -4,7 +4,7 @@ metadata:
   labels:
     app: node-master
     test-network-function.com/generic: fs_diff_master
-    test-network-function.com/container: fs_diff_master
+    test-network-function.com/container: fs_diff_master    
   annotations:
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
   name: node-master
