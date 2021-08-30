@@ -121,7 +121,7 @@ This will create a PUT named "test", and a TPP named "partner" which can be used
 example `test-configuration.yaml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
-To verify `partner` and `test`  pods are running: 
+To verify `partner` and `test` pods are running: 
 
 ```shell-script
 oc get pods -n tnf -o wide
