@@ -127,21 +127,13 @@ To verify `partner` and `test`  pods are running:
 oc get pods -n tnf -o wide
 ```
 
-You should see something like this in case of running it on minikube (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
+You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
 NAME                       READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
 partner-68cf756959-tp2c5   1/1     Running   0          110s   10.244.1.7   minikube-m02   <none>           <none>
 test-7799cc9677-6d8qz      1/1     Running   0          110s   10.244.1.8   minikube-m02   <none>           <none>
 test-7799cc9677-rv8nv      1/1     Running   0          110s   10.244.0.5   minikube       <none>           <none>
 ```
-And to see this in case of oc:
-```shell-script
-NAME                       READY   STATUS    RESTARTS   AGE
-node-master                1/1     Running   0          8d
-partner-68cf756959-56p28   1/1     Running   0          3d7h
-test-7659f58975-944w9      1/1     Running   0          3d7h
-test-7659f58975-zzt2x      1/1     Running   0          5d21h
-``` 
 
 To avoid having to specify the `tnf` namespace with the `-n` option, set the namespace for the current context:
 
