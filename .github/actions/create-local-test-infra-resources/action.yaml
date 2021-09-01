@@ -75,3 +75,4 @@ runs:
         echo "(PUT) test pod name: $${{ inputs.put_pod_name_env_var }}"
         echo "(TPP) partner pod name: $${{ inputs.tpp_pod_name_env_var }}"
       shell: bash
+
