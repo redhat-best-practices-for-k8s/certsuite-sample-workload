@@ -1,8 +1,13 @@
 set -x
 
+#Namespace
+if [[ -z "${TNF_PARTNER_NAMESPACE}" ]]; then
+    export TNF_PARTNER_NAMESPACE="tnf"
+fi
+
 # Create secret (must be named cert.pem)
 cp ../certs/registry.pem ../certs/cert.pem
-oc create secret generic foo-cert-sec --from-file=../certs/cert.pem
+oc create secret generic foo-cert-sec --from-file=../certs/cert.pem  -n $TNF_PARTNER_NAMESPACE
 
 # Remove the docker registry 
 docker rm -f registry
@@ -115,10 +120,11 @@ make bundle IMG="cnftest-local.redhat.com/nginx-operator:v0.0.1"
 make bundle-build bundle-push
 
 # Deploy the operator bundle
-operator-sdk run bundle cnftest-local.redhat.com/nginx-operator-bundle:v0.0.1 --ca-secret-name foo-cert-sec
+operator-sdk run bundle cnftest-local.redhat.com/nginx-operator-bundle:v0.0.1 --ca-secret-name foo-cert-sec -n $TNF_PARTNER_NAMESPACE
 
 # Label and annotate the operator
 ## First call with csv fails, subsequent calls are ok
-oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target
-oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target
-oc annotate csv nginx-operator.v0.0.1 test-network-function.com/subscription_name='["nginx-operator-v0-0-1-sub"]'
+oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target -n $TNF_PARTNER_NAMESPACE
+oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target -n $TNF_PARTNER_NAMESPACE
+oc annotate csv nginx-operator.v0.0.1 test-network-function.com/subscription_name='["nginx-operator-v0-0-1-sub"]' -n $TNF_PARTNER_NAMESPACE
+oc get csv -n $TNF_PARTNER_NAMESPACE
