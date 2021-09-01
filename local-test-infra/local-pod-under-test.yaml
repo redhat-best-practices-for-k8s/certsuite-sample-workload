@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test
-  namespace: {{ NAMESPACE_TO_GENERATE }}
+  namespace: {{ TNF_PARTNER_NAMESPACE }}
 spec:
   replicas: 2
   selector:
