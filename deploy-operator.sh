@@ -118,7 +118,7 @@ make bundle-build bundle-push
 operator-sdk run bundle cnftest-local.redhat.com/nginx-operator-bundle:v0.0.1 --ca-secret-name foo-cert-sec
 
 # Label and annotate the operator
-sleep 10s
+## First call with csv fails, subsequent calls are ok
 oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target
 oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target
 oc annotate csv nginx-operator.v0.0.1 test-network-function.com/subscription_name='["nginx-operator-v0-0-1-sub"]'

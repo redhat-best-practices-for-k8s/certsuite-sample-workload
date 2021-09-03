@@ -17,9 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      #- name: Create Minikube certificates
-      #  run: ./create-certificates.sh
-
       - name: Start the minikube cluster
         uses: ./.github/actions/start-minikube
 
