@@ -14,7 +14,14 @@ This is the basic infrastructure required for "testing the tester".
 * Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a
 traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
 
-# test-partner
+# Namespace
+
+By default, all the deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
+
+```shell-script
+export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
+```
+# Test-partner
 
 test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper
 operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single
@@ -26,10 +33,16 @@ image to fulfill CNF Test dependency requirements:
 If you are using a different test partner pod, please ensure you provide these or the image will be unable to run all CNF
 Certification tests.
 
+## Cloning the repository
+
+The repository can be cloned to local machine using:
+
+```shell-script
+git clone git@github.com:test-network-function/cnf-certification-test-partner.git
+```
 ## (Re)Building the container image
 
-In order to build the test-partner image, use the following:
-
+In order to build the test-partner image, the code should be [cloned locally](##cloning-the-repository). The following command should be issued:
 ```shell-script
 docker build --no-cache -f Dockerfile -t testnetworkfunction/cnf-test-partner .
 ```
@@ -42,26 +55,13 @@ docker push testnetworkfunction/cnf-test-partner
 
 ## Installing the partner pod
 
-First, clone this repository:
-
-```shell-script
-git clone git@github.com:test-network-function/cnf-certification-test-partner.git
-```
-
-Next, configure the namespace to be used to deploy partner repo. This should be the namespace where the CNF under test is deployed
-```shell-script
-export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
-```
-
-Next, create and deploy the partner pod:
+In order to create and deploy the partner pod, use the following:
 
 ```shell-script
 make install-partner-pods
 ```
 
-
-This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF
-tests.
+This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF tests.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
 ## TODO
@@ -105,12 +105,7 @@ minikube config set embed-certs true
 ```
 
 ## Start local-test-infra
-To create the pods with a specific namespace, issue the followoing command:
-```shell-script
-export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
-```
-
-To create the PUT and TPP in the `TNF_PARTNER_NAMESPACE` namespace, issue the following command:
+To create the PUT and TPP in the `TNF_PARTNER_NAMESPACE` [namespace](#namespace), issue the following command:
 
 ```shell-script
 make install
