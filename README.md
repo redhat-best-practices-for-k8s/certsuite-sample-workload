@@ -1,8 +1,10 @@
 # CNF Certification Partner
 
 This repository contains two main sections:
-* test-partner:  A partner pod definition for use on a K8S CNF Certification cluster.
+* test-partner:  A partner pod definition for use on a k8s CNF Certification cluster.
 * local-test-infra:  A trivial example cluster, primarily intended to be used to run
+
+
 [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 This is the basic infrastructure required for "testing the tester".
 
@@ -16,7 +18,7 @@ traffic workload generator or receiver.  For generic cases, this currently inclu
 
 test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper
 operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single
-container, which is based off Universal Base Image (UBI) 7.  A minimal set of tools is installed on top of the base
+container, which is based off Universal Base Image (UBI) 8.  A minimal set of tools is installed on top of the base
 image to fulfill CNF Test dependency requirements:
 * iputils (for ping)
 * iproute (for ip)
@@ -46,35 +48,32 @@ First, clone this repository:
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
 
-Next, create the OpenShift resources:
-
+Next, configure the namespace to be used to deploy partner repo. This should be the namespace where the CNF under test is deployed
 ```shell-script
-cd cnf-certification-test-partner/test-partner
-oc create -f ./namespace.yaml
-oc create -f ./partner.yaml
+export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
 ```
 
-This will create a Pod named "partner" in the `tnf` namespace.  This Pod is the test partner for running Generic CNF
+Next, create and deploy the partner pod:
+
+```shell-script
+make install-partner-pods
+```
+
+
+This will create a Pod named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF
 tests.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
-
-To add the label to a selected node, issue the following command: 
-```shell-script:
-oc label nodes <node-name> role=partner
-```
-
 ## TODO
 
 * Create an OpenShift Operator for partner.yaml.  This has very little merit for our use-case, but does align with the
   best practices Red Hat recommends.
-* Consider a transition to UBI 8.
 
 # local-test-infra
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [local-test-infra](./local-test-infra)
-provides a very simple PUT and TPP containing the minimial requirements to peform `generic` test cases.
+provides a very simple PUT and TPP containing the minimial requirements to peform test cases.
 These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
 
 
@@ -91,13 +90,13 @@ In order to run the local test setup, the following dependencies are needed:
 To start minikube, issue the following command:
 
 ```shell-script
-minikube start --embed-certs --driver="virtualbox" --nodes 2
+minikube start --embed-certs --driver="virtualbox" --nodes 3
 ```
 
 The `--embed-certs` flag will cause minikube to embed certificates directly in its kubeconfig file.  
 This will allow the minikube cluster to be reached directly from the container without the need of binding additional volumes for certificates.
 
-The `--nodes 2` flag creates a cluster with one master node and one worker node. This is to support anti-affinity test cases.
+The `--nodes 3` flag creates a cluster with one master node and two worker nodes. This is to support anti-affinity and pod-recreation test case.
 
 To avoid having to specify this flag, set the `embed-certs` configuration key:
 
@@ -117,14 +116,14 @@ To create the PUT and TPP in the `TNF_PARTNER_NAMESPACE` namespace, issue the fo
 make install
 ```
 
-This will create a PUT named "test", and a TPP named "partner" which can be used to run `generic` test suite. The
+This will create a PUT named "test", and a TPP named "partner" which can be used to run test suites. The
 example `test-configuration.yaml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
 To verify `partner` and `test` pods are running: 
 
 ```shell-script
-oc get pods -n tnf -o wide
+oc get pods -n $TNF_PARTNER_NAMESPACE -o wide
 ```
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
@@ -135,10 +134,10 @@ test-7799cc9677-6d8qz      1/1     Running   0          110s   10.244.1.8   mini
 test-7799cc9677-rv8nv      1/1     Running   0          110s   10.244.0.5   minikube       <none>           <none>
 ```
 
-To avoid having to specify the `tnf` namespace with the `-n` option, set the namespace for the current context:
+To avoid having to specify the `TNF_PARTNER_NAMESPACE` namespace with the `-n` option, set the namespace for the current context:
 
 ```shell-script
-oc config set-context $(oc config current-context) --namespace=tnf
+oc config set-context $(oc config current-context) --namespace=$TNF_PARTNER_NAMESPACE
 ```
 ## Stop local-test-infra
 
