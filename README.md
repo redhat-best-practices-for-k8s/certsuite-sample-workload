@@ -60,7 +60,7 @@ make install-partner-pods
 ```
 
 
-This will create a Pod named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF
+This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF
 tests.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
