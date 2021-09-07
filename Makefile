@@ -6,6 +6,9 @@ install: install-partner-pods
 
 install-partner-pods:
 	bash ./deploy-partner-pods.sh
-	
+
+install-operator-github:
+	bash ./deploy-operator.sh
+
 clean:
 	bash ./clean-all.sh

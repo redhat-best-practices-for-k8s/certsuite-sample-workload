@@ -1,6 +1,8 @@
 name: start-minikube
 description: Creates and configures a minikube cluster for all things TNF-related
 inputs:
+  working_directory:
+    default: .
   minikube_version:
     default: v1.18.1
   minikube_driver:
@@ -13,6 +15,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Create Minikube certificates
+      run: ./create-certificates.sh
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
     - name: Download minikube debian package
       run: |
         curl -Lo minikube.deb https://storage.googleapis.com/minikube/releases/${{ inputs.minikube_version }}/minikube_latest_amd64.deb
