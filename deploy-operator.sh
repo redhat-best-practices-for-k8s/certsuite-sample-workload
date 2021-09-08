@@ -82,7 +82,7 @@ metadata:
   name: nginx-operator.v0.0.0
   namespace: placeholder
   labels:
-    operators.coreos.com/nginx-operator.tnf: ""
+    test-network-function.com/operator: target
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions: {}
