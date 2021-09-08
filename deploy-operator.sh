@@ -83,7 +83,6 @@ metadata:
   namespace: placeholder
   labels:
     operators.coreos.com/nginx-operator.tnf: ""
-   
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions: {}
