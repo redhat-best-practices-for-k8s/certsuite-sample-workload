@@ -78,8 +78,12 @@ metadata:
   annotations:
     alm-examples: '[]'
     capabilities: Basic Install
+    test-network-function.com/subscription_name: '["nginx-operator-v0-0-1-sub"]'
   name: nginx-operator.v0.0.0
   namespace: placeholder
+  labels:
+    operators.coreos.com/nginx-operator.tnf: ""
+   
 spec:
   apiservicedefinitions: {}
   customresourcedefinitions: {}
@@ -121,10 +125,3 @@ make bundle-build bundle-push
 
 # Deploy the operator bundle
 operator-sdk run bundle cnftest-local.redhat.com/nginx-operator-bundle:v0.0.1 --ca-secret-name foo-cert-sec -n $TNF_PARTNER_NAMESPACE
-
-# Label and annotate the operator
-## First call with csv fails, subsequent calls are ok
-oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target -n $TNF_PARTNER_NAMESPACE
-oc label csv nginx-operator.v0.0.1 test-network-function.com/operator=target -n $TNF_PARTNER_NAMESPACE
-oc annotate csv nginx-operator.v0.0.1 test-network-function.com/subscription_name='["nginx-operator-v0-0-1-sub"]' -n $TNF_PARTNER_NAMESPACE
-oc get csv -n $TNF_PARTNER_NAMESPACE
