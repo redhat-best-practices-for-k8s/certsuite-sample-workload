@@ -4,14 +4,7 @@ if [[ -z "${TNF_PARTNER_NAMESPACE}" ]]; then
     export TNF_PARTNER_NAMESPACE="tnf"
 fi
 
-export res=$(oc get namespace $TNF_PARTNER_NAMESPACE 2>&1)
-if [[ ${res#Error from server (NotFound)} != ${res} ]] || [[ ${res#No resources found} != ${res} ]]; then
-    cat ./local-test-infra/namespace.yaml | ./script/mo > ./temp/rendered-namespace.yaml
-    oc apply -f ./temp/rendered-namespace.yaml
-    rm ./temp/rendered-namespace.yaml
-else
-    echo "namespace ${TNF_PARTNER_NAMESPACE} already exists, no reason to recreate"
-fi
+oc create namespace ${TNF_PARTNER_NAMESPACE}
 
 cat ./local-test-infra/local-partner-deployment.yaml | ./script/mo > ./temp/rendered-partner-template.yaml
 oc apply -f ./temp/rendered-partner-template.yaml

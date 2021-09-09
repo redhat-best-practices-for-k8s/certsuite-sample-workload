@@ -4,6 +4,7 @@ if [[ -z "${TNF_PARTNER_NAMESPACE}" ]]; then
     export TNF_PARTNER_NAMESPACE="tnf"
 fi
 
+oc create namespace ${TNF_PARTNER_NAMESPACE}
 
 cat ./local-test-infra/local-pod-under-test.yaml | ./script/mo > ./temp/rendered-local-pod-under-test-template.yaml
 oc apply -f ./temp/rendered-local-pod-under-test-template.yaml

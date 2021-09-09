@@ -16,7 +16,7 @@ runs:
   using: 'composite'
   steps:
     - name: Create Minikube certificates
-      run: ./create-certificates.sh
+      run: ./create-local-registry.sh
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
