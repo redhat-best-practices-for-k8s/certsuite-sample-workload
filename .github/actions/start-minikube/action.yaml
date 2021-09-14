@@ -15,11 +15,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Create Minikube certificates
-      run: ./create-local-registry.sh
-      working-directory: ${{ inputs.working_directory }}
-      shell: bash
-
     - name: Download minikube debian package
       run: |
         curl -Lo minikube.deb https://storage.googleapis.com/minikube/releases/${{ inputs.minikube_version }}/minikube_latest_amd64.deb

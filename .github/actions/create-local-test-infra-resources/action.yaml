@@ -29,10 +29,7 @@ runs:
   steps:
     - name: Create `local-test-infra` OpenShift resources
       run: |
-        ./deploy-test-pods.sh
-        ./deploy-partner-pods.sh
-        ./create-operator-bundle.sh
-        ./deploy-operator.sh
+        make install
       working-directory: ${{ inputs.working_directory }}
       shell: bash
       env:
