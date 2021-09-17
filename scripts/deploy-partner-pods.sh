@@ -9,4 +9,5 @@ cat ./local-test-infra/local-partner-deployment.yaml | $SCRIPT_DIR/mo > ./temp/r
 oc apply -f ./temp/rendered-partner-template.yaml
 rm ./temp/rendered-partner-template.yaml
 sleep 3
-oc wait pod -n $TNF_PARTNER_NAMESPACE --for=condition=ready -l "app=partner" --timeout=30s
+
+oc wait deployment partner -n $TNF_PARTNER_NAMESPACE --for=condition=available
