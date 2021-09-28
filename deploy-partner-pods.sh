@@ -1,8 +1,7 @@
 mkdir -p ./temp
 
-if [[ -z "${TNF_PARTNER_NAMESPACE}" ]]; then
-    export TNF_PARTNER_NAMESPACE="tnf"
-fi
+export TNF_PARTNER_NAMESPACE="${TNF_PARTNER_NAMESPACE:-tnf}"
+export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
 
 export res=$(oc get namespace $TNF_PARTNER_NAMESPACE 2>&1)
 if [[ ${res#Error from server (NotFound)} != ${res} ]] || [[ ${res#No resources found} != ${res} ]]; then
