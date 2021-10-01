@@ -6,7 +6,8 @@ install:
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-operator.sh
-minikube:
+	
+rebuild-minikube:
 	./scripts/deploy-minikube.sh
 
 install-partner-pods:

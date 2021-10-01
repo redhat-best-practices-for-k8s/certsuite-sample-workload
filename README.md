@@ -103,7 +103,7 @@ minikube config set embed-certs true
 ```
 Or Alternatively, run:
 ```shell-script
-make minikube
+make rebuild-minikube
 ```
 
 ## Start local-test-infra
