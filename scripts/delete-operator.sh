@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 # Cleanup previous deployment if present
 operator-sdk cleanup nginx-operator -n $TNF_PARTNER_NAMESPACE

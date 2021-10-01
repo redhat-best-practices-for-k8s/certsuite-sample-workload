@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Delete tnf, partner and operator
+./delete-operator.sh
+./delete-partner-pods.sh
+./delete-test-pods.sh

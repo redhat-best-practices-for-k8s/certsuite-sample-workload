@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 $SCRIPT_DIR/create-local-registry.sh
 $SCRIPT_DIR/deploy-minikube.sh

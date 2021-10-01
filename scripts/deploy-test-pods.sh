@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 mkdir -p ./temp
 cat ./local-test-infra/local-pod-under-test.yaml | $SCRIPT_DIR/mo > ./temp/rendered-local-pod-under-test-template.yaml

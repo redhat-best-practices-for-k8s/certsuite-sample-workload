@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 # Login to the registry
 docker login quay.io/testnetworkfunction

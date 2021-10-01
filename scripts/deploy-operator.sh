@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then

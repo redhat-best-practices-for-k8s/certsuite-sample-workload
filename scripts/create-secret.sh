@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/operator-env.sh
+source $SCRIPT_DIR/init-env.sh
 
 #check pem file exists, create a secret with it if present
 if [[ -n "$(ls $SCRIPT_DIR/certs/registry.pem  2>/dev/null)" ]]; then

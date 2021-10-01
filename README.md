@@ -62,6 +62,7 @@ make install-partner-pods
 ```
 
 This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF tests.
+For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
 ## TODO
