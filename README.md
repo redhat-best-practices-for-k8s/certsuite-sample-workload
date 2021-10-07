@@ -7,10 +7,11 @@ This repository contains two main sections:
 
 [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 This is the basic infrastructure required for "testing the tester".
-
+Also includes a test operator.
 # Glossary
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
+* Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
 * Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a
 traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
 
@@ -65,16 +66,12 @@ This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` na
 For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
-## TODO
-
-* Create an OpenShift Operator for partner.yaml.  This has very little merit for our use-case, but does align with the
-  best practices Red Hat recommends.
 
 # local-test-infra
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [local-test-infra](./local-test-infra)
-provides a very simple PUT and TPP containing the minimial requirements to peform test cases.
+provides a very simple PUT, OT and TPP containing the minimial requirements to peform test cases.
 These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
 
 
@@ -104,9 +101,13 @@ To avoid having to specify this flag, set the `embed-certs` configuration key:
 ```shell-script
 minikube config set embed-certs true
 ```
+Or Alternatively, run:
+```shell-script
+make rebuild-minikube
+```
 
 ## Start local-test-infra
-To create the PUT and TPP in the `TNF_PARTNER_NAMESPACE` [namespace](#namespace), issue the following command:
+To create the PUT, OT and TPP in the `TNF_PARTNER_NAMESPACE` [namespace](#namespace), issue the following command:
 
 ```shell-script
 make install
@@ -124,10 +125,13 @@ oc get pods -n $TNF_PARTNER_NAMESPACE -o wide
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
-NAME                       READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
-partner-68cf756959-tp2c5   1/1     Running   0          110s   10.244.1.7   minikube-m02   <none>           <none>
-test-7799cc9677-6d8qz      1/1     Running   0          110s   10.244.1.8   minikube-m02   <none>           <none>
-test-7799cc9677-rv8nv      1/1     Running   0          110s   10.244.0.5   minikube       <none>           <none>
+NAME                                                              READY   STATUS      RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
+4c926df73b15df26b6874260a4f71ca3bf7c6ce2bdfd87aa90759a6aeb5rhpk   0/1     Completed   0          59s     10.244.0.5   minikube       <none>           <none>
+nginx-operator-controller-manager-7f8f449fbd-fvn4f                2/2     Running     0          44s     10.244.0.6   minikube       <none>           <none>
+partner-68cf756959-4mhpk                                          1/1     Running     0          2m45s   10.244.1.2   minikube-m02   <none>           <none>
+quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Running     0          69s     10.244.2.6   minikube-m03   <none>           <none>
+test-697ff58f87-88245                                             1/1     Running     0          2m20s   10.244.2.2   minikube-m03   <none>           <none>
+test-697ff58f87-mfmpv                                             1/1     Running     0          2m20s   10.244.1.3   minikube-m02   <none>           <none>
 ```
 
 To avoid having to specify the `TNF_PARTNER_NAMESPACE` namespace with the `-n` option, set the namespace for the current context:
@@ -137,7 +141,7 @@ oc config set-context $(oc config current-context) --namespace=$TNF_PARTNER_NAME
 ```
 ## Stop local-test-infra
 
-To tear down the local test cluster use the following command. It may take some time to completely stop both pods:
+To tear down the local test cluster use the following command. It may take some time to completely stop the PUT, OT and PTT:
 
 ```shell-script
 make clean

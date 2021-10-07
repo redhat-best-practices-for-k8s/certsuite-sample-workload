@@ -1,14 +1,30 @@
-.PHONY: install \
-        clean
+.PHONY: 
+	install \
+  clean
 
-install: install-partner-pods 
-	bash ./deploy-test-pods.sh
+# Deploys the partner and test pods and the operator
+install:
+	./scripts/deploy-partner-pods.sh
+	./scripts/deploy-test-pods.sh
+	./scripts/deploy-operator.sh
 
+# creates a minikube instance	
+rebuild-minikube:
+	./scripts/deploy-minikube.sh
+
+# deploys the partner pods
 install-partner-pods:
-	bash ./deploy-partner-pods.sh
+	./scripts/deploy-partner-pods.sh
 
-install-operator-github:
-	bash ./deploy-operator.sh
+# Instal operator requires OLM and operator SDK
+install-operator:
+	./scripts/deploy-operator.sh
 
+# deletes the namespace completely
+clean-all:
+	./scripts/clean-all.sh
+
+# deletes, the partner and test pods and the operator
+# pre-existing objects are preserved
 clean:
-	bash ./clean-all.sh
+	./scripts/clean.sh

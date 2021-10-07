@@ -51,7 +51,7 @@ jobs:
       # Cleanup
 
       - name: Delete OpenShift resources
-        run: make clean
+        run: make clean-all
 
       - name: 'Test: Check if `make clean` removed all TNF pods'
         run: '[[ "$(oc get pods -o name | wc -l)" -eq "0" ]]'

@@ -30,7 +30,6 @@ runs:
     - name: Create `local-test-infra` OpenShift resources
       run: |
         make install
-        make install-operator-github
       working-directory: ${{ inputs.working_directory }}
       shell: bash
       env:
