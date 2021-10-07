@@ -31,3 +31,8 @@ fi
 
 # Deploy the operator bundle
 operator-sdk run bundle $OPERATOR_BUNDLE_IMAGE_FULL_NAME -n $TNF_PARTNER_NAMESPACE $ADD_SECRET
+
+# Important: this line is required to enable csv short names with minikube
+# If short name "csv" is used, the call will fail the first time 
+# With long name the first time it will work and subsequent time it will work with long or short names 
+oc get clusterserviceversions.operators.coreos.com -n $TNF_PARTNER_NAMESPACE
