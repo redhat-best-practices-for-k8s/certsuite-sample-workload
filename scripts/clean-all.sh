@@ -6,3 +6,6 @@ source $SCRIPT_DIR/init-env.sh
 
 # Delete namespace
 oc delete namespace ${TNF_PARTNER_NAMESPACE}
+
+# Delete test CRDs
+$SCRIPT_DIR/delete-test-crds.sh
