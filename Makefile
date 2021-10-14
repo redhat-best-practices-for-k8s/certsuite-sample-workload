@@ -8,6 +8,7 @@ install:
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
+	./scripts/deploy-debug-ds.sh
 
 # creates a minikube instance
 rebuild-minikube:
