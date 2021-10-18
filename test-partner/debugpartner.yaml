@@ -9,14 +9,14 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: debug      
+      app: debug
   template:
     metadata:
       labels:
         app: debug
         test-network-function.com/skip_connectivity_test: ""
       name: debug
-    spec:      
+    spec:
       containers:
       - command:
         - tail
@@ -25,7 +25,12 @@ spec:
         image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:08f2ac584146d25239010fd9d5241016e29e355fe651b7ffe19fbc715dd90579
         imagePullPolicy: IfNotPresent
         name: container-00
-        resources: {}
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
         securityContext:
           privileged: true
           runAsUser: 0
