@@ -23,7 +23,7 @@ install-operator:
 
 # Install test CRDs
 install-crds:
-	./scripts/deploy-crds.sh
+	./scripts/deploy-test-crds.sh
 
 # deletes the namespace completely
 clean-all:
