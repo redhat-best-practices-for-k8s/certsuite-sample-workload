@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -20,26 +21,26 @@ spec:
       nodeSelector:
         test-network-function.com/node: target
       containers:
-      - command:
-        - /bin/sh
-        image: {{ REDHAT_RHEL_REGISTRY }}/support-tools:latest
-        imagePullPolicy: IfNotPresent
-        name: container-00
-        resources: {}
-        securityContext:
-          privileged: true
-          runAsUser: 0
-        stdin: true
-        stdinOnce: true
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        tty: true
-        volumeMounts:
-        - mountPath: /host
-          name: host
-        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          name: kube-api-access-whppm
-          readOnly: true
+        - command:
+            - /bin/sh
+          image: "{{REDHAT_RHEL_REGISTRY}}/support-tools:latest"
+          imagePullPolicy: IfNotPresent
+          name: container-00
+          resources: {}
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          stdin: true
+          stdinOnce: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          tty: true
+          volumeMounts:
+            - mountPath: /host
+              name: host
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: kube-api-access-whppm
+              readOnly: true
       enableServiceLinks: true
       hostNetwork: true
       hostPID: true
@@ -52,39 +53,39 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 30
       tolerations:
-      - effect: NoExecute
-        key: node.kubernetes.io/not-ready
-        operator: Exists
-        tolerationSeconds: 300
-      - effect: NoExecute
-        key: node.kubernetes.io/unreachable
-        operator: Exists
-        tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+          tolerationSeconds: 300
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+          tolerationSeconds: 300
       volumes:
-      - hostPath:
-          path: /
-          type: Directory
-        name: host
-      - name: kube-api-access-whppm
-        projected:
-          defaultMode: 420
-          sources:
-          - serviceAccountToken:
-              expirationSeconds: 3607
-              path: token
-          - configMap:
-              items:
-              - key: ca.crt
-                path: ca.crt
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-                path: namespace
-          - configMap:
-              items:
-              - key: service-ca.crt
-                path: service-ca.crt
-              name: openshift-service-ca.crt
+        - hostPath:
+            path: /
+            type: Directory
+          name: host
+        - name: kube-api-access-whppm
+          projected:
+            defaultMode: 420
+            sources:
+              - serviceAccountToken:
+                  expirationSeconds: 3607
+                  path: token
+              - configMap:
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                  name: kube-root-ca.crt
+              - downwardAPI:
+                  items:
+                    - fieldRef:
+                        apiVersion: v1
+                        fieldPath: metadata.namespace
+                      path: namespace
+              - configMap:
+                  items:
+                    - key: service-ca.crt
+                      path: service-ca.crt
+                  name: openshift-service-ca.crt

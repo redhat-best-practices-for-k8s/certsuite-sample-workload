@@ -23,7 +23,7 @@ spec:
             - tail
             - -f
             - /dev/null
-          image: {{ TNF_PARTNER_REPO }}/cnf-test-partner:latest
+          image: "{{ TNF_PARTNER_REPO }}/cnf-test-partner:latest"
           name: partner
           resources:
             limits:

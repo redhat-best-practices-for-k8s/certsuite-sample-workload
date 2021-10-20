@@ -30,15 +30,15 @@ spec:
               cpu: 0.25
           lifecycle:
             preStop:
-               exec:
-                 command: ["/bin/sh","-c","killall -0 tail"]
+              exec:
+                command: ["/bin/sh", "-c", "killall -0 tail"]
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - test
-            topologyKey: "kubernetes.io/hostname"
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - test
+              topologyKey: "kubernetes.io/hostname"
