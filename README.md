@@ -14,6 +14,7 @@ Also includes a test operator.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
 * Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a
 traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
+* CRD Under Test (CRD): A basic CustomResourceDefinition.
 
 # Namespace
 
@@ -71,7 +72,7 @@ For disconnected environments, override the default image repo `quay.io/testnetw
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [local-test-infra](./local-test-infra)
-provides a very simple PUT, OT and TPP containing the minimial requirements to peform test cases.
+provides a very simple PUT, OT, CRD and TPP containing the minimial requirements to peform test cases.
 These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
 
 

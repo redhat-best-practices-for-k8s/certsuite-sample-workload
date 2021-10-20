@@ -1,4 +1,4 @@
-.PHONY: 
+.PHONY:
 	install \
   clean
 
@@ -7,8 +7,9 @@ install:
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-operator.sh
+	./scripts/deploy-test-crds.sh
 
-# creates a minikube instance	
+# creates a minikube instance
 rebuild-minikube:
 	./scripts/deploy-minikube.sh
 
@@ -19,6 +20,10 @@ install-partner-pods:
 # Instal operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
+
+# Install test CRDs
+install-crds:
+	./scripts/deploy-test-crds.sh
 
 # deletes the namespace completely
 clean-all:
