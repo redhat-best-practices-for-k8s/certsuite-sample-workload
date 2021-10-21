@@ -15,7 +15,6 @@ then
   cat ./test-partner/debugpartner.yaml | $SCRIPT_DIR/mo > ./temp/debugpartner.yaml
   oc create -f ./temp/debugpartner.yaml
   rm ./temp/debugpartner.yaml
-  sleep 3
 else
   echo "minikube detected, skip installing debug daemonSet"
 fi
