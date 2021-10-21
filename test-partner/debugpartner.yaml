@@ -19,10 +19,7 @@ spec:
     spec:
       containers:
       - command:
-        - tail
-        - -f
-        - /dev/null
-        #image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:08f2ac584146d25239010fd9d5241016e29e355fe651b7ffe19fbc715dd90579
+        - /bin/sh
         image: {{ REDHAT_RHEL_REGISTRY }}/support-tools:latest
         imagePullPolicy: IfNotPresent
         name: container-00
