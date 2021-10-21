@@ -9,12 +9,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: debug
+      test-network-function.com/app: debug
   template:
     metadata:
       labels:
-        app: debug
         test-network-function.com/skip_connectivity_test: ""
+        test-network-function.com/app: debug
       name: debug
     spec:
       containers:

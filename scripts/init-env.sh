@@ -25,7 +25,7 @@ CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 
 # Namespace
 export TNF_PARTNER_NAMESPACE="${TNF_PARTNER_NAMESPACE:-tnf}"
-oc create namespace ${TNF_PARTNER_NAMESPACE}
+oc create namespace ${TNF_PARTNER_NAMESPACE} 2>/dev/null
 
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
