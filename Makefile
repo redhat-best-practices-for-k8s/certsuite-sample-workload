@@ -17,7 +17,8 @@ rebuild-minikube:
 # deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-partner-pods.sh
-
+	./scripts/deploy-debug-ds.sh
+	
 # Instal operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
