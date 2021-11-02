@@ -4,10 +4,12 @@
 
 # Deploys the partner and test pods and the operator
 install:
+	./scripts/fix-minikube-labels.sh
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
+	./scripts/deploy-debug-ds.sh
 
 # creates a minikube instance
 rebuild-minikube:
@@ -16,7 +18,8 @@ rebuild-minikube:
 # deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-partner-pods.sh
-
+	./scripts/deploy-debug-ds.sh
+	
 # Instal operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh

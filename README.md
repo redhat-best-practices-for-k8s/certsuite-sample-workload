@@ -14,7 +14,9 @@ Also includes a test operator.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
 * Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a
 traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
+* Debug Pod (DP): A Pod running [RHEL support tool image](https://catalog.redhat.com/software/containers/rhel8/support-tools/5ba3eaf9bed8bd6ee819b78b) deployed as part of a daemon set for accessing node information
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
+
 
 # Namespace
 
@@ -65,6 +67,7 @@ make install-partner-pods
 
 This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF tests.
 For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
+For environments with slow internet connection, override the default deployment timeout value (120s) by setting the environment variable named `TNF_DEPLOYMENT_TIMEOUT`.
 
 *Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
 
