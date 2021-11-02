@@ -92,13 +92,15 @@ In order to run the local test setup, the following dependencies are needed:
 To start minikube, issue the following command:
 
 ```shell-script
-minikube start --embed-certs --driver="virtualbox" --nodes 3
+minikube start --embed-certs --driver="virtualbox" --nodes 3 --network-plugin=cni --cni=calico 
 ```
 
 The `--embed-certs` flag will cause minikube to embed certificates directly in its kubeconfig file.  
 This will allow the minikube cluster to be reached directly from the container without the need of binding additional volumes for certificates.
 
 The `--nodes 3` flag creates a cluster with one master node and two worker nodes. This is to support anti-affinity and pod-recreation test case.
+
+The  `--network-plugin=cni --cni=calico` flags configure CNI support and installs Calico. This is required to install Multus later on.
 
 To avoid having to specify this flag, set the `embed-certs` configuration key:
 
