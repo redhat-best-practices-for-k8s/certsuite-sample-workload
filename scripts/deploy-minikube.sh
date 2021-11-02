@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 set -x
 minikube delete
-minikube start --driver=virtualbox --embed-certs --nodes 3
+
+# Minikube configures the Calico CNI to deploy multus 
+minikube start --driver=virtualbox --embed-certs --nodes 3 --network-plugin=cni --cni=calico 

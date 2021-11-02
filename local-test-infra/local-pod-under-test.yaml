@@ -18,6 +18,7 @@ spec:
       annotations:
         test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
+        k8s.v1.cni.cncf.io/networks: macvlan-conf # multus network
       name: test
     spec:
       containers:
