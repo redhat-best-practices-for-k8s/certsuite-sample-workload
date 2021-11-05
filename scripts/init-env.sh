@@ -30,3 +30,8 @@ oc create namespace ${TNF_PARTNER_NAMESPACE} 2>/dev/null
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
 export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-120s}"
+
+# Detect minikube cluster
+if [[ -z `oc version | grep Server` ]]; then
+    export TNF_MINIKUBE_CLUSTER=1
+fi
