@@ -88,6 +88,8 @@ In order to run the local test setup, the following dependencies are needed:
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
 ## Setup
+Install the latest minikube by following the instructions at:
+```https://minikube.sigs.k8s.io/docs/start/```
 
 To start minikube, issue the following command:
 
