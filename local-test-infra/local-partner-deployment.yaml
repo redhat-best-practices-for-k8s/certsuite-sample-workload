@@ -16,7 +16,7 @@ spec:
         test-network-function.com/generic: orchestrator
       annotations:
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
-        {{ MULTUS_ANNOTATION }}
+        k8s.v1.cni.cncf.io/networks: {{ MULTUS_ANNOTATION }}
       name: partner
     spec:
       containers:

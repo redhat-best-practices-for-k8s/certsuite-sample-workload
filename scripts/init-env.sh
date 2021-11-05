@@ -39,6 +39,6 @@ if [ -z "$res" ]
 then
    echo "Minikube or similar detected"
    IS_MINIKUBE=true
-   MULTUS_ANNOTATION="k8s.v1.cni.cncf.io/networks: macvlan-conf # multus network"
+   MULTUS_ANNOTATION="macvlan-conf # multus network"
 fi
 

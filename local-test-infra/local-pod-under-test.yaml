@@ -18,7 +18,7 @@ spec:
       annotations:
         test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
-        {{ MULTUS_ANNOTATION }}
+        k8s.v1.cni.cncf.io/networks: {{ MULTUS_ANNOTATION }}
       name: test
     spec:
       containers:
