@@ -4,9 +4,7 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
-
-res=`oc version | grep  Server`
-if [ -z "$res" ]
+if $IS_MINIKUBE
 then
   echo "minikube detected, deploying Multus, Calico CNI needed in Minikube for this to work"
 
@@ -17,9 +15,7 @@ then
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
 
   # Deploy Multus
-  cd ./temp/multus-cni
-  cat ./deployments/multus-daemonset-thick-plugin.yml | oc apply -f -
-  cd ../..
+  oc apply -f ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
 
   # Creates the network attachment on eth0 (bridge)
   mkdir -p ./temp
