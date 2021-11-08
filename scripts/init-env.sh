@@ -31,14 +31,14 @@ oc create namespace ${TNF_PARTNER_NAMESPACE} 2>/dev/null
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
 export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
 
-IS_MINIKUBE=false
+TNF_NON_OCP_CLUSTER=false
 MULTUS_ANNOTATION=""
 # Check for Minikube 
 res=`oc version | grep  Server`
 if [ -z "$res" ]
 then
    echo "Minikube or similar detected"
-   IS_MINIKUBE=true
+   TNF_NON_OCP_CLUSTER=true
    MULTUS_ANNOTATION="macvlan-conf # multus network"
 fi
 

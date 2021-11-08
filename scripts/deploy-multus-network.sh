@@ -4,7 +4,7 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
-if $IS_MINIKUBE
+if $TNF_NON_OCP_CLUSTER
 then
   echo "minikube detected, deploying Multus, Calico CNI needed in Minikube for this to work"
 
