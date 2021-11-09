@@ -8,7 +8,7 @@ inputs:
   minikube_driver:
     default: docker
   minikube_extra_options:
-    default: '--embed-certs --nodes 3 --network-plugin=cni --cni=calico'
+    default: '--embed-certs --nodes 3 --cni=calico'
   oc_kcm_timeout:
     default: 5m
 
