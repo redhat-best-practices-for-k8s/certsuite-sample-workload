@@ -75,7 +75,7 @@ For environments with slow internet connection, override the default deployment 
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [local-test-infra](./local-test-infra)
-provides a very simple PUT, OT, CRD and TPP containing the minimial requirements to peform test cases.
+provides a very simple PUT, OT, CRD, DP and TPP containing the minimal requirements to perform test cases.
 These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
 
 
