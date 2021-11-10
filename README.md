@@ -110,7 +110,7 @@ To create the PUT, OT and TPP, issue the following command:
 make install
 ```
 
-This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnfpartner" which can be used to run test suites, and Debug Daemonset named "debug" The
+This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnfpartner" which can be used to run test suites, and Debug Daemonset named "debug". The
 example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
