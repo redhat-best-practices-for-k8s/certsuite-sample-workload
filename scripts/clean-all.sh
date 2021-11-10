@@ -8,7 +8,7 @@ source $SCRIPT_DIR/init-env.sh
 ./$SCRIPT_DIR/delete-debug-ds.sh
 
 # Delete namespace
-oc delete namespace ${TNF_PARTNER_NAMESPACE}
+oc delete namespace ${TNF_EXAMPLE_CNF_NAMESPACE}
 
 # Delete test CRDs
 $SCRIPT_DIR/delete-test-crds.sh

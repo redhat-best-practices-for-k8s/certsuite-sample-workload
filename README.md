@@ -19,7 +19,7 @@ Also includes a test operator.
 By default, PUT and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
-export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
+export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
 ```
 # Test-partner
 
@@ -110,14 +110,14 @@ To create the PUT, OT and TPP, issue the following command:
 make install
 ```
 
-This will create a PUT named "test" in `TNF_PARTNER_NAMESPACE` [namespace](#namespace), TPP named "tnf_partner" which can be used to run test suites, and Debug Daemonset name "debug" The
+This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnf_partner" which can be used to run test suites, and Debug Daemonset name "debug" The
 example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
 To verify `test` pods are running: 
 
 ```shell-script
-oc get pods -n $TNF_PARTNER_NAMESPACE -o wide
+oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
 ```
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
