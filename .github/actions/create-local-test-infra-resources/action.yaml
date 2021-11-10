@@ -47,7 +47,7 @@ runs:
       shell: bash
 
     - name: (TPP) Wait for the partner pod to be ready
-      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }} -n $DEFAULT_NAMESPACE
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }} -n ${{ inputs.default_namespace }}
       shell: bash
 
     - name: Display all pods in namespace
@@ -59,7 +59,7 @@ runs:
       shell: bash
 
     - name: (TPP) Ensure only one pod with the label is present
-      run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -n $DEFAULT_NAMESPACE -o name | wc -l) -eq "1" ]]'
+      run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -n ${{ inputs.default_namespace }} -o name | wc -l) -eq "1" ]]'
       shell: bash
 
     - name: (PUT) Discover the name of the first test pod
@@ -70,7 +70,7 @@ runs:
 
     - name: (TPP) Discover the name of the partner pod
       run: |
-        TPP_POD_NAME=$(oc get pods -n $DEFAULT_NAMESPACE -l 'app=${{ inputs.tpp_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        TPP_POD_NAME=$(oc get pods -n ${{ inputs.default_namespace }} -l 'app=${{ inputs.tpp_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
         echo "${{ inputs.tpp_pod_name_env_var }}=$TPP_POD_NAME" >> $GITHUB_ENV
       shell: bash
 
