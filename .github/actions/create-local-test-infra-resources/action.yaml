@@ -47,7 +47,7 @@ runs:
       shell: bash
 
     - name: (TPP) Wait for the partner pod to be ready
-      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }} -n ${{ inputs.default_namespace }}
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }} -n $DEFAULT_NAMESPACE
       shell: bash
 
     - name: Display all pods in namespace
