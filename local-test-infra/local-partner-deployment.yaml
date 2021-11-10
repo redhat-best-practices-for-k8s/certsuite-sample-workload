@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: partner
-  namespace: {{ TNF_PARTNER_NAMESPACE }}
+  name: tnfpartner
+  namespace: {{ DEFAULT_NAMESPACE }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: partner
+      app: tnfpartner
   template:
     metadata:
       labels:
-        app: partner
+        app: tnfpartner
         test-network-function.com/generic: orchestrator
       annotations:
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
-      name: partner
+      name: tnfpartner
     spec:
       containers:
         - command:

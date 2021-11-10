@@ -2,35 +2,28 @@
 
 This repository contains two main sections:
 * test-partner:  A partner pod definition for use on a k8s CNF Certification cluster.
-* local-test-infra:  A trivial example cluster, primarily intended to be used to run
-
-
-[test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
+* local-test-infra:  A trivial example cluster, primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 This is the basic infrastructure required for "testing the tester".
 Also includes a test operator.
 # Glossary
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
-* Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a
-traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
-* Debug Pod (DP): A Pod running [RHEL support tool image](https://catalog.redhat.com/software/containers/rhel8/support-tools/5ba3eaf9bed8bd6ee819b78b) deployed as part of a daemon set for accessing node information
+* Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
+* Debug Pod (DP): A Pod running [RHEL support tool image](https://catalog.redhat.com/software/containers/rhel8/support-tools/5ba3eaf9bed8bd6ee819b78b) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
 
 # Namespace
 
-By default, all the deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
+By default, PUT and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
-export TNF_PARTNER_NAMESPACE="tnf" #tnf for example
+export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
 ```
 # Test-partner
 
-test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper
-operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single
-container, which is based off Universal Base Image (UBI) 8.  A minimal set of tools is installed on top of the base
-image to fulfill CNF Test dependency requirements:
+test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single container, which is based off Universal Base Image (UBI) 8.  A minimal set of tools is installed on top of the base image to fulfill CNF Test dependency requirements:
 * iputils (for ping)
 * iproute (for ip)
 
@@ -51,7 +44,7 @@ In order to build the test-partner image, the code should be [cloned locally](##
 docker build --no-cache -f Dockerfile -t testnetworkfunction/cnf-test-partner .
 ```
 
-If needed (and authorised) the following will update the stored image:
+If needed (and authorized) the following will update the stored image:
 
 ```shell-script
 docker push testnetworkfunction/cnf-test-partner
@@ -65,11 +58,11 @@ In order to create and deploy the partner pod, use the following:
 make install-partner-pods
 ```
 
-This will create a deployment named "partner" in the `$TNF_PARTNER_NAMESPACE` namespace.  This Pod is the test partner for running CNF tests.
+This will create a deployment named "partner" in the "default" namespace.  This Pod is the test partner for running CNF tests.
 For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
 For environments with slow internet connection, override the default deployment timeout value (120s) by setting the environment variable named `TNF_DEPLOYMENT_TIMEOUT`.
 
-*Note*: Nodes have to be properly labeled (`role=partner`) for the partner pod to be started.
+*Note*: Nodes have to be properly labeled (`role=tnfpartner`) for the partner pod to be started.
 
 # local-test-infra
 
@@ -111,20 +104,20 @@ make rebuild-minikube
 ```
 
 ## Start local-test-infra
-To create the PUT, OT and TPP in the `TNF_PARTNER_NAMESPACE` [namespace](#namespace), issue the following command:
+To create the PUT, OT and TPP, issue the following command:
 
 ```shell-script
 make install
 ```
 
-This will create a PUT named "test", and a TPP named "partner" which can be used to run test suites. The
-example `test-configuration.yaml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
+This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnfpartner" which can be used to run test suites, and Debug Daemonset named "debug". The
+example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
-To verify `partner` and `test` pods are running: 
+To verify `test` pods are running: 
 
 ```shell-script
-oc get pods -n $TNF_PARTNER_NAMESPACE -o wide
+oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
 ```
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
@@ -132,16 +125,21 @@ You should see something like this (note that the 2 test pods are running on dif
 NAME                                                              READY   STATUS      RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
 4c926df73b15df26b6874260a4f71ca3bf7c6ce2bdfd87aa90759a6aeb5rhpk   0/1     Completed   0          59s     10.244.0.5   minikube       <none>           <none>
 nginx-operator-controller-manager-7f8f449fbd-fvn4f                2/2     Running     0          44s     10.244.0.6   minikube       <none>           <none>
-partner-68cf756959-4mhpk                                          1/1     Running     0          2m45s   10.244.1.2   minikube-m02   <none>           <none>
 quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Running     0          69s     10.244.2.6   minikube-m03   <none>           <none>
 test-697ff58f87-88245                                             1/1     Running     0          2m20s   10.244.2.2   minikube-m03   <none>           <none>
 test-697ff58f87-mfmpv                                             1/1     Running     0          2m20s   10.244.1.3   minikube-m02   <none>           <none>
 ```
 
-To avoid having to specify the `TNF_PARTNER_NAMESPACE` namespace with the `-n` option, set the namespace for the current context:
+To verify `partner` pod is running: 
 
 ```shell-script
-oc config set-context $(oc config current-context) --namespace=$TNF_PARTNER_NAMESPACE
+oc get pods -n default -o wide
+```
+
+You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
+```shell-script
+NAME                                                              NAME                          READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
+tnfpartner-678db9858c-f9p4f   1/1     Running   0          142m   10.244.4.2   minikube-m05   <none>           <none>
 ```
 ## Stop local-test-infra
 

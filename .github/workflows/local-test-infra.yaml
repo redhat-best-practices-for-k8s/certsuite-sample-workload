@@ -12,6 +12,7 @@ jobs:
       TNF_NAMESPACE: tnf
       PUT_CONTAINER_NAME: test
       TPP_CONTAINER_NAME: partner
+      DEFAULT_NAMESPACE: default
       DEFAULT_TIMEOUT: 90s
 
     steps:
@@ -40,13 +41,13 @@ jobs:
       # Tests for the partner pod (TPP)
 
       - name: '(partner pod) Test: Check if ping is installed'
-        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ping
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -n $DEFAULT_NAMESPACE -- which ping
 
       - name: '(partner pod) Test: Check if ip is installed'
-        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ip
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -n $DEFAULT_NAMESPACE -- which ip
 
       - name: '(partner pod) Test: Check if ssh is installed'
-        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ssh
+        run: oc exec -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -n $DEFAULT_NAMESPACE -- which ssh
 
       # Cleanup
 

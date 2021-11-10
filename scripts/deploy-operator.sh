@@ -16,7 +16,7 @@ fi
 $SCRIPT_DIR/install-olm.sh
 
 # Create namespace
-oc create namespace $TNF_PARTNER_NAMESPACE
+oc create namespace $TNF_EXAMPLE_CNF_NAMESPACE
 
 $SCRIPT_DIR/delete-operator.sh
 
@@ -24,15 +24,15 @@ $SCRIPT_DIR/delete-operator.sh
 $SCRIPT_DIR/create-secret.sh
 
 ADD_SECRET=""
-if [[ -n "$(oc get secret -n $TNF_PARTNER_NAMESPACE | awk '{print $1}'| grep $SECRET_NAME)" ]];
+if [[ -n "$(oc get secret -n $TNF_EXAMPLE_CNF_NAMESPACE | awk '{print $1}'| grep $SECRET_NAME)" ]];
 then
   ADD_SECRET="--ca-secret-name $SECRET_NAME"
 fi
 
 # Deploy the operator bundle
-operator-sdk run bundle $OPERATOR_BUNDLE_IMAGE_FULL_NAME -n $TNF_PARTNER_NAMESPACE $ADD_SECRET
+operator-sdk run bundle $OPERATOR_BUNDLE_IMAGE_FULL_NAME -n $TNF_EXAMPLE_CNF_NAMESPACE $ADD_SECRET
 
 # Important: this line is required to enable csv short names with minikube
 # If short name "csv" is used, the call will fail the first time 
 # With long name the first time it will work and subsequent time it will work with long or short names 
-oc get clusterserviceversions.operators.coreos.com -n $TNF_PARTNER_NAMESPACE
+oc get clusterserviceversions.operators.coreos.com -n $TNF_EXAMPLE_CNF_NAMESPACE

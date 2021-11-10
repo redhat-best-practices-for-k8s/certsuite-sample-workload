@@ -10,4 +10,4 @@ oc apply -f ./temp/rendered-local-pod-under-test-template.yaml
 rm ./temp/rendered-local-pod-under-test-template.yaml
 sleep 3
 
-oc wait deployment test -n $TNF_PARTNER_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc wait deployment test -n $TNF_EXAMPLE_CNF_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT

@@ -1,13 +1,15 @@
 name: create-local-test-infra-resources
 description: Creates `local-test-infra` OpenShift resources
 inputs:
+  default_namespace:
+    default: default
   working_directory:
     default: .
   oc_namespace:
     default: tnf
   oc_pod_timeout:
     description: "Timeout for the `oc wait` command"
-    default: 90s
+    default: 120s
   put_deployment_name:
     description: "The expected value of the test deployment name"
     default: test
@@ -19,7 +21,7 @@ inputs:
     default: PUT_POD_NAME
   tpp_pod_label_app:
     description: "The expected value of the partner pod's `app` label"
-    default: partner
+    default: tnfpartner
   tpp_pod_name_env_var:
     description: "The environment variable the partner pod's name will be saved to"
     default: TPP_POD_NAME
@@ -33,7 +35,8 @@ runs:
       working-directory: ${{ inputs.working_directory }}
       shell: bash
       env:
-        TNF_PARTNER_NAMESPACE: ${{ inputs.oc_namespace }} 
+        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
 
     - name: Set the current context to use the correct TNF namespace
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
@@ -44,7 +47,7 @@ runs:
       shell: bash
 
     - name: (TPP) Wait for the partner pod to be ready
-      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }}
+      run: oc wait pod --for=condition=ready -l "app=${{ inputs.tpp_pod_label_app }}" --timeout=${{ inputs.oc_pod_timeout }} -n $DEFAULT_NAMESPACE
       shell: bash
 
     - name: Display all pods in namespace
@@ -56,7 +59,7 @@ runs:
       shell: bash
 
     - name: (TPP) Ensure only one pod with the label is present
-      run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -o name | wc -l) -eq "1" ]]'
+      run: '[[ $(oc get pods -l "app=${{ inputs.tpp_pod_label_app }}" -n $DEFAULT_NAMESPACE -o name | wc -l) -eq "1" ]]'
       shell: bash
 
     - name: (PUT) Discover the name of the first test pod
@@ -67,7 +70,7 @@ runs:
 
     - name: (TPP) Discover the name of the partner pod
       run: |
-        TPP_POD_NAME=$(oc get pods -l 'app=${{ inputs.tpp_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        TPP_POD_NAME=$(oc get pods -n $DEFAULT_NAMESPACE -l 'app=${{ inputs.tpp_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
         echo "${{ inputs.tpp_pod_name_env_var }}=$TPP_POD_NAME" >> $GITHUB_ENV
       shell: bash
 
