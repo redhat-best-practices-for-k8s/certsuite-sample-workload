@@ -36,6 +36,7 @@ runs:
       shell: bash
       env:
         TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
 
     - name: Set the current context to use the correct TNF namespace
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}

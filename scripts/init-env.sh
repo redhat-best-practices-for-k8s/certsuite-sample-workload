@@ -23,9 +23,12 @@ SECRET_NAME=foo-cert-sec
 TNF_CONTAINER_CLIENT="docker"
 CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 
-# Namespace
+# Test Namespace
 export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
 oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
+
+# Default Namespace
+export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
 
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"

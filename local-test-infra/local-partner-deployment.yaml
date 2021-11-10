@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tnfpartner
-  namespace: default
+  namespace: {{ DEFAULT_NAMESPACE }}
 spec:
   replicas: 1
   selector:
