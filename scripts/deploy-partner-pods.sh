@@ -10,4 +10,4 @@ oc apply -f ./temp/rendered-partner-template.yaml
 rm ./temp/rendered-partner-template.yaml
 sleep 3
 
-oc wait deployment partner -n $TNF_PARTNER_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT

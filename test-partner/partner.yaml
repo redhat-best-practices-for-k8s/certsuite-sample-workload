@@ -2,18 +2,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: partner
-  namespace: tnf
+  name: tnfpartner
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: partner
+      app: tnfpartner
   template:
     metadata:
       labels:
-        app: partner
-      name: partner
+        app: tnfpartner
+      name: tnfpartner
     spec:
       containers:
         - command:
@@ -27,4 +27,4 @@ spec:
               memory: 1Gi
               cpu: 1
       nodeSelector:
-        role: partner
+        role: tnfpartner

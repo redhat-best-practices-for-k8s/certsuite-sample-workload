@@ -10,9 +10,9 @@ jobs:
     name: 'Test the partner pod on minikube'
     runs-on: ubuntu-20.04
     env:
-      TNF_NAMESPACE: tnf
+      DEFAULT_NAMESPACE: default
       TPP_CONTAINER_NAME: partner
-      DEFAULT_TIMEOUT: 90s
+      DEFAULT_TIMEOUT: 180s
 
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/start-minikube
 
       - name: Add a proper label to the minikube node
-        run: oc label nodes minikube role=partner
+        run: oc label nodes minikube role=tnfpartner
 
       - name: Create the partner pod using the instructions in the README
         run: |
@@ -29,20 +29,20 @@ jobs:
           oc create -f ./partner.yaml
 
       - name: Wait for the partner pod to be ready
-        run: oc wait pod -n $TNF_NAMESPACE --for=condition=ready -l 'app=partner' --timeout=$DEFAULT_TIMEOUT
+        run: oc wait pod --for=condition=ready -l 'app=tnfpartner' -n $DEFAULT_NAMESPACE --timeout=$DEFAULT_TIMEOUT
 
       - name: Ensure only one partner pod with the label is present
-        run: '[[ $(oc get pods -n $TNF_NAMESPACE -l "app=partner" -o name | wc -l) -eq "1" ]]'
+        run: '[[ $(oc get pods -n $DEFAULT_NAMESPACE -l "app=tnfpartner" -o name | wc -l) -eq "1" ]]'
 
       - name: Discover the name of the partner pod
         run: |
-          echo "TPP_POD_NAME=$(oc get pods -n $TNF_NAMESPACE -l 'app=partner' -o jsonpath='{.items[0].metadata.name}')" >> $GITHUB_ENV
+          echo "TPP_POD_NAME=$(oc get pods -n $DEFAULT_NAMESPACE -l 'app=tnfpartner' -o jsonpath='{.items[0].metadata.name}')" >> $GITHUB_ENV
 
       - name: '(partner pod) Test: Check if ping is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ping
+        run: oc exec -n $DEFAULT_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ping
 
       - name: '(partner pod) Test: Check if ip is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ip
+        run: oc exec -n $DEFAULT_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ip
 
       - name: '(partner pod) Test: Check if ssh is installed'
-        run: oc exec -n $TNF_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ssh
+        run: oc exec -n $DEFAULT_NAMESPACE -i $TPP_POD_NAME -c $TPP_CONTAINER_NAME -- which ssh
