@@ -4,6 +4,9 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
+# Create namespace if it does not exist
+oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
+
 mkdir -p ./temp
 cat ./local-test-infra/local-pod-under-test.yaml | $SCRIPT_DIR/mo > ./temp/rendered-local-pod-under-test-template.yaml
 oc apply -f ./temp/rendered-local-pod-under-test-template.yaml

@@ -15,8 +15,8 @@ fi
 # Installing OLM
 $SCRIPT_DIR/install-olm.sh
 
-# Create namespace
-oc create namespace $TNF_EXAMPLE_CNF_NAMESPACE
+# Create namespace if it does not exist
+oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
 
 $SCRIPT_DIR/delete-operator.sh
 
