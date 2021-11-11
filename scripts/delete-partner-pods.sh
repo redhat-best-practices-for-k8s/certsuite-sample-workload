@@ -5,4 +5,4 @@ SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
 # Delete partner
-oc delete  deployment.apps/partner -n ${TNF_EXAMPLE_CNF_NAMESPACE}
+oc delete  deployment.apps/tnfpartner -n ${DEFAULT_NAMESPACE}
