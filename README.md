@@ -16,7 +16,7 @@ Also includes a test operator.
 
 # Namespace
 
-By default, TTP and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
+By default, TPP and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
 export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
@@ -150,7 +150,7 @@ tnfpartner-678db9858c-f9p4f   1/1     Running   0          142m   10.244.4.2   m
 ```
 ## Stop local-test-infra
 
-To tear down the local test cluster use the following command. It may take some time to completely stop the PUT, OT and PTT:
+To tear down the local test cluster use the following command. It may take some time to completely stop the PUT, CRD, OT, DP and TPP:
 
 ```shell-script
 make clean
