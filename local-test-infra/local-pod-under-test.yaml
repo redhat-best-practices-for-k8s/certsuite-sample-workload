@@ -24,6 +24,9 @@ spec:
         - command: [ "/bin/bash", "-c", "echo 'logs' && tail -f /dev/null" ]
           image: quay.io/testnetworkfunction/cnf-test-partner:latest
           name: test
+          ports:
+            - name: "testport"
+              containerPort: 8080
           resources:
             limits:
               memory: 512Mi
