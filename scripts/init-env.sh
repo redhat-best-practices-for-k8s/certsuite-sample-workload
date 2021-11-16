@@ -26,6 +26,9 @@ CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 # Test Namespace
 export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
 
+# Create namespace if it does not exist
+oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
+
 # Default Namespace
 export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
 
