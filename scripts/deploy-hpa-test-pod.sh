@@ -13,6 +13,6 @@ oc apply -f ./temp/rendered-local-hpa-pod-under-test-template.yaml
 rm ./temp/rendered-local-hpa-pod-under-test-template.yaml
 sleep 3
 
-oc wait deployment hpa -n $TNF_EXAMPLE_CNF_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc wait deployment hpa-test -n $TNF_EXAMPLE_CNF_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
 
-kubectl autoscale deployment hpa -n $TNF_EXAMPLE_CNF_NAMESPACE --cpu-percent=50 --min=2 --max=3
+oc autoscale deployment hpa-test -n $TNF_EXAMPLE_CNF_NAMESPACE --cpu-percent=50 --min=2 --max=3

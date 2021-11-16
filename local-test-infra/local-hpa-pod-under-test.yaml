@@ -2,27 +2,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hpa
+  name: hpa-test
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: hpa
+      app: hpa-test
   template:
     metadata:
       labels:
-        app: hpa
+        app: hpa-test
         test-network-function.com/generic: target
         test-network-function.com/container: target
       annotations:
         test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
-      name: hpa
+      name: hpa-test
     spec:
       containers:
         - command: [ "/bin/bash", "-c", "echo 'logs' && tail -f /dev/null" ]
           image: quay.io/testnetworkfunction/cnf-test-partner:latest
-          name: hpa
+          name: hpa-test
           resources:
             limits:
               memory: 512Mi
@@ -39,5 +39,5 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - hpa
+                      - hpa-test
               topologyKey: "kubernetes.io/hostname"
