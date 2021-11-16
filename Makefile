@@ -7,6 +7,7 @@ install:
 	./scripts/fix-minikube-labels.sh
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
+	./scripts/deploy-hpa-test-pod.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh
