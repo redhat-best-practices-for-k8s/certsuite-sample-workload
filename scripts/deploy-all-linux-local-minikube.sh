@@ -7,7 +7,7 @@ source $SCRIPT_DIR/init-env.sh
 $SCRIPT_DIR/create-local-registry.sh
 $SCRIPT_DIR/deploy-minikube.sh
 $SCRIPT_DIR/deploy-test-pods.sh
-$SCRIPT_DIR/deploy-hpa-test-pod.sh
+$SCRIPT_DIR/deploy-hpa.sh
 $SCRIPT_DIR/deploy-partner-pods.sh
 $SCRIPT_DIR/create-secret.sh
 $SCRIPT_DIR/install-operator-sdk.sh
