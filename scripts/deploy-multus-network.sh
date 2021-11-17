@@ -16,11 +16,20 @@ then
 
   # Deploy Multus
   oc apply -f ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
+  
+  # Wait for all calico and multus daemonset pods to be running
+  oc rollout status daemonset calico-node -n kube-system  --timeout=240s
+  oc rollout status daemonset kube-multus-ds -n kube-system  --timeout=240s
 
-  # Creates the network attachment on eth0 (bridge)
+  # Creates the network attachment on eth0 (bridge) on partner namespace
   mkdir -p ./temp
-  cat ./local-test-infra/multus.yaml | $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
+  cat ./local-test-infra/multus.yaml | RANGE_START="192.168.1.2" RANGE_END="192.168.1.49" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
   oc apply -f ./temp/rendered-multus.yaml
+  
+  # Creating a network attachment for the default namespace as well
+  cat ./local-test-infra/multus.yaml | TNF_EXAMPLE_CNF_NAMESPACE=default RANGE_START="192.168.1.50" RANGE_END="192.168.1.99" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
+  oc apply -f ./temp/rendered-multus.yaml
+
   rm ./temp/rendered-multus.yaml
   sleep 3
 else 
