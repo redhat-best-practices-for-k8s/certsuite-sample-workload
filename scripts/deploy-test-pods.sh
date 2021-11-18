@@ -11,3 +11,8 @@ rm ./temp/rendered-local-pod-under-test-template.yaml
 sleep 3
 
 oc wait deployment test -n $TNF_EXAMPLE_CNF_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc scale --replicas=0 deployment test -n $TNF_EXAMPLE_CNF_NAMESPACE 
+
+# Minikube bug needs another scale out?
+oc wait deployment test -n $TNF_EXAMPLE_CNF_NAMESPACE --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc scale --replicas=2 deployment test -n $TNF_EXAMPLE_CNF_NAMESPACE 

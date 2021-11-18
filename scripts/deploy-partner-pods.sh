@@ -9,5 +9,9 @@ cat ./local-test-infra/local-partner-deployment.yaml | MULTUS_ANNOTATION=$MULTUS
 oc apply -f ./temp/rendered-partner-template.yaml
 rm ./temp/rendered-partner-template.yaml
 sleep 3
-
 oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc scale --replicas=0 deployment tnfpartner -n default
+
+# Minikube bug needs another scale out?
+oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc scale --replicas=1 deployment tnfpartner -n default
