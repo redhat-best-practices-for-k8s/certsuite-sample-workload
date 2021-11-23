@@ -6,7 +6,7 @@ defaults:
     working-directory: test-partner
 
 jobs:
-  test-local-test-infra:
+  test-test-partner:
     name: 'Test the partner pod on minikube'
     runs-on: ubuntu-20.04
     env:
@@ -20,13 +20,9 @@ jobs:
       - name: Start the minikube cluster
         uses: ./.github/actions/start-minikube
 
-      - name: Add a proper label to the minikube node
-        run: oc label nodes minikube role=tnfpartner
-
       - name: Create the partner pod using the instructions in the README
         run: |
-          oc create -f ./namespace.yaml
-          oc create -f ./partner.yaml
+          make install-partner
 
       - name: Wait for the partner pod to be ready
         run: oc wait pod --for=condition=ready -l 'app=tnfpartner' -n $DEFAULT_NAMESPACE --timeout=$DEFAULT_TIMEOUT

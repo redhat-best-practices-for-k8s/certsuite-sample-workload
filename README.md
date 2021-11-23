@@ -1,10 +1,11 @@
 # CNF Certification Partner
 
 This repository contains two main sections:
-* test-partner:  A partner pod definition for use on a k8s CNF Certification cluster.
-* local-test-infra:  A trivial example cluster, primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
-This is the basic infrastructure required for "testing the tester".
-Also includes a test operator.
+* test-partner:  Partner pods definition for use on a k8s CNF Certification cluster.
+* test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
+
+Together, they make up the basic infrastructure required for "testing the tester".
+
 # Glossary
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
@@ -64,11 +65,11 @@ For environments with slow internet connection, override the default deployment 
 
 *Note*: Nodes have to be properly labeled (`role=tnfpartner`) for the partner pod to be started.
 
-# local-test-infra
+# Test-target
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
-in which using a local emulator can greatly help with test development.  As such, [local-test-infra](./local-test-infra)
-provides a very simple PUT, OT, CRD, DP and TPP containing the minimal requirements to perform test cases.
+in which using a local emulator can greatly help with test development.  As such, [test-target](./test-target)
+provides a very simple PUT, OT, CRD, which satisfies the minimal requirements to perform test cases.
 These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
 
 
@@ -103,7 +104,7 @@ Or Alternatively, run:
 make rebuild-minikube
 ```
 
-## Start local-test-infra
+## Deploy both test target and test partner as a local-test-infra
 
 To create the resources, issue the following command:
 
@@ -144,9 +145,9 @@ You should see something like this (note that the 2 test pods are running on dif
 NAME                                                              NAME                          READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
 tnfpartner-678db9858c-f9p4f   1/1     Running   0          142m   10.244.4.2   minikube-m05   <none>           <none>
 ```
-## Stop local-test-infra
+## Delete local-test-infra
 
-To tear down the local test cluster use the following command. It may take some time to completely stop the PUT, CRD, OT, DP and TPP:
+To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, DP and TPP:
 
 ```shell-script
 make clean
