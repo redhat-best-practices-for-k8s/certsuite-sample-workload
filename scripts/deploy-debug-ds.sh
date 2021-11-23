@@ -14,7 +14,7 @@ then
 else
   echo "use registry $REDHAT_RHEL_REGISTRY"
   mkdir -p ./temp
-  cat ./local-test-infra/debugpartner.yaml | $SCRIPT_DIR/mo > ./temp/debugpartner.yaml
+  cat ./test-partner/debugpartner.yaml | $SCRIPT_DIR/mo > ./temp/debugpartner.yaml
   oc apply -f ./temp/debugpartner.yaml
   rm ./temp/debugpartner.yaml
 fi
