@@ -1,7 +1,6 @@
-# This is for future when we need to deploy partner pods to namespaces other than "default"
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ DEFAULT_NAMESPACE }}
+  name: tnf
   labels:
-    name: {{ DEFAULT_NAMESPACE }}
+    name: tnf
