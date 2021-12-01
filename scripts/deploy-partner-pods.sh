@@ -9,9 +9,14 @@ cat ./test-partner/partner-deployment.yaml | MULTUS_ANNOTATION=$MULTUS_ANNOTATIO
 oc apply -f ./temp/rendered-partner-template.yaml
 rm ./temp/rendered-partner-template.yaml
 sleep 3
+
+# adding oc get pods here to refresh the pod list for oc wait, bug ?
+oc get pods
 oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
-oc scale --replicas=0 deployment tnfpartner -n default
 
 # Minikube bug needs another scale out?
-oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT
+oc scale --replicas=0 deployment tnfpartner -n default
 oc scale --replicas=1 deployment tnfpartner -n default
+# adding oc get pods here to refresh the pod list for oc wait, bug ?
+oc get pods
+oc wait deployment tnfpartner -n default --for=condition=available --timeout=$TNF_DEPLOYMENT_TIMEOUT

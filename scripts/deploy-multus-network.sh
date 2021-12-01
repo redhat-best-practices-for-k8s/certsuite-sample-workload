@@ -18,8 +18,8 @@ then
   oc apply -f ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
   
   # Wait for all calico and multus daemonset pods to be running
-  oc rollout status daemonset calico-node -n kube-system  --timeout=240s
-  oc rollout status daemonset kube-multus-ds -n kube-system  --timeout=240s
+  oc rollout status daemonset calico-node -n kube-system  --timeout=$TNF_DEPLOYMENT_TIMEOUT
+  oc rollout status daemonset kube-multus-ds -n kube-system  --timeout=$TNF_DEPLOYMENT_TIMEOUT
 
   # Creates the network attachment on eth0 (bridge) on partner namespace
   mkdir -p ./temp
