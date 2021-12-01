@@ -23,11 +23,11 @@ then
 
   # Creates the network attachment on eth0 (bridge) on partner namespace
   mkdir -p ./temp
-  cat ./local-test-infra/multus.yaml | RANGE_START="192.168.1.2" RANGE_END="192.168.1.49" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
+  cat ./test-target/multus.yaml | RANGE_START="192.168.1.2" RANGE_END="192.168.1.49" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
   oc apply -f ./temp/rendered-multus.yaml
   
   # Creating a network attachment for the default namespace as well
-  cat ./local-test-infra/multus.yaml | TNF_EXAMPLE_CNF_NAMESPACE=default RANGE_START="192.168.1.50" RANGE_END="192.168.1.99" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
+  cat ./test-target/multus.yaml | TNF_EXAMPLE_CNF_NAMESPACE=default RANGE_START="192.168.1.50" RANGE_END="192.168.1.99" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
   oc apply -f ./temp/rendered-multus.yaml
 
   rm ./temp/rendered-multus.yaml
