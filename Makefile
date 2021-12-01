@@ -8,6 +8,7 @@ install:
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
+	./scripts/deploy-hpa.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh

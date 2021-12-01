@@ -5,7 +5,7 @@ metadata:
   annotations:
     debug.openshift.io/source-container: container-00
     openshift.io/scc: node-exporter
-  namespace: default
+  namespace: {{ DEFAULT_NAMESPACE }}
   name: debug
 spec:
   selector:
