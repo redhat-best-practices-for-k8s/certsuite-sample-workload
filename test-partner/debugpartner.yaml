@@ -38,9 +38,6 @@ spec:
           volumeMounts:
             - mountPath: /host
               name: host
-            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-              name: kube-api-access-whppm
-              readOnly: true
       enableServiceLinks: true
       hostNetwork: true
       hostPID: true
@@ -51,6 +48,7 @@ spec:
       securityContext: {}
       serviceAccount: default
       serviceAccountName: default
+      automountServiceAccountToken: true
       terminationGracePeriodSeconds: 30
       tolerations:
         - effect: NoExecute
@@ -68,26 +66,3 @@ spec:
             path: /
             type: Directory
           name: host
-        - name: kube-api-access-whppm
-          projected:
-            defaultMode: 420
-            sources:
-              - serviceAccountToken:
-                  expirationSeconds: 3607
-                  path: token
-              - configMap:
-                  items:
-                    - key: ca.crt
-                      path: ca.crt
-                  name: kube-root-ca.crt
-              - downwardAPI:
-                  items:
-                    - fieldRef:
-                        apiVersion: v1
-                        fieldPath: metadata.namespace
-                      path: namespace
-              - configMap:
-                  items:
-                    - key: service-ca.crt
-                      path: service-ca.crt
-                  name: openshift-service-ca.crt
