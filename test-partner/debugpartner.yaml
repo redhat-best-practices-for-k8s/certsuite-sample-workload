@@ -48,7 +48,7 @@ spec:
       securityContext: {}
       serviceAccount: default
       serviceAccountName: default
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       terminationGracePeriodSeconds: 30
       tolerations:
         - effect: NoExecute
