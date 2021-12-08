@@ -1,16 +1,15 @@
 # CNF Certification Partner
 
 This repository contains two main sections:
-* test-partner:  Partner pods definition for use on a k8s CNF Certification cluster.
+* test-partner:  Partner debug pods definition for use on a k8s CNF Certification cluster. Used to run platform and networking tests.
 * test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 
-Together, they make up the basic infrastructure required for "testing the tester".
+Together, they make up the basic infrastructure required for "testing the tester". The partner debug pod is always required for platform tests and networking tests.
 
 # Glossary
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
-* Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
 * Debug Pod (DP): A Pod running [RHEL support tool image](https://catalog.redhat.com/software/containers/rhel8/support-tools/5ba3eaf9bed8bd6ee819b78b) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
@@ -22,15 +21,6 @@ By default, TPP and DP are deployed in "default" namespace. all the other deploy
 ```shell-script
 export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
 ```
-# Test-partner
-
-test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single container, which is based off Universal Base Image (UBI) 8.  A minimal set of tools is installed on top of the base image to fulfill CNF Test dependency requirements:
-* iputils (for ping)
-* iproute (for ip)
-
-If you are using a different test partner pod, please ensure you provide these or the image will be unable to run all CNF
-Certification tests.
-
 ## Cloning the repository
 
 The repository can be cloned to local machine using:
@@ -38,22 +28,9 @@ The repository can be cloned to local machine using:
 ```shell-script
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
-## (Re)Building the container image
-
-In order to build the test-partner image, the code should be [cloned locally](##cloning-the-repository). The following command should be issued:
-```shell-script
-docker build --no-cache -f Dockerfile -t testnetworkfunction/cnf-test-partner .
-```
-
-If needed (and authorized) the following will update the stored image:
-
-```shell-script
-docker push testnetworkfunction/cnf-test-partner
-```
-
 ## Installing the partner pod
 
-In order to create and deploy the partner pod, use the following:
+In order to create and deploy the partner debug pods (daemonset), use the following:
 
 ```shell-script
 make install-partner-pods
