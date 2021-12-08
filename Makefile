@@ -5,6 +5,7 @@
 # Deploys the partner and test pods and the operator
 install:
 	./scripts/fix-minikube-labels.sh
+	./scripts/deploy-multus-network.sh
 	./scripts/deploy-partner-pods.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-hpa.sh
