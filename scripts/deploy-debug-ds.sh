@@ -7,8 +7,7 @@ source $SCRIPT_DIR/init-env.sh
 export REDHAT_RHEL_REGISTRY="${REDHAT_RHEL_REGISTRY:-registry.redhat.io/rhel8}"
 # check if we're using minikube by looking for kube-apiserver-minikube pod
 # if it's minikube, don't install debug partner
-res=`oc version | grep  Server`
-if [[ -z "$res" ]]
+if $TNF_NON_OCP_CLUSTER
 then
   echo "minikube detected, skip installing debug daemonSet"
 else
