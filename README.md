@@ -16,7 +16,7 @@ Together, they make up the basic infrastructure required for "testing the tester
 
 # Namespace
 
-By default, TPP and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
+By default, DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
 export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
@@ -91,7 +91,7 @@ To create the resources, issue the following command:
 make install
 ```
 
-This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnfpartner" which can be used to run test suites, and Debug Daemonset named "debug". The
+This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
 example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
@@ -112,21 +112,9 @@ quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Runnin
 test-697ff58f87-88245                                             1/1     Running     0          2m20s   10.244.2.2   minikube-m03   <none>           <none>
 test-697ff58f87-mfmpv                                             1/1     Running     0          2m20s   10.244.1.3   minikube-m02   <none>           <none>
 ```
-
-To verify `partner` pod is running: 
-
-```shell-script
-oc get pods -n default -o wide
-```
-
-You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
-```shell-script
-NAME                                                              NAME                          READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
-tnfpartner-678db9858c-f9p4f   1/1     Running   0          142m   10.244.4.2   minikube-m05   <none>           <none>
-```
 ## Delete local-test-infra
 
-To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, DP and TPP:
+To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
 
 ```shell-script
 make clean
