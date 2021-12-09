@@ -23,7 +23,7 @@ spec:
       containers:
         - command:
             - /bin/sh
-          image: "{{REDHAT_RHEL_REGISTRY}}/{{SUPPORT_IMAGE}}"
+          image: "{{TNF_PARTNER_REPO}}/{{SUPPORT_IMAGE}}"
           imagePullPolicy: IfNotPresent
           name: container-00
           resources: {}
