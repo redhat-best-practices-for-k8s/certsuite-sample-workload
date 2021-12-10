@@ -34,6 +34,9 @@ jobs:
       - name: 'Test: Check if lspci is installed'
         run: docker run $IMAGE_NAME:$IMAGE_TAG which lspci
 
+      - name: 'Test: Check if ping is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ping
+
   push-debug-partner-image:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: 'Push the new `debug-partner` image to Quay.io'
