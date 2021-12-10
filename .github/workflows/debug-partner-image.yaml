@@ -1,0 +1,69 @@
+name: 'Test/push the `debug-partner` image'
+on:
+  push:
+    paths:
+      - 'test-partner/Dockerfile.debug-partner'
+  pull_request:
+defaults:
+  run:
+    shell: bash
+    working-directory: test-partner
+env:
+  REGISTRY: quay.io
+  IMAGE_NAME: testnetworkfunction/debug-partner
+  IMAGE_TAG: latest
+  IMAGE_CONTAINER_FILE_PATH: test-partner/Dockerfile.debug-partner
+
+jobs:
+  test-debug-partner-image:
+    name: 'Build and test the `debug-partner` image'
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 'Build the `debug-partner` image'
+        run: docker build --no-cache -f Dockerfile.debug-partner -t $IMAGE_NAME:$IMAGE_TAG .
+
+      - name: 'Test: Check if lscpu is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which lscpu
+
+      - name: 'Test: Check if lsblk is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which lsblk
+
+      - name: 'Test: Check if lspci is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which lspci
+
+      - name: 'Test: Check if ping is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ping
+
+      - name: 'Test: Check if ip is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ip
+
+  push-debug-partner-image:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: 'Push the new `debug-partner` image to Quay.io'
+    needs: test-debug-partner-image
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout the main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Authenticate against Quay.io
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          # Use a Robot Account to authenticate against Quay.io
+          # https://docs.quay.io/glossary/robot-accounts.html
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      - name: 'Build and push the new `debug-partner` image'
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
+          tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'

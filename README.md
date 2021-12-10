@@ -10,7 +10,7 @@ Together, they make up the basic infrastructure required for "testing the tester
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
-* Debug Pod (DP): A Pod running [RHEL support tool image](https://catalog.redhat.com/software/containers/rhel8/support-tools/5ba3eaf9bed8bd6ee819b78b) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
+* Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
 
