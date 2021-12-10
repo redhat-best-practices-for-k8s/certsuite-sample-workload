@@ -37,6 +37,9 @@ jobs:
       - name: 'Test: Check if ping is installed'
         run: docker run $IMAGE_NAME:$IMAGE_TAG which ping
 
+      - name: 'Test: Check if ip is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ip
+
   push-debug-partner-image:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: 'Push the new `debug-partner` image to Quay.io'
