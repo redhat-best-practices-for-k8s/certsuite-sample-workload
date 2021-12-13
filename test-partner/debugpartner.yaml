@@ -24,7 +24,7 @@ spec:
         - command:
             - /bin/sh
           image: "{{TNF_PARTNER_REPO}}/{{SUPPORT_IMAGE}}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: container-00
           resources: {}
           securityContext:
