@@ -1,36 +1,26 @@
 # CNF Certification Partner
 
 This repository contains two main sections:
-* test-partner:  Partner pods definition for use on a k8s CNF Certification cluster.
+* test-partner:  Partner debug pods definition for use on a k8s CNF Certification cluster. Used to run platform and networking tests.
 * test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
 
-Together, they make up the basic infrastructure required for "testing the tester".
+Together, they make up the basic infrastructure required for "testing the tester". The partner debug pod is always required for platform tests and networking tests.
 
 # Glossary
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
-* Test Partner Pod (TPP): A Universal Base Image (UBI) Pod containing the test tools and dependencies to act as a traffic workload generator or receiver.  For generic cases, this currently includes ICMPv4 only.
 * Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
 
 # Namespace
 
-By default, TPP and DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
+By default, DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
 export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
 ```
-# Test-partner
-
-test-partner provides the basic configuration to create a CNF Test Partner Pod (TPP), which is used to verify proper operation of a Partner Vendor's Pod Under Test in a CNF Certification Cluster.  The Pod is composed of a single container, which is based off Universal Base Image (UBI) 8.  A minimal set of tools is installed on top of the base image to fulfill CNF Test dependency requirements:
-* iputils (for ping)
-* iproute (for ip)
-
-If you are using a different test partner pod, please ensure you provide these or the image will be unable to run all CNF
-Certification tests.
-
 ## Cloning the repository
 
 The repository can be cloned to local machine using:
@@ -38,22 +28,9 @@ The repository can be cloned to local machine using:
 ```shell-script
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
-## (Re)Building the container image
-
-In order to build the test-partner image, the code should be [cloned locally](##cloning-the-repository). The following command should be issued:
-```shell-script
-docker build --no-cache -f Dockerfile -t testnetworkfunction/cnf-test-partner .
-```
-
-If needed (and authorized) the following will update the stored image:
-
-```shell-script
-docker push testnetworkfunction/cnf-test-partner
-```
-
 ## Installing the partner pod
 
-In order to create and deploy the partner pod, use the following:
+In order to create and deploy the partner debug pods (daemonset), use the following:
 
 ```shell-script
 make install-partner-pods
@@ -114,7 +91,7 @@ To create the resources, issue the following command:
 make install
 ```
 
-This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace), TPP named "tnfpartner" which can be used to run test suites, and Debug Daemonset named "debug". The
+This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
 example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
 will use this local infrastructure by default.
 
@@ -135,21 +112,9 @@ quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Runnin
 test-697ff58f87-88245                                             1/1     Running     0          2m20s   10.244.2.2   minikube-m03   <none>           <none>
 test-697ff58f87-mfmpv                                             1/1     Running     0          2m20s   10.244.1.3   minikube-m02   <none>           <none>
 ```
-
-To verify `partner` pod is running: 
-
-```shell-script
-oc get pods -n default -o wide
-```
-
-You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
-```shell-script
-NAME                                                              NAME                          READY   STATUS    RESTARTS   AGE    IP           NODE           NOMINATED NODE   READINESS GATES
-tnfpartner-678db9858c-f9p4f   1/1     Running   0          142m   10.244.4.2   minikube-m05   <none>           <none>
-```
 ## Delete local-test-infra
 
-To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, DP and TPP:
+To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
 
 ```shell-script
 make clean
