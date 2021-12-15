@@ -1,6 +1,7 @@
 .PHONY:
 	install \
   clean \
+  delete-deployment \
   creat-statefulset
 
 # Deploys the partner and test pods and the operator
@@ -28,9 +29,12 @@ install-operator:
 install-crds:
 	./scripts/deploy-test-crds.sh
 
-# deletes the namespace completely
-creat-statefulset:
+# delete deployment pods
+delete-deployment:
 	./scripts/delete-test-pods.sh
+
+# create statefulset pods
+creat-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
 
 # deletes the namespace completely

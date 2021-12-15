@@ -23,6 +23,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Delete the deployment pods
+      run: |
+        make delete-deployment
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+      env:
+        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
     - name: Delete the deployment and deploy Statefulset pods
       run: |
         make creat-statefulset
