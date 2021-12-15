@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test
+  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+        test-network-function.com/generic: target
+        test-network-function.com/container: target
+      annotations:
+        test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
+        test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
+        k8s.v1.cni.cncf.io/networks: {{ MULTUS_ANNOTATION }}
+      name: test
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - command: [ "/bin/bash", "-c", "echo 'logs' && tail -f /dev/null" ]
+          image: quay.io/testnetworkfunction/cnf-test-partner:latest
+          imagePullPolicy: IfNotPresent
+          name: test
+          ports:
+            - name: "testport"
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 0.25
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "killall -0 tail"]
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - test
+              topologyKey: "kubernetes.io/hostname"
