@@ -2,7 +2,7 @@
 	install \
   clean \
   delete-deployment \
-  creat-statefulset
+  create-statefulset
 
 # Deploys the partner and test pods and the operator
 install:
@@ -34,7 +34,7 @@ delete-deployment:
 	./scripts/delete-test-pods.sh
 
 # create statefulset pods
-creat-statefulset:
+create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
 
 # deletes the namespace completely
