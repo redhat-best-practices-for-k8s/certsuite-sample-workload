@@ -31,3 +31,4 @@ runs:
       env:
         TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
         DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
+        
