@@ -1,0 +1,41 @@
+name: deploy-statefulset-pods
+description: delete the deployment pods and create a stateful set pods with hpa
+inputs:
+  default_namespace:
+    default: default
+  working_directory:
+    default: .
+  oc_namespace:
+    default: tnf
+  oc_pod_timeout:
+    description: "Timeout for the `oc wait` command"
+    default: 120s
+  put_deployment_name:
+    description: "The expected value of the test deployment name"
+    default: test
+  put_pod_label_app:
+    description: "The expected value of the test pod's `app` label"
+    default: test
+  put_pod_name_env_var:
+    description: "The environment variable the test pod's name will be saved to"
+    default: PUT_POD_NAME
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Delete the deployment pods
+      run: |
+        make delete-deployment
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+      env:
+        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
+    - name: Delete the deployment and deploy Statefulset pods
+      run: |
+        make create-statefulset
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+      env:
+        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}

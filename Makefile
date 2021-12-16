@@ -1,13 +1,14 @@
 .PHONY:
 	install \
-  clean
+  clean \
+  delete-deployment \
+  create-statefulset
 
 # Deploys the partner and test pods and the operator
 install:
 	./scripts/fix-minikube-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-test-pods.sh
-	./scripts/deploy-hpa.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh
@@ -28,6 +29,14 @@ install-operator:
 install-crds:
 	./scripts/deploy-test-crds.sh
 
+# delete deployment pods
+delete-deployment:
+	./scripts/delete-test-pods.sh
+
+# create statefulset pods
+create-statefulset:
+	./scripts/deploy-statefulset-test-pods.sh
+
 # deletes the namespace completely
 clean-all:
 	./scripts/clean-all.sh
@@ -36,3 +45,4 @@ clean-all:
 # pre-existing objects are preserved
 clean:
 	./scripts/clean.sh
+

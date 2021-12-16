@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: {{ RESOURCE_TYPE }}
 metadata:
   name: test
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
