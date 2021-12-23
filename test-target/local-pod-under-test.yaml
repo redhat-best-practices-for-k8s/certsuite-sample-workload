@@ -23,6 +23,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
+        #- image: quay.io/shamadi/partner:latest
         - image: quay.io/testnetworkfunction/cnf-test-partner:latest
           imagePullPolicy: IfNotPresent
           name: test
@@ -44,8 +45,8 @@ spec:
               httpHeaders:
                 - name: health-check
                   value: liveness
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /ready
@@ -53,8 +54,8 @@ spec:
               httpHeaders:
                 - name: health-check
                   value: readiness
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

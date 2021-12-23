@@ -6,7 +6,7 @@ inputs:
   minikube_version:
     default: v1.24.0
   minikube_driver:
-    default: docker
+    default: virtualbox
   minikube_extra_options:
     default: '--embed-certs --nodes 3 --cni=calico'
   oc_kcm_timeout:
