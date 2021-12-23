@@ -27,7 +27,7 @@ spec:
           imagePullPolicy: IfNotPresent
           name: test
           ports:
-            - name: "probeport"
+            - name: "http-probe"
               containerPort: 8080
           resources:
             limits:
