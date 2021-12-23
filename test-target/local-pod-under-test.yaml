@@ -23,7 +23,6 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        #- image: quay.io/shamadi/partner:latest
         - image: quay.io/testnetworkfunction/cnf-test-partner:latest
           imagePullPolicy: IfNotPresent
           name: test
@@ -56,6 +55,7 @@ spec:
                   value: readiness
             initialDelaySeconds: 10
             periodSeconds: 5
+          command: ["./bin/app"]
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
