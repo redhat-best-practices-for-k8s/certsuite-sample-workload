@@ -22,10 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: 'check workdirectory'
-        run: 'ls -a'
-        working-directory: .
-
       - name: 'Build the `cnf-test-partner` image'
         run: docker build  -t $IMAGE_NAME:$IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
         working-directory: .
