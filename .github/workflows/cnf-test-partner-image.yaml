@@ -7,12 +7,12 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: test-partner
+
 env:
   REGISTRY: quay.io
   IMAGE_NAME: testnetworkfunction/cnf-test-partner
   IMAGE_TAG: latest
-  IMAGE_CONTAINER_FILE_PATH: test-partner/Dockerfile
+  IMAGE_CONTAINER_FILE_PATH: ./test-partner/Dockerfile
 
 jobs:
   test-cnf-test-partner-image:
@@ -23,7 +23,8 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: 'Build the `cnf-test-partner` image'
-        run: docker build --no-cache -f Dockerfile -t $IMAGE_NAME:$IMAGE_TAG .
+        run: docker build  -t $IMAGE_NAME:$IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
+        working-directory: .
 
       - name: 'Test: Check if ping is installed'
         run: docker run $IMAGE_NAME:$IMAGE_TAG which ping
