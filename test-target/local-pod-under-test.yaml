@@ -21,9 +21,10 @@ spec:
         k8s.v1.cni.cncf.io/networks: {{ MULTUS_ANNOTATION }}
       name: test
     spec:
+      terminationGracePeriodSeconds: 30
       automountServiceAccountToken: false
       containers:
-        - image: quay.io/testnetworkfunction/cnf-test-partner:latest 
+        - image: quay.io/testnetworkfunction/cnf-test-partner:latest
           imagePullPolicy: IfNotPresent
           name: test
           ports:
