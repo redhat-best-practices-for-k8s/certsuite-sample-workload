@@ -29,6 +29,15 @@ fi
 # Deploy the operator bundle
 operator-sdk run bundle $OPERATOR_BUNDLE_IMAGE_FULL_NAME -n $TNF_EXAMPLE_CNF_NAMESPACE $ADD_SECRET
 
+# In some cases, the operator deployment fails with an i/o timeout
+# Let's give it a second chance in that case
+if [ $? -ne 0 ]; then
+  echo "WARNING: operator failed to deploy. Trying again"
+  $SCRIPT_DIR/delete-operator.sh
+  operator-sdk run bundle $OPERATOR_BUNDLE_IMAGE_FULL_NAME -n $TNF_EXAMPLE_CNF_NAMESPACE $ADD_SECRET
+fi
+
+
 # Important: this line is required to enable csv short names with minikube
 # If short name "csv" is used, the call will fail the first time 
 # With long name the first time it will work and subsequent time it will work with long or short names 
