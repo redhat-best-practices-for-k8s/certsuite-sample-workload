@@ -4,7 +4,7 @@ inputs:
   working_directory:
     default: .
   minikube_version:
-    default: v1.24.0
+    default: v1.25.0
   minikube_driver:
     default: docker
   minikube_extra_options:
