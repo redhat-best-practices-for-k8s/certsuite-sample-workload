@@ -6,7 +6,7 @@ defaults:
 
 jobs:
   test-local-test-infra:
-    name: 'Test the `local-test-infra` configuration on minikube'
+    name: 'Test the `local-test-infra` configuration on k8s cluster'
     runs-on: ubuntu-20.04
     env:
       TNF_NAMESPACE: tnf
@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Start the minikube cluster
-        uses: ./.github/actions/start-minikube
+      - name: Start the k8s cluster
+        uses: ./.github/actions/start-k8s-cluster
 
       - name: Create `local-test-infra` OpenShift resources
         uses: ./.github/actions/create-local-test-infra-resources

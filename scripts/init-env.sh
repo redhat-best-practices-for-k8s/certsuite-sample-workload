@@ -36,14 +36,32 @@ export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
 export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
 
+# Number of multus interfaces to create
+MULTUS_IF_NUM="${MULTUS_IF_NUM:-2}"
+
 TNF_NON_OCP_CLUSTER=false
 MULTUS_ANNOTATION=""
-# Check for Minikube 
+NET_NAME="mynet"
+# Check for non-ocp cluster 
 res=`oc version | grep  Server`
 if [ -z "$res" ]
 then
-   echo "Minikube or similar detected"
+   echo "non-ocp cluster detected"
    TNF_NON_OCP_CLUSTER=true
-   MULTUS_ANNOTATION="macvlan-conf # multus network"
 fi
 
+# create Multus annotations
+create_multus_annotation(){
+  for (( NUM=0; NUM<$MULTUS_IF_NUM; NUM++ ))
+  do
+    MULTUS_ANNOTATION="${MULTUS_ANNOTATION}{ \"name\" : \"${NET_NAME}-$1-${NUM}\" },"
+  done
+}
+# IPv4
+create_multus_annotation "ipv4"
+# IPv6
+create_multus_annotation "ipv6"
+
+if [ $NUM -ge 0 ]; then
+  export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
+fi

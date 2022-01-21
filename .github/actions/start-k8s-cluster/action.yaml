@@ -1,0 +1,53 @@
+name: start-k8s-cluster
+description: Creates and configures a k8s cluster for all things TNF-related
+inputs:
+  working_directory:
+    default: .
+  k8s_cluster_version:
+    default: v0.11.1
+  oc_kcm_timeout:
+    default: 5m
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download cluster bootstrap executable
+      run: |
+        curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/${{ inputs.k8s_cluster_version }}/kind-linux-amd64
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Install cluster bootstrap executable
+      run: chmod +x kind; sudo cp kind /usr/bin/kind
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Configure docker
+      run: make new-docker-config
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    - name: Start the cluster
+      run: make rebuild-cluster
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
+    # The waiting is performed to allow the `kube-controller-manager` to start all required controllers,
+    # such as the `service-account-controller` responsible for managing and creating Service Accounts.
+    - name: Wait for kube-controller-manager
+      run: |
+        echo "Waiting for kube-controller-manager... (timeout: ${{ inputs.oc_kcm_timeout }})" && \
+        oc wait -n kube-system --for=condition=ready pod --all=true --timeout=${{ inputs.oc_kcm_timeout }}
+      shell: bash
+
+    - name: Display kube-system pods
+      run: oc get pods -n kube-system -o wide
+      shell: bash
+      
+    - name: Display cluster nodes
+      run: oc get nodes
+      shell: bash
+
+    - name: Display a friendly summary message
+      run: echo "TNF-compatible cluster is ready to go! Have fun!"
+      shell: bash

@@ -4,12 +4,16 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
+CNIS_DAEMONSET_URL="https://raw.githubusercontent.com/k8snetworkplumbingwg/multus-cni/master/e2e/cni-install.yml"
+MULTUS_GIT_URL="https://github.com/k8snetworkplumbingwg/multus-cni.git"
+WHEREABOUTS_GIT_URL="https://github.com/k8snetworkplumbingwg/whereabouts"
+
 if $TNF_NON_OCP_CLUSTER
 then
-  echo "minikube detected, deploying Multus, Calico CNI needed in Minikube for this to work"
+  echo "non ocp cluster detected, deploying Multus"
 
   rm -rf ./temp
-  git clone --depth 1 https://github.com/k8snetworkplumbingwg/multus-cni.git ./temp/multus-cni
+  git clone --depth 1 $MULTUS_GIT_URL ./temp/multus-cni
 
   # fix for dimensioning bug
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
@@ -17,20 +21,40 @@ then
   # Deploy Multus
   oc apply -f ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
   
-  # Wait for all calico and multus daemonset pods to be running
-  oc rollout status daemonset calico-node -n kube-system  --timeout=$TNF_DEPLOYMENT_TIMEOUT
+  # Wait for all multus daemonset pods to be running
   oc rollout status daemonset kube-multus-ds -n kube-system  --timeout=$TNF_DEPLOYMENT_TIMEOUT
 
-  # Creates the network attachment on eth0 (bridge) on partner namespace
-  mkdir -p ./temp
-  cat ./test-target/multus.yaml | RANGE_START="192.168.1.2" RANGE_END="192.168.1.49" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
-  oc apply -f ./temp/rendered-multus.yaml
-  
-  # Creating a network attachment for the default namespace as well
-  cat ./test-target/multus.yaml | TNF_EXAMPLE_CNF_NAMESPACE=default RANGE_START="192.168.1.50" RANGE_END="192.168.1.99" $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
-  oc apply -f ./temp/rendered-multus.yaml
+  # Install macvlan and other default plugins
+  echo "## install CNIs"
+  kubectl create -f "${CNIS_DAEMONSET_URL}"
+  kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout=$TNF_DEPLOYMENT_TIMEOUT
 
-  rm ./temp/rendered-multus.yaml
+  # Install whereabout
+  git clone $WHEREABOUTS_GIT_URL --depth 1
+  oc apply \
+    -f whereabouts/doc/crds/daemonset-install.yaml \
+    -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
+    -f whereabouts/doc/crds/whereabouts.cni.cncf.io_overlappingrangeipreservations.yaml \
+    -f whereabouts/doc/crds/ip-reconciler-job.yaml
+  
+  rm -rf whereabouts
+  # Whereabout does not support dual stack so creating 2 sets of single stack multus interfaces
+  create_nets(){
+    for (( NUM=0; NUM<$MULTUS_IF_NUM; NUM++ ))
+    do
+      # Creates the network attachment with ptp plugin on partner namespace
+      mkdir -p ./temp
+
+      cat ./config/k8s-cluster/multus.yaml | IP_NUM=$(echo $2|sed 's/NUM/'${NUM}'/g') NET_NAME_NUM="$NET_NAME-$1-$NUM"  $SCRIPT_DIR/mo > ./temp/rendered-multus.yaml
+      oc apply -f ./temp/rendered-multus.yaml
+      rm ./temp/rendered-multus.yaml
+    done
+  }
+  # IPv4
+  create_nets "ipv4" "192.168.NUM.0/24"
+  # IPv6
+  create_nets "ipv6" "3ffe:ffff:0:NUM::/64"
+
   sleep 3
 else 
   echo "Minukube not detected, Skipping Multus installation"
