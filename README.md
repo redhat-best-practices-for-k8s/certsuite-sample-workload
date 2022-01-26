@@ -60,7 +60,7 @@ In order to run the local test setup, the following dependencies are needed:
 
 Install the latest docker version ( https://docs.docker.com/engine/install/fedora ):
 ```shell-script
- sudo dnf config-manager \
+sudo dnf config-manager \
     --add-repo \
     https://download.docker.com/linux/fedora/docker-ce.repo
 
@@ -98,6 +98,7 @@ sudo bash -c 'cat <<- EOF > /etc/docker/daemon.json
   "fixed-cidr-v6": "2001:db8:1::/64"
 }
 EOF'
+```
 
 Enable IPv6 with:
 ```shell-script
