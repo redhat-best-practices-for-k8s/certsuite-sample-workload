@@ -32,9 +32,8 @@ runs:
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
-    # The waiting is performed to allow the `kube-controller-manager` to start all required controllers,
-    # such as the `service-account-controller` responsible for managing and creating Service Accounts.
-    - name: Wait for kube-controller-manager
+    # Wait for all pods to be ready
+    - name: Wait for all pods ready
       run: |
         echo "Waiting for kube-controller-manager... (timeout: ${{ inputs.oc_kcm_timeout }})" && \
         oc wait -n kube-system --for=condition=ready pod --all=true --timeout=${{ inputs.oc_kcm_timeout }}

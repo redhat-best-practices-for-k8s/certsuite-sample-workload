@@ -12,6 +12,9 @@ if $TNF_NON_OCP_CLUSTER
 then
   echo "non ocp cluster detected, deploying Multus"
 
+  # Wait for all calico and multus daemonset pods to be running
+  oc rollout status daemonset calico-node -n kube-system  --timeout=$TNF_DEPLOYMENT_TIMEOUT
+
   rm -rf ./temp
   git clone --depth 1 $MULTUS_GIT_URL ./temp/multus-cni
 
