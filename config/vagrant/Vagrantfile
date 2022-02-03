@@ -1,0 +1,24 @@
+Vagrant.configure("2") do |config|
+    config.vm.synced_folder "../..", "/home/vagrant/partner"
+    config.vm.synced_folder "kubeconfig", "/home/vagrant/.kube"
+    config.vm.network "forwarded_port", guest: 6443, host: 6443
+    
+    config.vm.define "k8shost" do |k8shost|
+      k8shost.vm.box = "generic/fedora34"
+      k8shost.vm.hostname = "k8shost"
+      k8shost.vm.network "private_network", ip: "10.0.0.10"
+      k8shost.vm.provider "virtualbox" do |vb|
+          vb.memory = 4048
+          vb.cpus = 2
+      end
+
+      # Configure docker 
+      k8shost.vm.provision "shell", path: "scripts/bootstrap-docker.sh", privileged: false
+      
+      # trigger reload to setup docker rootless permissions
+      k8shost.vm.provision :reload
+
+      # configure kubernetes
+      k8shost.vm.provision "shell", path: "scripts/bootstrap-cluster.sh", privileged: false
+    end
+  end

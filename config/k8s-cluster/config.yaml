@@ -5,6 +5,8 @@ featureGates:
 networking:
   ipFamily: dual
   disableDefaultCNI: true
+  apiServerAddress: "0.0.0.0"
+  apiServerPort: 6443
 nodes:
   - role: control-plane
   - role: worker

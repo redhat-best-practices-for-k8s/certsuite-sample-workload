@@ -17,6 +17,17 @@ install:
 rebuild-cluster:
 	./scripts/deploy-k8s-cluster.sh
 
+# launch Vagrant env
+vagrant-build:
+	mkdir config/vagrant/kubeconfig
+	vagrant plugin install vagrant-reload
+	cd config/vagrant;vagrant up;cd ../..
+	cp config/vagrant/kubeconfig/config ~/.kube/config
+
+# destroy Vagrant env
+vagrant-destroy:
+	cd config/vagrant;vagrant destroy
+
 # create a new docker configuration
 new-docker-config:
 	./scripts/configure-docker.sh
