@@ -5,8 +5,13 @@ sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/dow
 sudo chmod +x /usr/bin/kind
 
 # download openshift client
-curl -Lo oc.tar.gz https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
-tar -xvf oc.tar.gz --strip-components 1
+OPENSHIFT_VERSION="4.7.7"
+OC_BIN_TAR="openshift-client-linux.tar.gz"
+OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
+
+curl -Lo oc.tar.gz ${OC_DL_URL}
+tar -xvf oc.tar.gz
+chmod +x oc kubectl
 sudo cp oc kubectl /usr/bin/.
 
 # create cluster
