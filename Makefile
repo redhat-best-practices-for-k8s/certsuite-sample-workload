@@ -19,7 +19,7 @@ rebuild-cluster:
 
 # launch Vagrant env
 vagrant-build:
-	mkdir config/vagrant/kubeconfig
+	mkdir -p config/vagrant/kubeconfig
 	vagrant plugin install vagrant-reload
 	cd config/vagrant;vagrant up;cd ../..
 	cp config/vagrant/kubeconfig/config ~/.kube/config

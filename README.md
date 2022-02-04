@@ -52,6 +52,7 @@ These can be used in conjunction with a local [kind](https://kind.sigs.k8s.io/) 
 ## Dependencies
 
 In order to run the local test setup, the following dependencies are needed:
+* [vagrant](https://www.vagrantup.com/downloads)
 * [kind](https://kind.sigs.k8s.io/)
 * [Docker](https://docs.docker.com/get-docker/)
 * [oc client](https://docs.openshift.com/container-platform/3.6/cli_reference/get_started_cli.html#cli-linux)
@@ -201,6 +202,11 @@ make clean
 ```
 
 ## Setup with Vagrant, docker and kind (Mac OS support)
+
+Install vagrant for your platform
+```shell-script
+https://www.vagrantup.com/downloads
+```
 
 To build the environement, including deploying the test cnf, do the following:
 
