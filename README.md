@@ -13,8 +13,9 @@ Together, they make up the basic infrastructure required for "testing the tester
 * Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
+# Prerequisites
 
-# Namespace
+## Namespace
 
 By default, DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
@@ -28,7 +29,7 @@ The repository can be cloned to local machine using:
 ```shell-script
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
-## Installing the partner pod
+# Installing the partner pod
 
 In order to create and deploy the partner debug pods (daemonset), use the following:
 
@@ -40,7 +41,7 @@ This will create a deployment named "partner" in the "default" namespace.  This 
 For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
 For environments with slow internet connection, override the default deployment timeout value (120s) by setting the environment variable named `TNF_DEPLOYMENT_TIMEOUT`.
 
-# Test-target
+# Installing the Test-target
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [test-target](./test-target)
@@ -56,7 +57,7 @@ In order to run the local test setup, the following dependencies are needed:
 * [oc client](https://docs.openshift.com/container-platform/3.6/cli_reference/get_started_cli.html#cli-linux)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
-## Setup
+## Setup with docker and kind
 
 Install the latest docker version ( https://docs.docker.com/engine/install/fedora ):
 ```shell-script
@@ -160,7 +161,7 @@ fs.inotify.max_user_instances = 512
 fs.inotify.max_user_watches = 524288
 fs.inotify.max_user_instances = 512
 ```
-## Deploy both test target and test partner as a local-test-infra
+### Deploy both test target and test partner as a local-test-infra
 
 To create the resources, issue the following command:
 
@@ -191,10 +192,38 @@ test-6cd5f864bd-kbqhq                                             1/1     Runnin
 test-6cd5f864bd-sb6xf                                             1/1     Running     0          7m28s   10.244.1.2    kind-worker    <none>           <none>
 
 ```
-## Delete local-test-infra
+### Delete local-test-infra
 
 To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
 
 ```shell-script
 make clean
 ```
+
+## Setup with Vagrant, docker and kind (Mac OS support)
+
+To build the environement, including deploying the test cnf, do the following:
+
+```shell-script
+make vagrant-build
+```
+
+The kubeconfig for the new environement will override the file located at ~/.kube/config
+Just start running commands from the command line to test the new cluster:
+```shell-script
+oc get pods -A
+```
+
+To destroy the vagrant environment, do the following:
+
+```shell-script
+make vagrant-destroy
+```
+
+To access the virtual machine supporting the cluster, do the following:
+```shell-script
+cd config/vagrant
+user@fedora vagrant]$ vagrant ssh
+[vagrant@k8shost ~]$
+```
+The partner repo scripts are located in ~/partner
