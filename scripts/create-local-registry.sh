@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# TODO: needs refactoring to work with kind
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh

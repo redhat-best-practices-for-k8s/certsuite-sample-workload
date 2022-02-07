@@ -6,16 +6,31 @@
 
 # Deploys the partner and test pods and the operator
 install:
-	./scripts/fix-minikube-labels.sh
+	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh
 
-# creates a minikube instance
-rebuild-minikube:
-	./scripts/deploy-minikube.sh
+# creates a k8s cluster instance
+rebuild-cluster:
+	./scripts/deploy-k8s-cluster.sh
+
+# launch Vagrant env
+vagrant-build:
+	mkdir -p config/vagrant/kubeconfig
+	vagrant plugin install vagrant-reload
+	cd config/vagrant;vagrant up;cd ../..
+	cp config/vagrant/kubeconfig/config ~/.kube/config
+
+# destroy Vagrant env
+vagrant-destroy:
+	cd config/vagrant;vagrant destroy
+
+# create a new docker configuration
+new-docker-config:
+	./scripts/configure-docker.sh
 
 # deploys the partner pods
 install-partner-pods:

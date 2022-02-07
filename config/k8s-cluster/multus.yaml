@@ -1,7 +1,7 @@
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition 
 metadata:
-  name: macvlan-conf 
+  name: {{ NET_NAME_NUM }}
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
 spec:
   config: '{ 
@@ -10,13 +10,7 @@ spec:
       "master": "eth0",
       "mode": "bridge",
       "ipam": {
-        "type": "host-local",
-        "subnet": "192.168.1.0/24",
-        "rangeStart": "{{ RANGE_START }}",
-        "rangeEnd": "{{ RANGE_END }}",
-        "routes": [
-          { "dst": "0.0.0.0/0" }
-        ],
-        "gateway": "192.168.1.1"
+        "type": "whereabouts",
+        "range": "{{ IP_NUM }}"
       }
     }'

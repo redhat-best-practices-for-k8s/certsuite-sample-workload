@@ -13,8 +13,9 @@ Together, they make up the basic infrastructure required for "testing the tester
 * Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
+# Prerequisites
 
-# Namespace
+## Namespace
 
 By default, DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
@@ -28,7 +29,7 @@ The repository can be cloned to local machine using:
 ```shell-script
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
-## Installing the partner pod
+# Installing the partner pod
 
 In order to create and deploy the partner debug pods (daemonset), use the following:
 
@@ -40,50 +41,128 @@ This will create a deployment named "partner" in the "default" namespace.  This 
 For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
 For environments with slow internet connection, override the default deployment timeout value (120s) by setting the environment variable named `TNF_DEPLOYMENT_TIMEOUT`.
 
-# Test-target
+# Installing the Test-target
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times
 in which using a local emulator can greatly help with test development.  As such, [test-target](./test-target)
 provides a very simple PUT, OT, CRD, which satisfies the minimal requirements to perform test cases.
-These can be used in conjunction with a local kind or [minikube](https://minikube.sigs.k8s.io/docs/) cluster to perform local test development.
+These can be used in conjunction with a local [kind](https://kind.sigs.k8s.io/) cluster to perform local test development.
 
 
 ## Dependencies
 
 In order to run the local test setup, the following dependencies are needed:
-* [minikube](https://minikube.sigs.k8s.io/docs/)
-* [VirtualBox](https://www.virtualbox.org/) (or another driver for minikube)
+* [vagrant](https://www.vagrantup.com/downloads)
+* [kind](https://kind.sigs.k8s.io/)
+* [Docker](https://docs.docker.com/get-docker/)
 * [oc client](https://docs.openshift.com/container-platform/3.6/cli_reference/get_started_cli.html#cli-linux)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 
-## Setup
-Install the latest minikube by following the instructions at:
-```https://minikube.sigs.k8s.io/docs/start/```
+## Setup with docker and kind
 
-To start minikube, issue the following command:
-
+Install the latest docker version ( https://docs.docker.com/engine/install/fedora ):
 ```shell-script
-minikube start --embed-certs --driver="virtualbox" --nodes 3 --network-plugin=cni --cni=calico 
+sudo dnf config-manager \
+    --add-repo \
+    https://download.docker.com/linux/fedora/docker-ce.repo
+
+sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
+
+sudo dnf -y install dnf-plugins-core
+
+sudo dnf install docker-ce docker-ce-cli containerd.io
 ```
 
-The `--embed-certs` flag will cause minikube to embed certificates directly in its kubeconfig file.  
-This will allow the minikube cluster to be reached directly from the container without the need of binding additional volumes for certificates.
-
-The `--nodes 3` flag creates a cluster with one master node and two worker nodes. This is to support anti-affinity and pod-recreation test case.
-
-The  `--network-plugin=cni --cni=calico` flags configure CNI support and installs Calico. This is required to install Multus later on.
-
-To avoid having to specify this flag, set the `embed-certs` configuration key:
-
+Perform the post install ( https://docs.docker.com/engine/install/linux-postinstall ) 
 ```shell-script
-minikube config set embed-certs true
+ sudo systemctl start docker.service
+ sudo systemctl enable docker.service
+ sudo systemctl enable containerd.service
+ sudo groupadd docker
+ sudo usermod -aG docker $USER
+ newgrp docker 
 ```
-Or Alternatively, run:
+Configure IPv6 in docker ( https://docs.docker.com/config/daemon/ipv6/ )
 ```shell-script
-make rebuild-minikube
+# update docker config
+sudo bash -c 'cat <<- EOF > /etc/docker/daemon.json
+{
+  "ipv6": true,
+  "fixed-cidr-v6": "2001:db8:1::/64"
+}
+EOF'
 ```
 
-## Deploy both test target and test partner as a local-test-infra
+Enable IPv6 with:
+```shell-script
+sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
+sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=0
+```
+
+to persist IPv6 support, edit or add the following lines in the /etc/sysctl.conf file
+```shell-script
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+```
+
+disable firewall, if present, as multus interfaces will not be able to communicate. 
+
+Note: if docker is already running after running the command below, also restart docker as taking the firewall down will remove the docker rules
+```shell-script
+sudo systemctl stop firewalld
+```
+
+restart docker
+```shell-script
+sudo systemctl restart docker
+```
+
+Download and install Kubebernetes In Docker (Kind):
+```shell-script
+curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64
+```
+
+Configure a cluster with 4 worker nodes and one master node ( dual stack ): 
+```shell-script
+cat <<- EOF > config.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  ipFamily: dual
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+- role: worker
+EOF
+kind create cluster --config=config.yaml
+```
+
+Increase max files limit to prevent issue due to the large cluster size ( see https://kind.sigs.k8s.io/docs/user/known-issues/#pod-errors-due-to-too-many-open-files ) 
+```shell-script
+sudo sysctl fs.inotify.max_user_watches=524288
+sudo sysctl fs.inotify.max_user_instances=512
+```
+To make the changes persistent, edit the file /etc/sysctl.conf and add these lines:
+```shell-script
+fs.inotify.max_user_watches = 524288
+fs.inotify.max_user_instances = 512
+
+fs.inotify.max_user_watches = 524288
+fs.inotify.max_user_instances = 512
+```
+### Deploy both test target and test partner as a local-test-infra
 
 To create the resources, issue the following command:
 
@@ -105,17 +184,52 @@ oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
-NAME                                                              READY   STATUS      RESTARTS   AGE     IP           NODE           NOMINATED NODE   READINESS GATES
-4c926df73b15df26b6874260a4f71ca3bf7c6ce2bdfd87aa90759a6aeb5rhpk   0/1     Completed   0          59s     10.244.0.5   minikube       <none>           <none>
-nginx-operator-controller-manager-7f8f449fbd-fvn4f                2/2     Running     0          44s     10.244.0.6   minikube       <none>           <none>
-quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Running     0          69s     10.244.2.6   minikube-m03   <none>           <none>
-test-697ff58f87-88245                                             1/1     Running     0          2m20s   10.244.2.2   minikube-m03   <none>           <none>
-test-697ff58f87-mfmpv                                             1/1     Running     0          2m20s   10.244.1.3   minikube-m02   <none>           <none>
+$ oc get pods -ntnf -owide
+NAME                                                              READY   STATUS      RESTARTS   AGE     IP            NODE           NOMINATED NODE   READINESS GATES
+4c926df73b15df26b6874260a4f71ca3bf7c6ce2bdfd87aa90759a6aeb8b942   0/1     Completed   0          6m16s   10.244.2.9    kind-worker3   <none>           <none>
+nginx-operator-controller-manager-58cbcc4d8d-v8r6q                2/2     Running     0          6m2s    10.244.2.10   kind-worker3   <none>           <none>
+quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Running     0          6m25s   10.244.2.8    kind-worker3   <none>           <none>
+test-6cd5f864bd-kbqhq                                             1/1     Running     0          7m28s   10.244.3.3    kind-worker2   <none>           <none>
+test-6cd5f864bd-sb6xf                                             1/1     Running     0          7m28s   10.244.1.2    kind-worker    <none>           <none>
+
 ```
-## Delete local-test-infra
+### Delete local-test-infra
 
 To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
 
 ```shell-script
 make clean
 ```
+
+## Setup with Vagrant, docker and kind (Mac OS support)
+
+Install vagrant for your platform
+```shell-script
+https://www.vagrantup.com/downloads
+```
+
+To build the environement, including deploying the test cnf, do the following:
+
+```shell-script
+make vagrant-build
+```
+
+The kubeconfig for the new environement will override the file located at ~/.kube/config
+Just start running commands from the command line to test the new cluster:
+```shell-script
+oc get pods -A
+```
+
+To destroy the vagrant environment, do the following:
+
+```shell-script
+make vagrant-destroy
+```
+
+To access the virtual machine supporting the cluster, do the following:
+```shell-script
+cd config/vagrant
+user@fedora vagrant]$ vagrant ssh
+[vagrant@k8shost ~]$
+```
+The partner repo scripts are located in ~/partner
