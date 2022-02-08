@@ -57,10 +57,15 @@ create_multus_annotation(){
     MULTUS_ANNOTATION="${MULTUS_ANNOTATION}{ \"name\" : \"${NET_NAME}-$1-${NUM}\" },"
   done
 }
-# IPv4
-create_multus_annotation "ipv4"
-# IPv6
-create_multus_annotation "ipv6"
+
+# Only add annotation in non OCP clusters
+if $TNF_NON_OCP_CLUSTER
+then
+  # IPv4
+  create_multus_annotation "ipv4"
+  # IPv6
+  create_multus_annotation "ipv6"
+fi
 
 if [ $NUM -ge 0 ]; then
   export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
