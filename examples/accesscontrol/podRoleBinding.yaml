@@ -42,9 +42,7 @@ metadata:
   name: rolebindingpod
   namespace: tnf
 spec:
-  # This should be set to false explicitly to satisfy testing requirements.
-  # Please visit this link to learn more:
-  # https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-automount-service-account-token
+  # serviceAccountName should be set to false explicitly to satisfy testing requirements.
   serviceAccountName: app-service-account
   automountServiceAccountToken: false
   containers:
