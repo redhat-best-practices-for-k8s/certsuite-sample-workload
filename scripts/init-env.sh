@@ -61,6 +61,7 @@ create_multus_annotation(){
 # Only add annotation in non OCP clusters
 if $TNF_NON_OCP_CLUSTER
 then
+  echo 'creating multus annotations'
   # IPv4
   create_multus_annotation "ipv4"
   # IPv6
