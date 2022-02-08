@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: netadminpod
+    app: test
+    test-network-function.com/generic: target
+    test-network-function.com/container: target
+  name: netadminpod
+  namespace: tnf
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - image: nginx
+      name: netadminpod
+      resources: {}
+      securityContext:
+        capabilities:
+          add: ["NET_ADMIN"]  # NET_ADMIN should not be set.
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
