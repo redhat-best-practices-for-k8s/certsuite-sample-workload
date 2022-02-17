@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: fail-access
+    app: test
+    test-network-function.com/generic: target
+    test-network-function.com/container: target
+  name: fail-access
+  namespace: tnf
+spec:
+  hostIPC: true
+  hostPID: true
+  hostNetwork: true
+  securityContext:
+    runAsUser: 0
+  automountServiceAccountToken: false
+  volumes:
+    - name: test-volume
+      hostPath:
+        # directory location on host
+        path: /data
+        # this field is optional
+        type: Directory
+  containers:
+    - command: ["sh", "-c", "tail -f /dev/null"]
+      image: quay.io/testnetworkfunction/debug-partner
+      name: test-container
+      resources: {}
+      securityContext:
+        runAsUser: 0
+        allowPrivilegeEscalation: true
+        capabilities:
+          add: ["SYS_ADMIN"] # SYS_ADMIN should not be set.
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
