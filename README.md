@@ -23,7 +23,7 @@ By default, DP are deployed in "default" namespace. all the other deployment fil
 export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
 ```
 
-## On-demand vx always on debug pods
+## On-demand vs always on debug pods
 By default debug pods are installed on demand when the tnf test suite is deployed. To deploy debug pods on all nodes in the cluster, configure the following environment variable:
 ```shell-script
 export ON_DEMAND_DEBUG_PODS=false
