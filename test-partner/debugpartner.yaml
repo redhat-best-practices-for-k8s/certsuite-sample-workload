@@ -18,7 +18,7 @@ spec:
         test-network-function.com/app: debug
       name: debug
     spec:
-      {{NODE_SELECTOR}}
+      #{{NODE_SELECTOR}}
       containers:
         - command:
             - /bin/sh

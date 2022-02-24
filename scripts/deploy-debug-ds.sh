@@ -15,7 +15,8 @@ then
   NODE_SELECTOR=""
 else
   echo "Configuring on-demand debug pods"
-  NODE_SELECTOR="nodeSelector:
+  NODE_SELECTOR="
+      nodeSelector:
         test-network-function.com/node: target"
 fi
 
