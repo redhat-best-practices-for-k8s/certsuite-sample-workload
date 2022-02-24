@@ -32,6 +32,9 @@ oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
 # Default Namespace
 export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
 
+# Debug on-demand by default
+export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
+
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
 export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
@@ -71,3 +74,5 @@ fi
 if [ $NUM -ge 0 ]; then
   export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
 fi
+
+export 
