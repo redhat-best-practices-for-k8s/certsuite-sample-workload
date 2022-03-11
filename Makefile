@@ -9,6 +9,7 @@ install:
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-test-pods.sh
+	./scripts/deploy-statefulset-test-pods.sh
 	./scripts/deploy-operator.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh

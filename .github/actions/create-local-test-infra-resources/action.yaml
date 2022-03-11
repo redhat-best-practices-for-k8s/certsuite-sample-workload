@@ -13,9 +13,12 @@ inputs:
   put_deployment_name:
     description: "The expected value of the test deployment name"
     default: test
-  put_pod_label_app:
-    description: "The expected value of the test pod's `app` label"
-    default: test
+  put_pod_label_app_statefulset:
+    description: "The expected value of the test statefulset's `app` label"
+    default: testss
+  put_pod_label_app_deployment:
+    description: "The expected value of the test deployment's `app` label"
+    default: testdp
   put_pod_name_env_var:
     description: "The environment variable the test pod's name will be saved to"
     default: PUT_POD_NAME
@@ -44,13 +47,17 @@ runs:
       run: oc get pods -o wide
       shell: bash
 
-    - name: (PUT) Ensure that two pods with the label are present
-      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app }}" -o name | wc -l) -eq "2" ]]'
+    - name: (PUT) Ensure that two statefulset pods with the label are present
+      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app_statefulset }}" -o name | wc -l) -eq "2" ]]'
+      shell: bash
+
+    - name: (PUT) Ensure that two deployment pods with the label are present
+      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app_deployment }}" -o name | wc -l) -eq "2" ]]'
       shell: bash
 
     - name: (PUT) Discover the name of the first test pod
       run: |
-        PUT_POD_NAME=$(oc get pods -l 'app=${{ inputs.put_pod_label_app }}' -o jsonpath='{.items[0].metadata.name}')
+        PUT_POD_NAME=$(oc get pods -l 'app=${{ inputs.put_pod_label_app_deployment }}' -o jsonpath='{.items[0].metadata.name}')
         echo "${{ inputs.put_pod_name_env_var }}=$PUT_POD_NAME" >> $GITHUB_ENV
       shell: bash
 
