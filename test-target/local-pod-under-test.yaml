@@ -59,6 +59,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 5
           command: ["./bin/app"]
+          terminationMessagePolicy: FallbackToLogsOnError
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
