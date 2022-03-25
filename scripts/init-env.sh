@@ -26,6 +26,9 @@ CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 # Test Namespace
 export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
 
+# catalog source namespace
+export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
+
 # Create namespace if it does not exist
 oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
 
@@ -75,4 +78,5 @@ if [ $NUM -ge 0 ]; then
   export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
 fi
 
-export 
+COMMUNITY_OPERATOR_NAME=zoperator.v0.3.6
+COMMUNITY_OPERATOR_BASE=zoperator

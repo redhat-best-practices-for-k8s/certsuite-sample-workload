@@ -191,12 +191,12 @@ oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
 $ oc get pods -ntnf -owide
-NAME                                                              READY   STATUS      RESTARTS   AGE     IP            NODE           NOMINATED NODE   READINESS GATES
-4c926df73b15df26b6874260a4f71ca3bf7c6ce2bdfd87aa90759a6aeb8b942   0/1     Completed   0          6m16s   10.244.2.9    kind-worker3   <none>           <none>
-nginx-operator-controller-manager-58cbcc4d8d-v8r6q                2/2     Running     0          6m2s    10.244.2.10   kind-worker3   <none>           <none>
-quay-io-testnetworkfunction-nginx-operator-bundle-v0-0-1          1/1     Running     0          6m25s   10.244.2.8    kind-worker3   <none>           <none>
-test-6cd5f864bd-kbqhq                                             1/1     Running     0          7m28s   10.244.3.3    kind-worker2   <none>           <none>
-test-6cd5f864bd-sb6xf                                             1/1     Running     0          7m28s   10.244.1.2    kind-worker    <none>           <none>
+NAME                         READY   STATUS    RESTARTS   AGE   IP               NODE           NOMINATED NODE   READINESS GATES
+test-0                       1/1     Running   0          15m   10.244.162.133   kind-worker    <none>           <none>
+test-1                       1/1     Running   0          15m   10.244.110.166   kind-worker2   <none>           <none>
+test-6cbd5b97b7-d5756        1/1     Running   0          15m   10.244.110.165   kind-worker2   <none>           <none>
+test-6cbd5b97b7-xgpt6        1/1     Running   0          15m   10.244.195.209   kind-worker3   <none>           <none>
+zoperator-54cdd7f77c-ddhwm   1/1     Running   0          12m   10.244.195.217   kind-worker3   <none>           <none>
 
 ```
 ### Delete local-test-infra

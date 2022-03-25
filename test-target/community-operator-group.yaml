@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: test-group
+  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+spec:
+  targetNamespaces:
+    - {{ TNF_EXAMPLE_CNF_NAMESPACE }}
