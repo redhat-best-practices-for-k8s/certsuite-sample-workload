@@ -12,3 +12,4 @@ source $SCRIPT_DIR/init-env.sh
 ./$SCRIPT_DIR/delete-test-crds.sh
 ./$SCRIPT_DIR/delete-debug-ds.sh
 ./$SCRIPT_DIR/delete-statefulset-pods.sh
+./$SCRIPT_DIR/delete-community-operator.sh

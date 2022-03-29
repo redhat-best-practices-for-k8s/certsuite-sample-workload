@@ -16,7 +16,7 @@ else
   export OS="$(uname | awk '{print tolower($0)}')"
 
   ## Download executable
-  export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.15.0
+  export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.18.1
   curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_${OS}_${ARCH}
 
   ## Download the auth key
