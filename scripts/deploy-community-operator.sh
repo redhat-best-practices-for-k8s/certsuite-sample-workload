@@ -37,8 +37,8 @@ rm ./temp/rendered-local-community-operator-subscription.yaml
 
 CSV_CHECK_RETRIES=24 # 240 seconds
 while [[ $(oc get csv -n $TNF_EXAMPLE_CNF_NAMESPACE $COMMUNITY_OPERATOR_NAME -o go-template="{{.status.phase}}") != "Succeeded" && "$CSV_CHECK_RETRIES" -gt 0 ]]; do
-        echo "waiting for $COMMUNITY_OPERATOR_NAME installation to succeed"
-        sleep 10
+	echo "waiting for $COMMUNITY_OPERATOR_NAME installation to succeed"
+	sleep 10
 	CSV_CHECK_RETRIES=$(($CSV_CHECK_RETRIES-1))
 	oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE
 	oc get sa -n $TNF_EXAMPLE_CNF_NAMESPACE
