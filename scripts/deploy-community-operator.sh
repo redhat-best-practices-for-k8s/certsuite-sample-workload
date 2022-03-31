@@ -55,3 +55,6 @@ oc get csv -n $TNF_EXAMPLE_CNF_NAMESPACE
 
 # Label the community operator
 oc label clusterserviceversions.operators.coreos.com $COMMUNITY_OPERATOR_NAME -n $TNF_EXAMPLE_CNF_NAMESPACE test-network-function.com/operator=target
+
+# For the old repo only, add an annotation to identify the subscription
+oc annotate csv $COMMUNITY_OPERATOR_NAME test-network-function.com/subscription_name='["test-subscription"]' --overwrite  -ntnf
