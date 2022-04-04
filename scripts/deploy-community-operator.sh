@@ -26,12 +26,14 @@ fi
 mkdir -p ./temp
 cat ./test-target/community-operator-group.yaml | TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE $SCRIPT_DIR/mo > ./temp/rendered-local-community-operator-group.yaml
 oc apply -f ./temp/rendered-local-community-operator-group.yaml
+cat ./temp/rendered-local-community-operator-group.yaml
 rm ./temp/rendered-local-community-operator-group.yaml
 
 # Create the Subscription
 mkdir -p ./temp
 cat ./test-target/community-operator-subscription.yaml | OPERATOR_NAME=$COMMUNITY_OPERATOR_BASE CATALOG_SOURCE=$CATALOG_SOURCE CATALOG_NAMESPACE=$CATALOG_NAMESPACE TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE $SCRIPT_DIR/mo > ./temp/rendered-local-community-operator-subscription.yaml
 oc apply -f ./temp/rendered-local-community-operator-subscription.yaml
+cat ./temp/rendered-local-community-operator-subscription.yaml
 rm ./temp/rendered-local-community-operator-subscription.yaml
 
 
