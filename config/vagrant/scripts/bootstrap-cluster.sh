@@ -5,7 +5,7 @@ sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/dow
 sudo chmod +x /usr/bin/kind
 
 # download openshift client
-OPENSHIFT_VERSION="4.7.7"
+OPENSHIFT_VERSION="4.9.9"
 OC_BIN_TAR="openshift-client-linux.tar.gz"
 OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
 
