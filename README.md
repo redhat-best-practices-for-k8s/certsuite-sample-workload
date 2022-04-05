@@ -136,7 +136,7 @@ sudo systemctl restart docker
 
 Download and install Kubebernetes In Docker (Kind):
 ```shell-script
-curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.11.1/kind-linux-amd64
+curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.12.0/kind-linux-amd64
 ```
 
 Configure a cluster with 4 worker nodes and one master node ( dual stack ): 
