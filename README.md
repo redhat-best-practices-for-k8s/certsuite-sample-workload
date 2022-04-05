@@ -134,7 +134,7 @@ restart docker
 sudo systemctl restart docker
 ```
 
-Download and install Kubebernetes In Docker (Kind):
+Download and install Kubernetes In Docker (Kind):
 ```shell-script
 curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.12.0/kind-linux-amd64
 ```
@@ -201,7 +201,7 @@ zoperator-54cdd7f77c-ddhwm   1/1     Running   0          12m   10.244.195.217  
 ```
 ### Delete local-test-infra
 
-To tear down the local test infrastruture from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
+To tear down the local test infrastructure from the cluster, use the following command. It may take some time to completely stop the PUT, CRD, OT, and DP:
 
 ```shell-script
 make clean
@@ -214,13 +214,13 @@ Install vagrant for your platform
 https://www.vagrantup.com/downloads
 ```
 
-To build the environement, including deploying the test cnf, do the following:
+To build the environment, including deploying the test cnf, do the following:
 
 ```shell-script
 make vagrant-build
 ```
 
-The kubeconfig for the new environement will override the file located at ~/.kube/config
+The kubeconfig for the new environment will override the file located at ~/.kube/config
 Just start running commands from the command line to test the new cluster:
 ```shell-script
 oc get pods -A
