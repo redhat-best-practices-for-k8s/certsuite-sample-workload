@@ -4,6 +4,12 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
+if [[ -z "$(oc get packagemanifests | grep zoperator 2>/dev/null)" ]]; then
+  echo "zoperator package was not found in the catalog, skipping installation"
+  exit 0
+else
+  echo "zoperator package found, starting installation"
+fi
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
   echo "operator-sdk executable cannot be found in the path. Will try to install it."

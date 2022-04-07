@@ -4,6 +4,14 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
+if $TNF_NON_OCP_CLUSTER
+then
+  echo "Installing OLM for non OCP cluster"
+else
+  echo "Assuming OLM is installed by default with OpenShift, skipping installation"
+  exit 0
+fi
+
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
   echo "operator-sdk executable cannot be found in the path. Will try to install it."
