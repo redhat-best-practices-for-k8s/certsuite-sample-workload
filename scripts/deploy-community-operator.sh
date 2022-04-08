@@ -4,19 +4,32 @@
 SCRIPT_DIR=$(dirname "$0")
 source $SCRIPT_DIR/init-env.sh
 
+CATALOG_CHECK_RETRIES=3 # 30 seconds
+while [[ $(oc get packagemanifests 2>/dev/null) == "" && "$CATALOG_CHECK_RETRIES" -gt 0 ]]; do
+	echo "waiting for catalog manifests to be available"
+	sleep 10
+	CATALOG_CHECK_RETRIES=$(($CATALOG_CHECK_RETRIES-1))
+	echo $CATALOG_CHECK_RETRIES
+done
+
+if [ "$CATALOG_CHECK_RETRIES" -le 0  ]; then
+	echo "timed out waiting for the catalog to be available"
+	exit 1
+fi
+
 if [[ -z "$(oc get packagemanifests | grep zoperator 2>/dev/null)" ]]; then
   echo "zoperator package was not found in the catalog, skipping installation"
   exit 0
-else
-  echo "zoperator package found, starting installation"
 fi
+echo "zoperator package found, starting installation"
+
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
   echo "operator-sdk executable cannot be found in the path. Will try to install it."
   $SCRIPT_DIR/install-operator-sdk.sh
 else
   echo "operator-sdk was found in the path, no need to install it"
-fi
+	fi
 
 # Select namespace based on OCP vs Kind
 if $TNF_NON_OCP_CLUSTER
