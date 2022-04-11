@@ -2,7 +2,8 @@
 	install \
   clean \
   delete-deployment \
-  create-statefulset
+  create-statefulset \
+  install-litmus
 
 # Deploys the partner and test pods and the operator
 install:
@@ -43,6 +44,10 @@ install-operator:
 # Install test CRDs
 install-crds:
 	./scripts/deploy-test-crds.sh
+
+install-litmus:
+	kubectl apply -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
+	kubectl apply -f ./scripts/operator-ce.yaml
 
 # delete deployment pods
 delete-deployment:
