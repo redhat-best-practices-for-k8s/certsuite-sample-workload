@@ -12,6 +12,10 @@ OPERATOR_BUNDLE_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_BUNDLE_IMAGE
 OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE
 OPERATOR_REGISTRY_POD_NAME_FULL=$(echo $OPERATOR_BUNDLE_IMAGE_FULL_NAME|sed 's/[\/|\.|:]/-/g')
 
+# Community operator name (03/29/2022 only zoperator is both community and redhat certified)
+COMMUNITY_OPERATOR_NAME=zoperator.v0.3.6
+COMMUNITY_OPERATOR_BASE=zoperator
+
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} > 63 ]];then
     OPERATOR_REGISTRY_POD_NAME=${OPERATOR_REGISTRY_POD_NAME_FULL: -63}
@@ -25,6 +29,9 @@ CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 
 # Test Namespace
 export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
+
+# catalog source namespace
+export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
 
 # Create namespace if it does not exist
 oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
@@ -74,5 +81,3 @@ fi
 if [ $NUM -ge 0 ]; then
   export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
 fi
-
-export 

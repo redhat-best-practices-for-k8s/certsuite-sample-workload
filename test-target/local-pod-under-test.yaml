@@ -2,17 +2,19 @@
 apiVersion: apps/v1
 kind: {{ RESOURCE_TYPE }}
 metadata:
+  labels:
+    test-network-function.com/generic: target
   name: test
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: test
+      app: {{ APP }}
   template:
     metadata:
       labels:
-        app: test
+        app: {{ APP }}
         test-network-function.com/generic: target
         test-network-function.com/container: target
       annotations:
@@ -57,6 +59,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 5
           command: ["./bin/app"]
+          terminationMessagePolicy: FallbackToLogsOnError
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -65,5 +68,5 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      - test
+                      - {{ APP }}
               topologyKey: "kubernetes.io/hostname"
