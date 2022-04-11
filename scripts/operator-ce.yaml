@@ -34,26 +34,26 @@ metadata:
     name: litmus
   rules:
     - apiGroups: [""]
-      resources: ["replicationcontrollers","secrets"]
-      verbs: ["get","list"]
+      resources: ["replicationcontrollers", "secrets"]
+      verbs: ["get", "list"]
     - apiGroups: ["apps.openshift.io"]
       resources: ["deploymentconfigs"]
-      verbs: ["get","list"]
+      verbs: ["get", "list"]
     - apiGroups: ["apps"]
       resources: ["deployments", "daemonsets", "replicasets", "statefulsets"]
-      verbs: ["get","list"]
+      verbs: ["get", "list"]
     - apiGroups: ["batch"]
       resources: ["jobs"]
-      verbs: ["get","list","deletecollection"]
+      verbs: ["get", "list", "deletecollection"]
     - apiGroups: ["argoproj.io"]
       resources: ["rollouts"]
-      verbs: ["get","list"]
+      verbs: ["get", "list"]
     - apiGroups: [""]
-      resources: ["pods","configmaps","events","services"]
-      verbs: ["get","create","update","patch","delete","list","watch","deletecollection"]
+      resources: ["pods", "configmaps", "events", "services"]
+      verbs: ["get", "create", "update", "patch", "delete", "list", "watch", "deletecollection"]
     - apiGroups: ["litmuschaos.io"]
-      resources: ["chaosengines","chaosexperiments","chaosresults"]
-      verbs: ["get","create","update","patch","delete","list","watch","deletecollection"]
+      resources: ["chaosengines", "chaosexperiments", "chaosresults"]
+      verbs: ["get", "create", "update"," patch", "delete", "list", "watch", "deletecollection"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -73,9 +73,9 @@ roleRef:
   kind: ClusterRole
   name: litmus
 subjects:
-- kind: ServiceAccount
-  name: litmus
-  namespace: litmus
+  - kind: ServiceAccount
+    name: litmus
+    namespace: litmus
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,7 +113,7 @@ spec:
         - name: chaos-operator
           image: litmuschaos/chaos-operator:1.13.2
           command:
-          - chaos-operator
+            - chaos-operator
           imagePullPolicy: Always
           env:
             - name: CHAOS_RUNNER_IMAGE
@@ -140,7 +140,7 @@ spec:
     singular: chaosengine
   scope: Namespaced
   versions:
-  - name: v1alpha1
+    - name: v1alpha1
     schema:
       openAPIV3Schema:
         type: object
