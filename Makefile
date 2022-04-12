@@ -34,6 +34,10 @@ vagrant-destroy:
 vagrant-suspend:
 	cd config/vagrant;vagrant suspend
 
+# resume the vagrant vm
+vagrant-resume:
+	cd config/vagrant;vagrant resume
+
 # create a new docker configuration
 new-docker-config:
 	./scripts/configure-docker.sh
