@@ -65,6 +65,10 @@ delete-deployment:
 create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
 
+delete-litmus:
+    kubectl delete -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
+	kubectl delete -f ./scripts/operator-ce.yaml
+
 # deletes the namespace completely
 clean-all:
 	./scripts/clean-all.sh
