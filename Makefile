@@ -54,8 +54,8 @@ install-crds:
 	./scripts/deploy-test-crds.sh
 
 install-litmus:
-	kubectl apply -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
-	kubectl apply -f ./scripts/operator-ce.yaml
+	oc apply -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
+	oc apply -f ./scripts/operator-ce.yaml
 
 # delete deployment pods
 delete-deployment:
@@ -66,8 +66,8 @@ create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
 
 delete-litmus:
-    kubectl delete -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
-	kubectl delete -f ./scripts/operator-ce.yaml
+    oc delete -f https://litmuschaos.github.io/litmus/2.7.0/litmus-2.7.0.yaml
+	oc delete -f ./scripts/operator-ce.yaml
 
 # deletes the namespace completely
 clean-all:
