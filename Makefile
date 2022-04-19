@@ -15,6 +15,7 @@ install:
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
+	./scripts/install-litmus-operator.sh
 
 # creates a k8s cluster instance
 rebuild-cluster:
