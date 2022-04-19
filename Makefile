@@ -67,7 +67,6 @@ create-statefulset:
 delete-litmus:
 	./scripts/delete-litmus-operator.sh
 
-
 # deletes the namespace completely
 clean-all:
 	./scripts/clean-all.sh
