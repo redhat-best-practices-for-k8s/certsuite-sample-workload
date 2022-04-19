@@ -4,7 +4,7 @@ RUN yum install -y wget make hostname iproute iputils openssh openssh-clients po
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
-ENV GO_BIN_TAR="go1.17.8.linux-amd64.tar.gz"
+ENV GO_BIN_TAR="go1.18.1.linux-amd64.tar.gz"
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 ENV GOPATH="/root/go"
 RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
