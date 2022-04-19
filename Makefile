@@ -38,6 +38,10 @@ vagrant-suspend:
 vagrant-resume:
 	cd config/vagrant;vagrant resume
 
+# update the vagrant vm
+vagrant-update:
+	cd config/vagrant;vagrant box update
+
 # create a new docker configuration
 new-docker-config:
 	./scripts/configure-docker.sh
