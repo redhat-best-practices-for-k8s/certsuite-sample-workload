@@ -2,7 +2,8 @@
 	install \
   clean \
   delete-deployment \
-  create-statefulset
+  create-statefulset \
+  install-litmus
 
 # Deploys the partner and test pods and the operator
 install:
@@ -14,6 +15,7 @@ install:
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
+	./scripts/install-litmus-operator.sh
 
 # creates a k8s cluster instance
 rebuild-cluster:
@@ -64,6 +66,9 @@ delete-community-operator:
 install-crds:
 	./scripts/deploy-test-crds.sh
 
+install-litmus:
+	./scripts/install-litmus-operator.sh
+
 # delete deployment pods
 delete-deployment:
 	./scripts/delete-test-pods.sh
@@ -71,6 +76,9 @@ delete-deployment:
 # create statefulset pods
 create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
+
+delete-litmus:
+	./scripts/delete-litmus-operator.sh
 
 # deletes the namespace completely
 clean-all:
