@@ -28,3 +28,12 @@ jobs:
                 level: warning
               braces:
                 level: warning
+  deprecated-k8s-check:
+    name: Pluto Deprecated Version Check
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download Pluto
+        uses: FairwindsOps/pluto/github-action@master
+      - name: Use pluto
+        run: |
+          pluto detect-files
