@@ -34,6 +34,6 @@ jobs:
     steps:
       - name: Download Pluto
         uses: FairwindsOps/pluto/github-action@master
-      - name: Use pluto
+      - name: Check examples folder
         run: |
           pluto detect-files
