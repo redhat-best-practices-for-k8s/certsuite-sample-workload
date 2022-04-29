@@ -21,7 +21,7 @@ sudo dnf remove docker \
 
 # Install docker
 sudo dnf -y install dnf-plugins-core
-sudo dnf -y install docker-ce docker-ce-cli containerd.io
+sudo dnf -y install docker-ce docker-ce-cli containerd.io jq
 
 # Configure IPv6 in docker ( https://docs.docker.com/config/daemon/ipv6/ )
 sudo mkdir /etc/docker
