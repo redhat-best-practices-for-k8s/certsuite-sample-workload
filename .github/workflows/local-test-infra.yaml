@@ -5,6 +5,16 @@ defaults:
     shell: bash
 
 jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
+          severity: error
   test-local-test-infra:
     name: 'Test the `local-test-infra` configuration on k8s cluster'
     runs-on: ubuntu-20.04

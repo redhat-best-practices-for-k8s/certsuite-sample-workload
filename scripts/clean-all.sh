@@ -2,13 +2,13 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/init-env.sh
+source "$SCRIPT_DIR"/init-env.sh
 
 # Delete debug pods
-./$SCRIPT_DIR/delete-debug-ds.sh
+./"$SCRIPT_DIR"/delete-debug-ds.sh
 
 # Delete namespace
-oc delete namespace ${TNF_EXAMPLE_CNF_NAMESPACE}
+oc delete namespace "${TNF_EXAMPLE_CNF_NAMESPACE}"
 
 # Delete test CRDs
-$SCRIPT_DIR/delete-test-crds.sh
+"$SCRIPT_DIR"/delete-test-crds.sh
