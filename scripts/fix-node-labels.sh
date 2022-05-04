@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/init-env.sh
+source "$SCRIPT_DIR"/init-env.sh
 
 if $TNF_NON_OCP_CLUSTER
 then

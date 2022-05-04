@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/init-env.sh
+source "$SCRIPT_DIR"/init-env.sh
 
 # Login to the registry
 docker login quay.io/testnetworkfunction
@@ -10,8 +10,8 @@ docker login quay.io/testnetworkfunction
 # create the test operator
 rm -rf nginx-operator
 mkdir nginx-operator
-cd nginx-operator
-operator-sdk init --domain $REGISTRY_NAME --plugins helm
+cd nginx-operator || exit
+operator-sdk init --domain "$REGISTRY_NAME" --plugins helm
 
 # Create a simple nginx API using Helm’s built-in chart boilerplate (from helm create):
 operator-sdk create api --group cnftest --version v0 --kind Nginx
@@ -20,7 +20,7 @@ operator-sdk create api --group cnftest --version v0 --kind Nginx
 ${CONTAINER_CLIENT} logs registry 
 
 # Build and push the operator image.
-make docker-build docker-push IMG=$OPERATOR_IMAGE_FULL_NAME
+make docker-build docker-push IMG="$OPERATOR_IMAGE_FULL_NAME"
 
 # Configure the operator manifest
 mkdir -p config/manifests/bases
@@ -74,7 +74,7 @@ spec:
 EOF
 
 # Make and push the operator bundle
-make bundle IMG=$OPERATOR_IMAGE_FULL_NAME
+make bundle IMG="$OPERATOR_IMAGE_FULL_NAME"
 IMAGE_TAG_BASE=$REGISTRY$DIRECTORY$OPERATOR_BUNDLE_BASE_IMAGE make bundle-build bundle-push
 
 # cleanup

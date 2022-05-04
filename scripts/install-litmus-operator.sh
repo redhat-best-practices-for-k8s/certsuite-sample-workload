@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/init-env.sh
+source "$SCRIPT_DIR"/init-env.sh
 # apply the crds and wait for them
 oc apply -f ./scripts/operator-ce.yaml
 oc wait crd chaosengines.litmuschaos.io --timeout=320s --for=condition=established

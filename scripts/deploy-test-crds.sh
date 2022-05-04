@@ -2,7 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
-source $SCRIPT_DIR/init-env.sh
+source "$SCRIPT_DIR"/init-env.sh
 
 oc apply -f ./test-target/local-crd-under-test.yaml
 

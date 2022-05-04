@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -x
 
 # Initialization
@@ -17,7 +19,7 @@ COMMUNITY_OPERATOR_NAME=zoperator.v0.3.6
 COMMUNITY_OPERATOR_BASE=zoperator
 
 # Truncate registry pod name if more than 63 characters
-if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} > 63 ]];then
+if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]];then
     OPERATOR_REGISTRY_POD_NAME=${OPERATOR_REGISTRY_POD_NAME_FULL: -63}
 else
     OPERATOR_REGISTRY_POD_NAME=$OPERATOR_REGISTRY_POD_NAME_FULL
@@ -34,7 +36,7 @@ export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
 export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
 
 # Create namespace if it does not exist
-oc create namespace ${TNF_EXAMPLE_CNF_NAMESPACE} 2>/dev/null
+oc create namespace "${TNF_EXAMPLE_CNF_NAMESPACE}" 2>/dev/null
 
 # Default Namespace
 export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
@@ -53,7 +55,7 @@ TNF_NON_OCP_CLUSTER=false
 MULTUS_ANNOTATION=""
 NET_NAME="mynet"
 # Check for non-ocp cluster 
-res=`oc version | grep  Server`
+res=$(oc version | grep Server)
 if [ -z "$res" ]
 then
    echo "non-ocp cluster detected"
@@ -78,6 +80,6 @@ then
   create_multus_annotation "ipv6"
 fi
 
-if [ $NUM -ge 0 ]; then
+if [ "$NUM" -ge 0 ]; then
   export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
 fi
