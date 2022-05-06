@@ -56,11 +56,11 @@ install-partner-pods:
 install-operator:
 	./scripts/deploy-operator.sh
 
-install-community-operator:
-	./scripts/deploy-community-operator.sh
+#install-community-operator:
+#	./scripts/deploy-community-operator.sh
 
-delete-community-operator:
-	./scripts/delete-community-operator.sh
+#delete-community-operator:
+#	./scripts/delete-community-operator.sh
 
 # Install test CRDs
 install-crds:
