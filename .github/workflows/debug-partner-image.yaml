@@ -17,7 +17,7 @@ env:
 jobs:
   test-debug-partner-image:
     name: 'Build and test the `debug-partner` image'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +44,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: 'Push the new `debug-partner` image to Quay.io'
     needs: test-debug-partner-image
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout the main branch
