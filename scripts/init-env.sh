@@ -78,8 +78,8 @@ then
   create_multus_annotation "ipv4"
   # IPv6
   create_multus_annotation "ipv6"
-fi
 
-if [ "$NUM" -ge 0 ]; then
-  export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
+  if [ "$NUM" -ge 0 ]; then
+    export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
+  fi
 fi
