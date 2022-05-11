@@ -9,7 +9,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:
@@ -26,7 +26,7 @@ jobs:
       DEFAULT_TIMEOUT: 90s
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Start the k8s cluster
         uses: ./.github/actions/start-k8s-cluster

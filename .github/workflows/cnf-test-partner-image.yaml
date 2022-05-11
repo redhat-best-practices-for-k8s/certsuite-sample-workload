@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: 'Build the `cnf-test-partner` image'
         run: docker build  -t $IMAGE_NAME:$IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Checkout the main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: main
 
