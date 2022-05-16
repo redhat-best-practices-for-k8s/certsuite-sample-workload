@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: 'Build the `debug-partner` image'
         run: docker build --no-cache -f Dockerfile.debug-partner -t $IMAGE_NAME:$IMAGE_TAG .
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Checkout the main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: main
 
