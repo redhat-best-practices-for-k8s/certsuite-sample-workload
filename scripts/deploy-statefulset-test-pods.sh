@@ -13,4 +13,8 @@ sleep 3
 oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 oc wait -l statefulset.kubernetes.io/pod-name=test-1 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
-oc autoscale statefulset test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --cpu-percent=50 --min=2 --max=3
+# Check for existing HPA first
+HPA_EXISTS=$(oc get hpa test -n "$TNF_EXAMPLE_CNF_NAMESPACE")
+if [ $? -ne 0 ]; then
+    oc autoscale statefulset test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --cpu-percent=50 --min=2 --max=3
+fi
