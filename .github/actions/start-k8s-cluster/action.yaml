@@ -4,7 +4,7 @@ inputs:
   working_directory:
     default: .
   kind_version:
-    default: v0.12.0
+    default: v0.14.0
   oc_kcm_timeout:
     default: 5m
 

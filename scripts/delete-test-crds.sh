@@ -5,4 +5,4 @@ SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
 # Delete test deployment
-oc delete crd crdexamples.test-network-function.com
+oc delete crd crdexamples.test-network-function.com --ignore-not-found=true

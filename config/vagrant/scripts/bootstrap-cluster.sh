@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download and install Kubernetes In Docker (Kind):
-sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.12.0/kind-linux-amd64
+sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.14.0/kind-linux-amd64
 sudo chmod +x /usr/bin/kind
 
 # download the latest openshift client at a certain release level
