@@ -21,7 +21,7 @@ fi
 
 # Install OLM
 operator-sdk olm uninstall
-operator-sdk olm install --version=v0.20.0
+operator-sdk olm install --version=v0.21.2
 # Wait for all OLM pods to be ready
 kubectl wait --for=condition=ready pod --all=true -nolm --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 sleep 5
