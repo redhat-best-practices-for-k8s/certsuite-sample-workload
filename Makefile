@@ -44,6 +44,11 @@ vagrant-resume:
 vagrant-update:
 	cd config/vagrant;vagrant box update
 
+# one command to recreate the environment
+vagrant-recreate:
+	cd config/vagrant;vagrant destroy -f
+	make vagrant-build
+
 # create a new docker configuration
 new-docker-config:
 	./scripts/configure-docker.sh
