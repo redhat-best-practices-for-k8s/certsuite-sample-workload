@@ -4,7 +4,7 @@ metadata:
   name: test-subscription
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }} 
 spec:
-  channel: alpha
+  channel: {{ OPERATOR_CHANNEL }}
   name: {{ OPERATOR_NAME }}
   source: {{ CATALOG_SOURCE }}
   sourceNamespace: {{ CATALOG_NAMESPACE }}
