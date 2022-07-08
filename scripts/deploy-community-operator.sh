@@ -17,11 +17,11 @@ if [ "$CATALOG_CHECK_RETRIES" -le 0  ]; then
 	exit 1
 fi
 
-if [[ -z "$(oc get packagemanifests | grep instana-agent 2>/dev/null)" ]]; then
-  echo "instana-agent package was not found in the catalog, skipping installation"
+if [[ -z "$(oc get packagemanifests | grep zoperator 2>/dev/null)" ]]; then
+  echo "zoperator package was not found in the catalog, skipping installation"
   exit 0
 fi
-echo "instana-agent package found, starting installation"
+echo "zoperator package found, starting installation"
 
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
@@ -50,7 +50,7 @@ rm ./temp/rendered-local-community-operator-group.yaml
 
 # Create the Subscription
 mkdir -p ./temp
-cat ./test-target/community-operator-subscription.yaml | OPERATOR_CHANNEL=stable OPERATOR_NAME=$COMMUNITY_OPERATOR_BASE CATALOG_SOURCE=$CATALOG_SOURCE CATALOG_NAMESPACE=$CATALOG_NAMESPACE TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo > ./temp/rendered-local-community-operator-subscription.yaml
+cat ./test-target/community-operator-subscription.yaml | OPERATOR_NAME=$COMMUNITY_OPERATOR_BASE CATALOG_SOURCE=$CATALOG_SOURCE CATALOG_NAMESPACE=$CATALOG_NAMESPACE TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo > ./temp/rendered-local-community-operator-subscription.yaml
 oc apply -f ./temp/rendered-local-community-operator-subscription.yaml
 cat ./temp/rendered-local-community-operator-subscription.yaml
 rm ./temp/rendered-local-community-operator-subscription.yaml
