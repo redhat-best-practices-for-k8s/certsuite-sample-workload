@@ -14,9 +14,9 @@ OPERATOR_BUNDLE_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_BUNDLE_IMAGE
 OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE
 OPERATOR_REGISTRY_POD_NAME_FULL=$(echo $OPERATOR_BUNDLE_IMAGE_FULL_NAME|sed 's/[\/|\.|:]/-/g')
 
-COMMUNITY_OPERATOR_NAME=instana-agent-operator.v2.0.5
-COMMUNITY_OPERATOR_BASE=instana-agent-operator
-
+# Community operator name (03/29/2022 only zoperator is both community and redhat certified)
+COMMUNITY_OPERATOR_NAME=zoperator.v0.3.6
+COMMUNITY_OPERATOR_BASE=zoperator
 
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]];then
