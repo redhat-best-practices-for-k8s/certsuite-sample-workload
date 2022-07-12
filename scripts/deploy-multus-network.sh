@@ -32,8 +32,8 @@ then
   kubectl create -f "${CNIS_DAEMONSET_URL}"
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
-  # Install whereabout
-  git clone $WHEREABOUTS_GIT_URL --depth 1
+  # Install whereabouts at specific released version
+  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.5.3
   oc apply \
     -f whereabouts/doc/crds/daemonset-install.yaml \
     -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
