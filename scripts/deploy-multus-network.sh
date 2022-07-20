@@ -33,12 +33,11 @@ then
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   # Install whereabouts at specific released version
-  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.5.3
+  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.5.4
   oc apply \
     -f whereabouts/doc/crds/daemonset-install.yaml \
     -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
     -f whereabouts/doc/crds/whereabouts.cni.cncf.io_overlappingrangeipreservations.yaml \
-    -f whereabouts/doc/crds/ip-reconciler-job.yaml
   
   rm -rf whereabouts
   # Whereabout does not support dual stack so creating 2 sets of single stack multus interfaces
