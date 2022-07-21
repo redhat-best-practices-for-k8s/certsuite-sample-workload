@@ -9,10 +9,10 @@ networking:
   apiServerPort: 6443
 nodes:
   - role: control-plane
-    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    image: kindest/node:v1.21.12@sha256:05eefdedfcb6113402ac631782adfa3d9f8b75c38eac783e3da4f44f6404dae0
   - role: worker
-    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    image: kindest/node:v1.21.12@sha256:05eefdedfcb6113402ac631782adfa3d9f8b75c38eac783e3da4f44f6404dae0
   - role: worker
-    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    image: kindest/node:v1.21.12@sha256:05eefdedfcb6113402ac631782adfa3d9f8b75c38eac783e3da4f44f6404dae0
   - role: worker
-    image: kindest/node:v1.21.10@sha256:84709f09756ba4f863769bdcabe5edafc2ada72d3c8c44d6515fc581b66b029c
+    image: kindest/node:v1.21.12@sha256:05eefdedfcb6113402ac631782adfa3d9f8b75c38eac783e3da4f44f6404dae0
