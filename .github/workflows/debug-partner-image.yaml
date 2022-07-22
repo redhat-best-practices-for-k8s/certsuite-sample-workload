@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: 'Build and push the new `debug-partner` image'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
