@@ -9,6 +9,9 @@
 install:
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
+	./scripts/deploy-limit-range.sh
+	./scripts/deploy-resource-quota.sh
+	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
 	./scripts/deploy-test-crds.sh
