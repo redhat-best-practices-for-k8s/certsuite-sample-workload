@@ -22,7 +22,7 @@ then
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
 
   # Deploy Multus
-  oc apply -f ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
+  oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
   
   # Wait for all multus daemonset pods to be running
   oc rollout status daemonset kube-multus-ds -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
@@ -48,7 +48,7 @@ then
       mkdir -p ./temp
 
       cat ./config/k8s-cluster/multus.yaml | IP_NUM=$(echo "$2"|sed 's/NUM/'"${NUM}"'/g') NET_NAME_NUM="$NET_NAME-$1-$NUM"  "$SCRIPT_DIR"/mo > ./temp/rendered-multus.yaml
-      oc apply -f ./temp/rendered-multus.yaml
+      oc apply --filename ./temp/rendered-multus.yaml
       rm ./temp/rendered-multus.yaml
     done
   }

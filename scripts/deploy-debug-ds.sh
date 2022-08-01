@@ -21,5 +21,5 @@ else
 fi
 
 cat ./test-partner/debugpartner.yaml | NODE_SELECTOR=$NODE_SELECTOR "$SCRIPT_DIR"/mo > ./temp/debugpartner.yaml
-oc apply -f ./temp/debugpartner.yaml
+oc apply --filename ./temp/debugpartner.yaml
 rm ./temp/debugpartner.yaml

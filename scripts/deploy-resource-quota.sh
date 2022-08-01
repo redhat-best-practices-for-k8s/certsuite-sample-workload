@@ -7,4 +7,4 @@
 SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
-oc apply -f ./test-target/resource-quota.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE" 
+oc apply --filename ./test-target/resource-quota.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
