@@ -12,6 +12,7 @@ install:
 	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
+	./scripts/deploy-pod-disruption-budget.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
