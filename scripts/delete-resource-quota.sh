@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-oc delete --filename ./test-target/resource-quota.yaml --namespace "$TNF_EXAMPLE_CNF_NAMES" --ignore-not-found
+# Initialization
+SCRIPT_DIR=$(dirname "$0")
+source "$SCRIPT_DIR"/init-env.sh
+
+oc delete --filename ./test-target/resource-quota.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE" --ignore-not-found
