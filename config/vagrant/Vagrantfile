@@ -1,25 +1,31 @@
-Vagrant.configure("2") do |config|
-    config.vm.synced_folder "../..", "/home/vagrant/partner"
-    config.vm.synced_folder "kubeconfig", "/home/vagrant/.kube"
-    config.vm.network "forwarded_port", guest: 6443, host: 6443
+# frozen_string_literal: true
 
-    config.vm.define "k8shost" do |k8shost|
-      k8shost.vm.box = "generic/fedora34"
-      k8shost.vm.hostname = "k8shost"
-      k8shost.vm.network "private_network", ip: "192.168.56.10"
-      k8shost.vm.provider "virtualbox" do |vb|
-          vb.memory = 4048
-          vb.cpus = 2
-          vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga']
-      end
+Vagrant.configure('2') do |config|
+  config.vm.synced_folder '../..', '/home/vagrant/partner'
+  config.vm.synced_folder 'kubeconfig', '/home/vagrant/.kube'
+  config.vm.network 'forwarded_port', guest: 6443, host: 6443
 
-      # Configure docker 
-      k8shost.vm.provision "shell", path: "scripts/bootstrap-docker.sh", privileged: false
-      
-      # trigger reload to setup docker rootless permissions
-      k8shost.vm.provision :reload
-
-      # configure kubernetes
-      k8shost.vm.provision "shell", path: "scripts/bootstrap-cluster.sh", privileged: false
+  config.vm.define 'k8shost' do |k8shost|
+    k8shost.vm.box = 'generic/fedora34'
+    k8shost.vm.hostname = 'k8shost'
+    k8shost.vm.network 'private_network', ip: '192.168.56.10'
+    k8shost.vm.provider 'virtualbox' do |vb|
+      vb.memory = 4048
+      vb.cpus = 2
+      vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga']
     end
+
+    # Configures docker.
+    k8shost.vm.provision 'shell',
+                         path: 'scripts/bootstrap-docker.sh',
+                         privileged: false
+
+    # Triggers reload to setup docker rootless permissions.
+    k8shost.vm.provision :reload
+
+    # Configures kubernetes.
+    k8shost.vm.provision 'shell',
+                         path: 'scripts/bootstrap-cluster.sh',
+                         privileged: false
   end
+end
