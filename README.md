@@ -191,12 +191,12 @@ oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):
 ```shell-script
 $ oc get pods -ntnf -owide
-NAME                         READY   STATUS    RESTARTS   AGE   IP               NODE           NOMINATED NODE   READINESS GATES
-test-0                       1/1     Running   0          15m   10.244.162.133   kind-worker    <none>           <none>
-test-1                       1/1     Running   0          15m   10.244.110.166   kind-worker2   <none>           <none>
-test-6cbd5b97b7-d5756        1/1     Running   0          15m   10.244.110.165   kind-worker2   <none>           <none>
-test-6cbd5b97b7-xgpt6        1/1     Running   0          15m   10.244.195.209   kind-worker3   <none>           <none>
-zoperator-54cdd7f77c-ddhwm   1/1     Running   0          12m   10.244.195.217   kind-worker3   <none>           <none>
+NAME                                                    READY   STATUS    RESTARTS   AGE
+hazelcast-platform-controller-manager-6bbc968f9-fmmbs   1/1     Running   0          3m19s
+test-0                                                  1/1     Running   0          84m
+test-1                                                  1/1     Running   0          83m
+test-66f77bd94-2w4l8                                    1/1     Running   0          85m
+test-66f77bd94-6kd6j                                    1/1     Running   0          85m
 
 ```
 ### Delete local-test-infra

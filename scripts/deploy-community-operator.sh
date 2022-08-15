@@ -17,11 +17,11 @@ if [ "$CATALOG_CHECK_RETRIES" -le 0  ]; then
 	exit 1
 fi
 
-if [[ -z "$(oc get packagemanifests | grep zoperator 2>/dev/null)" ]]; then
-  echo "zoperator package was not found in the catalog, skipping installation"
+if [[ -z "$(oc get packagemanifests | grep hazelcast 2>/dev/null)" ]]; then
+  echo "hazelcast package was not found in the catalog, skipping installation"
   exit 0
 fi
-echo "zoperator package found, starting installation"
+echo "hazelcast package found, starting installation"
 
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
