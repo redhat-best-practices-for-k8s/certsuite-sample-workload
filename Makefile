@@ -101,6 +101,6 @@ clean:
 deploy-services:
 	./scripts/deploy-service.sh
 	
-# deploy services
+# delete services
 delete-services:
-	./scripts/delete-service.sh
+	./scripts/deploy-service.sh delete
