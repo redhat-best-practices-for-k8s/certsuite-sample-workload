@@ -17,6 +17,7 @@ install:
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
+	./scripts/deploy-service.sh
 	./scripts/deploy-network-policies.sh
 
 # creates a k8s cluster instance
@@ -96,3 +97,10 @@ clean-all:
 clean:
 	./scripts/clean.sh
 
+# deploy services
+deploy-services:
+	./scripts/deploy-service.sh
+	
+# deploy services
+delete-services:
+	./scripts/delete-service.sh
