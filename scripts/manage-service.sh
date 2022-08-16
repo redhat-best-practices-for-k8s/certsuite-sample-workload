@@ -6,6 +6,12 @@ source "$SCRIPT_DIR"/init-env.sh
 
 ACTION=""
 if [ -z $1 ]; then
+    echo "Missing paramter, run :
+     $0 deploy or
+     $0 delete"
+     exit 1
+fi
+if [[ "$1" == "deploy" ]]; then
     ACTION="apply"
 else
     ACTION="delete"
