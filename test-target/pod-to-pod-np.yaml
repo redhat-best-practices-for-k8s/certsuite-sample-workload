@@ -9,9 +9,9 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              name: tnf
+              kubernetes.io/metadata.name: tnf
   egress:
     - to:
         - namespaceSelector:
             matchLabels:
-              name: tnf
+              kubernetes.io/metadata.name: tnf

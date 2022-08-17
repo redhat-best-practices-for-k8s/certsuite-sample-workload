@@ -38,9 +38,6 @@ export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
 # Create namespace if it does not exist
 oc create namespace "${TNF_EXAMPLE_CNF_NAMESPACE}" 2>/dev/null
 
-# Label the namespace with a 'name' for the network policies to match up
-oc label namespace "${TNF_EXAMPLE_CNF_NAMESPACE}" name=tnf
-
 # Default Namespace
 export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
 
