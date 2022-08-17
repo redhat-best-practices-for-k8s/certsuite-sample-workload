@@ -1,0 +1,19 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: test-pdb-min
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: {{ APP_1 }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: test-pdb-max
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{ APP_2 }}
