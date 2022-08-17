@@ -11,5 +11,10 @@ source "$SCRIPT_DIR"/init-env.sh
 oc apply --filename ./test-target/ingress-deny-all-np.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 oc apply --filename ./test-target/egress-deny-all-np.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 
+# Render the script with vars
+mkdir -p ./temp
+cat ./test-target/pod-to-pod-np.yaml | TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo > ./temp/rendered-pod-to-pod-np.yaml
+
 # Apply policies to allow pod-to-pod communication (aka make the ping test work)
-oc apply --filename ./test-target/pod-to-pod-np.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+oc apply --filename ./temp/rendered-pod-to-pod-np.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+rm ./temp/rendered-pod-to-pod-np.yaml
