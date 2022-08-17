@@ -17,6 +17,7 @@ install:
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
+	./scripts/deploy-network-policies.sh
 
 # creates a k8s cluster instance
 rebuild-cluster:
