@@ -4,17 +4,24 @@
 SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
+usage(){
+    echo "$0 deploy or
+$0 delete"
+     exit 1
+}
+
 ACTION=""
 if [ -z $1 ]; then
-    echo "Missing paramter, run :
-     $0 deploy or
-     $0 delete"
-     exit 1
+    echo "Missing parameters, run :"
+    usage
 fi
 if [[ "$1" == "deploy" ]]; then
     ACTION="apply"
-else
+elif [[ "$1" == "delete" ]]; then
     ACTION="delete"
+else 
+    echo "Bad parameter, run :"
+    usage
 fi
 
 # ipv6 service
