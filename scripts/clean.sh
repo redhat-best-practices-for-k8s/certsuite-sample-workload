@@ -15,3 +15,4 @@ source "$SCRIPT_DIR"/init-env.sh
 ./"$SCRIPT_DIR"/delete-litmus-operator.sh
 ./"$SCRIPT_DIR"/delete-limit-range.sh
 ./"$SCRIPT_DIR"/delete-resource-quota.sh
+./"$SCRIPT_DIR"/delete-pod-disruption-budget.sh

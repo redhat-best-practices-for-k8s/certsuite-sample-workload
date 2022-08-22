@@ -12,10 +12,13 @@ install:
 	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
+	./scripts/deploy-pod-disruption-budget.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/deploy-debug-ds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
+	./scripts/manage-service.sh deploy
+	./scripts/deploy-network-policies.sh
 
 # creates a k8s cluster instance
 rebuild-cluster:
@@ -94,3 +97,10 @@ clean-all:
 clean:
 	./scripts/clean.sh
 
+# deploy services
+deploy-services:
+	./scripts/manage-service.sh deploy
+	
+# delete services
+delete-services:
+	./scripts/manage-service.sh delete
