@@ -4,7 +4,7 @@
 SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
-CATALOG_CHECK_RETRIES=3 # 30 seconds
+CATALOG_CHECK_RETRIES=6 # 30 seconds
 while [[ $(oc get packagemanifests 2>/dev/null) == "" && "$CATALOG_CHECK_RETRIES" -gt 0 ]]; do
 	echo "waiting for catalog manifests to be available"
 	sleep 10
