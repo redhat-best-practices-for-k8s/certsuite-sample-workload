@@ -28,35 +28,28 @@ rebuild-cluster:
 vagrant-build:
 	mkdir -p config/vagrant/kubeconfig
 	vagrant plugin install vagrant-reload
-	cd config/vagrant
-	vagrant up
-	cd -
+	cd config/vagrant;vagrant up;cd ../..
 	cp config/vagrant/kubeconfig/config ~/.kube/config
 
 # destroy Vagrant env
 vagrant-destroy:
-	cd config/vagrant
-	vagrant destroy
+	cd config/vagrant;vagrant destroy
 
 # suspend the vagrant vm
 vagrant-suspend:
-	cd config/vagrant
-	vagrant suspend
+	cd config/vagrant;vagrant suspend
 
 # resume the vagrant vm
 vagrant-resume:
-	cd config/vagrant
-	vagrant resume
+	cd config/vagrant;vagrant resume
 
 # update the vagrant vm
 vagrant-update:
-	cd config/vagrant
-	vagrant box update
+	cd config/vagrant;vagrant box update
 
 # one command to recreate the environment
 vagrant-recreate:
-	cd config/vagrant
-	vagrant destroy -f
+	cd config/vagrant;vagrant destroy -f
 	make vagrant-build
 
 # create a new docker configuration
@@ -66,7 +59,7 @@ new-docker-config:
 # deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-debug-ds.sh
-
+	
 # Instal operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
