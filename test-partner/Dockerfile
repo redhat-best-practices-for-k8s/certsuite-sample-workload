@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest
 
 RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc
-
+RUN dnf remove -y iptables ip6tables nftables 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
 ENV GO_BIN_TAR="go1.18.5.linux-amd64.tar.gz"
