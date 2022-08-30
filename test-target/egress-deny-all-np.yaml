@@ -4,6 +4,8 @@ kind: NetworkPolicy
 metadata:
   name: default-deny-egress
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      test-network-function.com/container: target
   policyTypes:
     - Egress

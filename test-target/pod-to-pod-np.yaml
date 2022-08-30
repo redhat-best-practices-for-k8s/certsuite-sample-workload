@@ -5,6 +5,8 @@ metadata:
   name: intra-namespace
 spec:
   podSelector:
+    matchLabels:
+      test-network-function.com/container: target
   ingress:
     - from:
         - namespaceSelector:
