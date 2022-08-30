@@ -3,7 +3,8 @@
   clean \
   delete-deployment \
   create-statefulset \
-  install-litmus
+  install-litmus \
+  install-prometheus
 
 # Deploys the partner and test pods and the operator
 install:
@@ -77,6 +78,8 @@ install-crds:
 install-litmus:
 	./scripts/install-litmus-operator.sh
 
+install-prometheus :
+	./scripts/install-prometheus-operator.sh
 # delete deployment pods
 delete-deployment:
 	./scripts/delete-test-pods.sh
