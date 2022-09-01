@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -o errexit
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
