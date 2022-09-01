@@ -35,8 +35,12 @@ export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
 # catalog source namespace
 export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
 
-# Create namespace if it does not exist
-oc create namespace "${TNF_EXAMPLE_CNF_NAMESPACE}" 2>/dev/null
+# Creates namespace if it does not exist.
+oc create \
+	namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--dry-run=client \
+	--output yaml |
+		oc apply --filename -
 
 # Default Namespace
 export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
