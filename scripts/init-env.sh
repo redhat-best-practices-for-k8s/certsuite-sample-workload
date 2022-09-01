@@ -58,13 +58,10 @@ MULTUS_IF_NUM="${MULTUS_IF_NUM:-2}"
 TNF_NON_OCP_CLUSTER=false
 MULTUS_ANNOTATION=""
 NET_NAME="mynet"
-# Check for non-ocp cluster 
-res=$(oc version | grep Server)
-if [ -z "$res" ]
-then
-   echo "non-ocp cluster detected"
-   TNF_NON_OCP_CLUSTER=true
-fi
+
+# Checks for non-OCP cluster.
+oc version | grep Server >/dev/null ||
+	{ printf 'Non-OCP cluster.\n'; TNF_NON_OCP_CLUSTER=true; }
 
 # create Multus annotations
 create_multus_annotation(){
