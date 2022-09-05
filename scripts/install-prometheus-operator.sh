@@ -8,8 +8,8 @@ git clone https://github.com/prometheus-operator/kube-prometheus.git --depth 1 -
 cd kube-prometheus
 oc apply --server-side -f manifests/setup
 oc wait \
-	--for condition=available \
-	--all deployments \
+	--for condition=Established \
+	--all CustomResourceDefinition \
 	--namespace=monitoring
 oc apply -f manifests/
 oc wait \
