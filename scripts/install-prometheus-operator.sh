@@ -10,7 +10,8 @@ oc apply --server-side -f manifests/setup
 oc wait \
 	--for condition=Established \
 	--all CustomResourceDefinition \
-	--namespace=monitoring
+	--namespace=monitoring \
+    --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 oc apply -f manifests/
 oc wait \
 	--for condition=available \
