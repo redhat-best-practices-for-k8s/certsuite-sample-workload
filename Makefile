@@ -81,6 +81,10 @@ install-litmus:
 
 install-prometheus :
 	./scripts/install-prometheus-operator.sh
+
+delete-prometheus :
+	./scripts/delete-prometheus-operator.sh
+	
 # delete deployment pods
 delete-deployment:
 	./scripts/delete-test-pods.sh
