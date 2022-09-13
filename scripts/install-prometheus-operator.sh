@@ -19,3 +19,5 @@ oc wait \
 	--namespace=monitoring \
 	--timeout="$TNF_DEPLOYMENT_TIMEOUT"
 oc get pods -A | grep prometheus
+
+rm -rf kube-prometheus
