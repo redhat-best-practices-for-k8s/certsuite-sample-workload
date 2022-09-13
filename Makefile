@@ -64,10 +64,6 @@ vagrant-recreate:
 	cd config/vagrant;vagrant destroy -f
 	make vagrant-build
 
-# create a new docker configuration
-new-docker-config:
-	./scripts/configure-docker.sh
-
 # deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-debug-ds.sh

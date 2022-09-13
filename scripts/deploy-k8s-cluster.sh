@@ -3,7 +3,7 @@ set -x
 kind delete cluster
 
 # Kind base with kindnetcni and ipv4/ipv6
-kind create cluster --config=config/k8s-cluster/config.yaml
+kind create cluster --config=config/k8s-cluster/config.yaml --retain -v 1
 
 # Download the calico YAML and change the image source to quay
 curl https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml |
