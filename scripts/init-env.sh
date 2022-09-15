@@ -81,6 +81,8 @@ then
   create_multus_annotation ipv6
 
   if [ "$NUM" -ge 0 ]; then
-    export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION:-1} ]'"
+    # Remove last comma. Works on bash 3.2.4 on OS X:
+    #  https://unix.stackexchange.com/questions/144298/delete-the-last-character-of-a-string-using-string-manipulation-in-shell-script
+    export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION: : -1} ]'"
   fi
 fi
