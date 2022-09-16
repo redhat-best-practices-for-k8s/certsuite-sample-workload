@@ -65,7 +65,7 @@ oc version | grep Server >/dev/null ||
 
 # create Multus annotations
 create_multus_annotation(){
-  for (( NUM=0; NUM<$MULTUS_IF_NUM; NUM++ ))
+  for (( NUM=0; NUM<MULTUS_IF_NUM; NUM++ ))
   do
     MULTUS_ANNOTATION="${MULTUS_ANNOTATION}{ \"name\" : \"${NET_NAME}-$1-${NUM}\" },"
   done
@@ -76,11 +76,13 @@ if $TNF_NON_OCP_CLUSTER
 then
   echo 'creating multus annotations'
   # IPv4
-  create_multus_annotation "ipv4"
+  create_multus_annotation ipv4
   # IPv6
-  create_multus_annotation "ipv6"
+  create_multus_annotation ipv6
 
   if [ "$NUM" -ge 0 ]; then
-    export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION::-1} ]'"
+    # Remove last comma. Works on bash 3.2.4 on OS X:
+    #  https://unix.stackexchange.com/questions/144298/delete-the-last-character-of-a-string-using-string-manipulation-in-shell-script
+    export MULTUS_ANNOTATION="'[ ${MULTUS_ANNOTATION: : -1} ]'"
   fi
 fi
