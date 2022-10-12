@@ -37,6 +37,9 @@ spec:
               memory: 512Mi
               cpu: 0.25
           lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "killall -0 tail"]
