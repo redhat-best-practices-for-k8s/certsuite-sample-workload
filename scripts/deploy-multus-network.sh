@@ -15,11 +15,10 @@ then
   oc rollout status daemonset calico-node -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   rm -rf ./temp
-  git clone --depth 1 $MULTUS_GIT_URL  -b v3.9.1 ./temp/multus-cni
+  git clone --depth 1 $MULTUS_GIT_URL  -b v3.9.2 ./temp/multus-cni
 
   # fix for dimensioning bug
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
-  sed 's/thick/v3.9.1-thick-amd64/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
 
   # Deploy Multus
   oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
