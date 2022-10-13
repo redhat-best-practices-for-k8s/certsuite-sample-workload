@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest
 
-RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc
+RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc ethtool
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
