@@ -2,3 +2,6 @@
 .vscode
 temp/
 kube-prometheus/
+config/vagrant/kubeconfig/cache
+config/vagrant/kubeconfig
+config/vagrant/.vagrant
