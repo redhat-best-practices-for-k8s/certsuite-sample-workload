@@ -39,7 +39,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /tmp/message"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "killall -0 tail"]

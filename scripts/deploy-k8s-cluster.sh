@@ -6,5 +6,5 @@ kind delete cluster
 kind create cluster --config=config/k8s-cluster/config.yaml
 
 # deploy calico (not needed but more feature rich - for future use)
-oc create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
+oc create -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.3/manifests/calico.yaml
 
