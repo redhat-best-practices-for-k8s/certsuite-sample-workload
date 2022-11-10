@@ -25,7 +25,7 @@ spec:
         seLinuxOptions:
           level: "s0:c30,c15"
         capabilities:
-          drop: ["KILL","MKNOD","SETUID","SETGID"]
+          drop: ["KILL", "MKNOD", "SETUID", "SETGID"]
         allowPrivilegeEscalation: false
         readOnlyRootFilesystem: false
         privileged: false
