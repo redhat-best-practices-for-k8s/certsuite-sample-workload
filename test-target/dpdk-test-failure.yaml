@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dpdk-app
+  namespace: {{TNF_EXAMPLE_CNF_NAMESPACE}}
+  labels:
+    test-network-function.com/container: target
+    test-network-function.com/generic: target
+  annotations:
+    k8s.v1.cni.cncf.io/networks: mynetwork   # To be created beforehand
+spec:
+  containers:
+    - name: app-container
+      image: registry.redhat.io/openshift4/dpdk-base-rhel8:v4.9
+      args:
+        - /bin/sh
+        - -c
+        - touch /tmp/healthy; sleep infinity
+      livenessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/healthy
+        initialDelaySeconds: 5
+        periodSeconds: 5
+      securityContext:
+        runAsUser: 0
+        capabilities:
+          add: ["IPC_LOCK", "SYS_RESOURCE", "NET_RAW"]
+      volumeMounts:
+        - mountPath: /dev/hugepages
+          name: hugepage
+      resources:
+        limits:
+          cpu: "4"
+          hugepages-1Gi: 1Gi
+          memory: 1Gi
+          openshift.io/onboardDPDK: "1"
+        requests:
+          cpu: "4"
+          hugepages-1Gi: 1Gi
+          memory: 1Gi
+          openshift.io/onboardDPDK: "1"
+  volumes:
+    - name: hugepage
+      emptyDir:
+        medium: HugePages
