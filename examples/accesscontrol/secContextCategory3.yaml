@@ -24,8 +24,8 @@ spec:
         seLinuxOptions:
           level: "s0:c30,c15"
         capabilities:
-          drop: ["KILL","MKNOD","SETUID","SETGID"]
-          add: ["NET_ADMIN", "NET_RAW","IPC_LOCK"]
+          drop: ["KILL", "MKNOD", "SETUID", "SETGID"]
+          add: ["NET_ADMIN", "NET_RAW", "IPC_LOCK"]
         allowPrivilegeEscalation: false
         readOnlyRootFilesystem: false
         privileged: false
