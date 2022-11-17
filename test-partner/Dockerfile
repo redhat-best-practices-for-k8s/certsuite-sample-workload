@@ -4,10 +4,10 @@ ARG USERNAME=tnf-user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
+RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc ethtool
+
 RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 USER $USERNAME
-
-RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc ethtool
 
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
