@@ -6,9 +6,6 @@ ARG USER_GID=$USER_UID
 
 RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc ethtool
 
-RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
-USER $USERNAME
-
 # Install Go binary
 ENV GO_DL_URL="https://golang.org/dl"
 ENV GO_BIN_TAR="go1.19.3.linux-amd64.tar.gz"
@@ -27,7 +24,7 @@ ENV PATH="/bin/":"/usr/local/go/bin":${GOPATH}"/bin/":"${PATH}"
 
 # Add arbitrary /licenses folder to pass preflight
 RUN mkdir /licenses
-RUN touch /licences/LICENSE
+RUN touch /licenses/LICENSE && echo "fake license" >> /licenses/LICENSE
 
 RUN echo ${PATH}
 
@@ -42,5 +39,8 @@ RUN make build
 ARG LIVENESS_PROBE_DEFAULT_PORT=8080
 
 EXPOSE ${LIVENESS_PROBE_DEFAULT_PORT}
+
+RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+USER $USERNAME
 
 CMD ["./bin/app"]
