@@ -5,6 +5,7 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+USER $USERNAME
 
 RUN dnf install -y wget make hostname iproute iputils openssh openssh-clients podman psmisc ethtool
 
@@ -26,6 +27,7 @@ ENV PATH="/bin/":"/usr/local/go/bin":${GOPATH}"/bin/":"${PATH}"
 
 # Add arbitrary /licenses folder to pass preflight
 RUN mkdir /licenses
+RUN touch /licences/LICENSE
 
 RUN echo ${PATH}
 
