@@ -4,6 +4,11 @@ set -o errexit
 SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
+if ! $TNF_NON_OCP_CLUSTER;then
+	echo "OCP cluster detected, skipping prometheus operator installation"
+	exit 0
+fi
+
 # Clear any existing kube-prometheus folders
 rm -rf kube-prometheus
 
