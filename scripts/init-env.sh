@@ -15,7 +15,7 @@ OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE
 OPERATOR_REGISTRY_POD_NAME_FULL=$(echo $OPERATOR_BUNDLE_IMAGE_FULL_NAME|sed 's/[\/|\.|:]/-/g')
 
 # Community operator name
-COMMUNITY_OPERATOR_NAME=hazelcast-platform-operator.v5.4.0
+COMMUNITY_OPERATOR_NAME=hazelcast-platform-operator.v5.5.0
 COMMUNITY_OPERATOR_BASE=hazelcast-platform-operator
 
 # Truncate registry pod name if more than 63 characters
