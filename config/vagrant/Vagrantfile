@@ -10,8 +10,8 @@ Vagrant.configure('2') do |config|
     k8shost.vm.hostname = 'k8shost'
     k8shost.vm.network 'private_network', ip: '192.168.56.10'
     k8shost.vm.provider 'virtualbox' do |vb|
-      vb.memory = 4048
-      vb.cpus = 2
+      vb.memory = 8096
+      vb.cpus = 4
       vb.customize ['modifyvm', :id, '--graphicscontroller', 'vmsvga']
     end
 
