@@ -16,7 +16,6 @@ OPERATOR_REGISTRY_POD_NAME_FULL=$(echo $OPERATOR_BUNDLE_IMAGE_FULL_NAME|sed 's/[
 
 # Community operator name
 COMMUNITY_OPERATOR_NAME=hazelcast-platform-operator.v5.5.0
-COMMUNITY_OPERATOR_BASE=hazelcast-platform-operator
 
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]];then
