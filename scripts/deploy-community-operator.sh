@@ -74,23 +74,18 @@ oc patch installplan \
 			grep "$COMMUNITY_OPERATOR_NAME" |
 			cut -f 1 -d \  \
 	)" || { printf >&2 'Unable to approve the installation plan.\n'; exit 1;}
-CSV_CHECK_RETRIES=24 # 240 seconds
-while [[ $(oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE" "$COMMUNITY_OPERATOR_NAME" -o go-template="{{.status.phase}}") != "Succeeded" && "$CSV_CHECK_RETRIES" -gt 0 ]]; do
-	echo "waiting for $COMMUNITY_OPERATOR_NAME installation to succeed"
-	sleep 10
-	CSV_CHECK_RETRIES=$(($CSV_CHECK_RETRIES-1))
-	oc get pods -n "$TNF_EXAMPLE_CNF_NAMESPACE"
-	oc get sa -n "$TNF_EXAMPLE_CNF_NAMESPACE"
-	echo $CSV_CHECK_RETRIES
-done
-
-if [ "$CSV_CHECK_RETRIES" -le 0  ]; then
-	echo "timed out waiting for the operator to succeed"
-	oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
+sleep 10
+oc wait \
+	--for=jsonpath=\{.status.phase\}=Succeeded \
+	csv \
+	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--selector=operators.coreos.com/hazelcast-platform-operator.tnf \
+	--timeout=240s || {
+	printf >&2 'Timed out waiting for the operator to succeed.\n'
+	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 	exit 1
-fi
-
-oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
+}
+oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 
 # Label the community operator
 oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$TNF_EXAMPLE_CNF_NAMESPACE" test-network-function.com/operator=target
