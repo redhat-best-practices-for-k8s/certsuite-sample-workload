@@ -40,6 +40,3 @@ else
   echo "ERROR: CSV not deployed. Operator deployment failed -- interrupting tests"
   exit 1
 fi
-
-# Workaround to remove the non compliant hazelcast services
-oc delete service  -ntnf hazelcast-platform-controller-manager-service  hazelcast-platform-webhook-service
