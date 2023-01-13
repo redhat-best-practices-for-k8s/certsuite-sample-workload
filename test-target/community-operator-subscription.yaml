@@ -5,6 +5,8 @@ metadata:
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }} 
 spec:
   channel: alpha
-  name: {{ OPERATOR_NAME }}
+  name: {{ OPERATOR_BASE }}
   source: {{ CATALOG_SOURCE }}
   sourceNamespace: {{ CATALOG_NAMESPACE }}
+  installPlanApproval: Manual
+  startingCSV: {{ OPERATOR_NAME }}
