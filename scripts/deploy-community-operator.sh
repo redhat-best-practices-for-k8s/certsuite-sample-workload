@@ -50,13 +50,31 @@ rm ./temp/rendered-local-community-operator-group.yaml
 
 # Create the Subscription
 mkdir -p ./temp
-cat ./test-target/community-operator-subscription.yaml | OPERATOR_NAME=$COMMUNITY_OPERATOR_BASE CATALOG_SOURCE=$CATALOG_SOURCE CATALOG_NAMESPACE=$CATALOG_NAMESPACE TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo > ./temp/rendered-local-community-operator-subscription.yaml
+cat ./test-target/community-operator-subscription.yaml |
+	OPERATOR_BASE=$COMMUNITY_OPERATOR_BASE \
+	OPERATOR_NAME=$COMMUNITY_OPERATOR_NAME \
+	CATALOG_SOURCE=$CATALOG_SOURCE \
+	CATALOG_NAMESPACE=$CATALOG_NAMESPACE \
+	TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE \
+	"$SCRIPT_DIR"/mo > ./temp/rendered-local-community-operator-subscription.yaml
 oc apply --filename ./temp/rendered-local-community-operator-subscription.yaml
 cat ./temp/rendered-local-community-operator-subscription.yaml
 rm ./temp/rendered-local-community-operator-subscription.yaml
 
-# Gives some time to the resource to come up.
+# Gives time to the resource to come up and approves installation plan for the
+# version. Gives another break and waits for the operator to come up.
 sleep 30
+oc patch installplan \
+	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--type merge \
+	--patch '{"spec":{"approved":true}}' \
+	"$( \
+		oc get installplan \
+		--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" |
+			grep "$COMMUNITY_OPERATOR_NAME" |
+			cut -f 1 -d \  \
+	)" || { printf >&2 'Unable to approve the installation plan.\n'; exit 1;}
+sleep 10
 oc wait \
 	--for=jsonpath=\{.status.phase\}=Succeeded \
 	csv \
@@ -67,7 +85,6 @@ oc wait \
 	oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
 	exit 1
 }
-
 oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
 
 # Label the community operator
