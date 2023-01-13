@@ -78,14 +78,14 @@ sleep 10
 oc wait \
 	--for=jsonpath=\{.status.phase\}=Succeeded \
 	csv \
-	-l operators.coreos.com/hazelcast-platform-operator.tnf \
-	-n tnf \
+	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--selector=operators.coreos.com/hazelcast-platform-operator.tnf \
 	--timeout=240s || {
 	printf >&2 'Timed out waiting for the operator to succeed.\n'
-	oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
+	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 	exit 1
 }
-oc get csv -n "$TNF_EXAMPLE_CNF_NAMESPACE"
+oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 
 # Label the community operator
 oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$TNF_EXAMPLE_CNF_NAMESPACE" test-network-function.com/operator=target
