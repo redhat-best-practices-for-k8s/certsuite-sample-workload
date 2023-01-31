@@ -5,7 +5,7 @@ sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/dow
 sudo chmod +x /usr/bin/kind
 
 # download the latest openshift client at a certain release level
-RELEASE_LEVEL="4.10"
+RELEASE_LEVEL="4.12"
 VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort))
 OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
 
