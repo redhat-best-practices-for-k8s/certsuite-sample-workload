@@ -80,7 +80,7 @@ oc wait \
 	csv \
 	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
 	--selector=operators.coreos.com/hazelcast-platform-operator.tnf \
-	--timeout=240s || {
+	--timeout=600s || {
 	printf >&2 'Timed out waiting for the operator to succeed.\n'
 	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 	exit 1
