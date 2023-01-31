@@ -7,7 +7,8 @@ sudo chmod +x /usr/bin/kind
 # download the latest openshift client at a certain release level
 RELEASE_LEVEL="4.10"
 VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort))
-OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
+IFS=$'\n' SORTED_VERSIONS=($(sort -V <<<"${VERSIONS[*]}")); unset IFS
+OPENSHIFT_VERSION=${SORTED_VERSIONS[${#SORTED_VERSIONS[@]} - 1]}
 
 OC_BIN_TAR="openshift-client-linux.tar.gz"
 OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
