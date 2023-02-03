@@ -8,3 +8,4 @@ git clone $CRD_SCALING_URL
 cd crd-operator-scaling
 make addrole
 make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
+kubectl apply -f config/samples  --validate=false
