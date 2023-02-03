@@ -111,3 +111,6 @@ deploy-services:
 # delete services
 delete-services:
 	./scripts/manage-service.sh delete
+
+deploy-test-crd-scaling-operator:
+	./scripts/deploy-operator-crd-scaling.sh
