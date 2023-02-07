@@ -19,5 +19,6 @@ gcc -g -Wall bin/controller-gen.c -o bin/bin/controller-gen
 make manifests
 make install
 make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
+oc wait deployment new-pro-controller-manager --for=condition=available --timeout=240s
 make addrole
 kubectl apply -f config/samples  --validate=false
