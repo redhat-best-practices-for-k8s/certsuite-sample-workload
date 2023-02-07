@@ -8,6 +8,9 @@ git clone $CRD_SCALING_URL
 ## install the operator
 cd crd-operator-scaling
 ## install the crd
+uname -a
+file bin/controller-gen
+file bin/kustomize
 make manifests
 make install
 make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
