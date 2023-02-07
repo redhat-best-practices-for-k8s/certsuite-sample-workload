@@ -11,6 +11,8 @@ cd crd-operator-scaling
 uname -a
 file bin/controller-gen
 file bin/kustomize
+chmod +x bin/controller-gen
+chmod +x bin/kustomize
 make manifests
 make install
 make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
