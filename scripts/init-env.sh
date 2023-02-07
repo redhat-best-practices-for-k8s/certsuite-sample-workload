@@ -50,7 +50,7 @@ export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
 
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
-export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240}"
+export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
 
 # Number of multus interfaces to create
 MULTUS_IF_NUM="${MULTUS_IF_NUM:-2}"
