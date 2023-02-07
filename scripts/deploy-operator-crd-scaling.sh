@@ -13,12 +13,13 @@ file bin/controller-gen
 file bin/kustomize
 chmod +x bin/controller-gen
 chmod +x bin/kustomize
-gcc -g -Wall bin/kustomize.c -o bin/kustomize
-gcc -g -Wall bin/controller-gen.c -o bin/bin/controller-gen
+
 
 make manifests
 make install
 make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
+
 oc wait deployment new-pro-controller-manager -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout=240s
+
 make addrole
 kubectl apply -f config/samples  --validate=false
