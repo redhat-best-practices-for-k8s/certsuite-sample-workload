@@ -79,7 +79,7 @@ oc wait \
 	--for=jsonpath=\{.status.phase\}=Succeeded \
 	csv \
 	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
-	--selector=operators.coreos.com/hazelcast-platform-operator.tnf \
+	--selector=operators.coreos.com/hazelcast-platform-operator."${TNF_EXAMPLE_CNF_NAMESPACE}" \
 	--timeout=600s || {
 	printf >&2 'Timed out waiting for the operator to succeed.\n'
 	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
@@ -90,5 +90,3 @@ oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 # Label the community operator
 oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$TNF_EXAMPLE_CNF_NAMESPACE" test-network-function.com/operator=target
 
-# For the old repo only, add an annotation to identify the subscription
-oc annotate csv "$COMMUNITY_OPERATOR_NAME" test-network-function.com/subscription_name='["test-subscription"]' --overwrite  -ntnf
