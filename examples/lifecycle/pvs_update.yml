@@ -57,7 +57,7 @@ spec:
     required:
       nodeSelectorTerms:
         - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-              - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
