@@ -23,8 +23,8 @@ spec:
       command: [ "/bin/bash", "-c", "--" ]
       args: [ "while true; do sleep 30; done;" ]
       securityContext:
-          runAsUser: 2000
-          runAsGroup: 3000 
+        runAsUser: 2000
+        runAsGroup: 3000 
 ---          
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -33,7 +33,7 @@ metadata:
   namespace: tnf
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi 
@@ -48,16 +48,16 @@ spec:
   capacity:
     storage: 5Gi
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   local:
     path: /tmp
   nodeAffinity:
     required:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: kubernetes.io/hostname
+      nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
             operator: In
             values:
-            - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
+              - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
