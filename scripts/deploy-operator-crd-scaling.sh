@@ -23,4 +23,4 @@ make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
 oc wait deployment new-pro-controller-manager -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout=240s
 
 make addrole
-kubectl apply -f config/samples  --validate=false
+kubectl apply -f config/samples --validate=false
