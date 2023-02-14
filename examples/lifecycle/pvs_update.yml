@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Pod
 metadata:
@@ -20,7 +21,7 @@ spec:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage   
       command: [ "/bin/bash", "-c", "--" ]
-      args: [ "while true; do sleep 30; done;" ]    
+      args: [ "while true; do sleep 30; done;" ]
       securityContext:
           runAsUser: 2000
           runAsGroup: 3000 
@@ -54,9 +55,9 @@ spec:
     path: /tmp
   nodeAffinity:
     required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
