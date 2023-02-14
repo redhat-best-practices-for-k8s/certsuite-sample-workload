@@ -13,8 +13,6 @@ file bin/controller-gen
 file bin/kustomize
 chmod +x bin/controller-gen
 chmod +x bin/kustomize
-gcc -g -Wall bin/kustomize.c -o bin/kustomize
-gcc -g -Wall bin/controller-gen.c -o bin/bin/controller-gen
 
 make manifests
 make install
