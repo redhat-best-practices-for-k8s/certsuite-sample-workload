@@ -37,7 +37,6 @@ spec:
     requests:
       storage: 5Gi 
   storageClassName: local-storage    
-  
 ---  
 apiVersion: v1
 kind: PersistentVolume
