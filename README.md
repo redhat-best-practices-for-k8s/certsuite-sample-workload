@@ -1,4 +1,4 @@
-# CNF Certification Partner
+# CNF Certification Partner [![license](https://img.shields.io/github/license/test-network-function/cnf-certification-test-partner?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test-partner/blob/master/LICENSE)
 
 This repository contains two main sections:
 * test-partner:  Partner debug pods definition for use on a k8s CNF Certification cluster. Used to run platform and networking tests.
@@ -239,3 +239,8 @@ user@fedora vagrant]$ vagrant ssh
 [vagrant@k8shost ~]$
 ```
 The partner repo scripts are located in ~/partner
+
+## License
+CNF Certification Test Partner is copyright [Red Hat, Inc.](https://www.redhat.com) and available
+under an
+[Apache 2 license](https://github.com/test-network-function/cnf-certification-test-partner/blob/main/LICENSE).
