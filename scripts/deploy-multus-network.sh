@@ -15,7 +15,7 @@ then
   oc rollout status daemonset calico-node -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   rm -rf ./temp
-  git clone --depth 1 $MULTUS_GIT_URL  -b v3.9.2 ./temp/multus-cni
+  git clone --depth 1 $MULTUS_GIT_URL  -b v3.9.3 ./temp/multus-cni
 
   # fix for dimensioning bug
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
@@ -32,7 +32,7 @@ then
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   # Install whereabouts at specific released version
-  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6
+  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.1
   oc apply \
     -f whereabouts/doc/crds/daemonset-install.yaml \
     -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
