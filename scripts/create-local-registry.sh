@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # TODO: needs refactoring to work with kind
 # Initialization
+# shellcheck disable=SC1001,SC2215
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
 #setting sudo
@@ -42,12 +45,13 @@ sudo $CERT_UPDATER
 
 
 # Add the hostname to /etc/hosts
-if [ -z $( grep "$REGISTRY_NAME" /etc/hosts) ]
+# shellcheck disable=SC2143 # Use grep -q.
+if [ -z "$( grep "$REGISTRY_NAME" /etc/hosts)" ]
 then
   REGISTRY_ADDRESS=$(hostname -I|awk '{print $1}')
   echo REGISTRY_ADDRESS= "$REGISTRY_ADDRESS" 
   sudo REGISTRY_ADDRESS1="$REGISTRY_ADDRESS" REGISTRY1="$REGISTRY_NAME" sh -c 'echo "$REGISTRY_ADDRESS1 $REGISTRY1" >> /etc/hosts'
-else 
+else
   echo "entry already present"
 fi
 cat /etc/hosts
@@ -65,7 +69,7 @@ ${CONTAINER_CLIENT} rm -f registry
 
 # Create the docker registry
 ${CONTAINER_CLIENT} run -d \Linux
-  -v $(pwd)/"$SCRIPT_DIR"/certs:/certs:Z \
+  -v "$(pwd)"/"$SCRIPT_DIR"/certs:/certs:Z \
   -e REGISTRY_HTTP_ADDR=0.0.0.0:443 \
   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt \
   -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key \

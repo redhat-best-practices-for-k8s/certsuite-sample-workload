@@ -2,13 +2,15 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
 CATALOG_CHECK_RETRIES=6 # 30 seconds
 while [[ $(oc get packagemanifests 2>/dev/null) == "" && "$CATALOG_CHECK_RETRIES" -gt 0 ]]; do
 	echo "waiting for catalog manifests to be available"
 	sleep 10
-	CATALOG_CHECK_RETRIES=$(($CATALOG_CHECK_RETRIES-1))
+	CATALOG_CHECK_RETRIES=$((CATALOG_CHECK_RETRIES-1))
 	echo $CATALOG_CHECK_RETRIES
 done
 
@@ -17,19 +19,20 @@ if [ "$CATALOG_CHECK_RETRIES" -le 0  ]; then
 	exit 1
 fi
 
+# shellcheck disable=SC2143 # Use ! grep -q.
 if [[ -z "$(oc get packagemanifests | grep hazelcast 2>/dev/null)" ]]; then
-  echo "hazelcast package was not found in the catalog, skipping installation"
-  exit 0
+	echo "hazelcast package was not found in the catalog, skipping installation"
+	exit 0
 fi
 echo "hazelcast package found, starting installation"
 
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
-  echo "operator-sdk executable cannot be found in the path. Will try to install it."
-  "$SCRIPT_DIR"/install-operator-sdk.sh
+	echo "operator-sdk executable cannot be found in the path. Will try to install it."
+	"$SCRIPT_DIR"/install-operator-sdk.sh
 else
-  echo "operator-sdk was found in the path, no need to install it"
-	fi
+	echo "operator-sdk was found in the path, no need to install it"
+fi
 
 # Select namespace based on OCP vs Kind
 if $TNF_NON_OCP_CLUSTER
@@ -37,12 +40,14 @@ then
 	export CATALOG_SOURCE="operatorhubio-catalog"
 	export CATALOG_NAMESPACE="olm"
 else
-    export CATALOG_SOURCE="certified-operators"
+	export CATALOG_SOURCE="certified-operators"
 	export CATALOG_NAMESPACE="openshift-marketplace"
 fi
 
 # Create the operator group
 mkdir -p ./temp
+
+# shellcheck disable=SC2002 # Useless cat.
 cat ./test-target/community-operator-group.yaml | TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo > ./temp/rendered-local-community-operator-group.yaml
 oc apply --filename ./temp/rendered-local-community-operator-group.yaml
 cat ./temp/rendered-local-community-operator-group.yaml
@@ -50,6 +55,8 @@ rm ./temp/rendered-local-community-operator-group.yaml
 
 # Create the Subscription
 mkdir -p ./temp
+
+# shellcheck disable=SC2002 # Useless cat.
 cat ./test-target/community-operator-subscription.yaml |
 	OPERATOR_BASE=$COMMUNITY_OPERATOR_BASE \
 	OPERATOR_NAME=$COMMUNITY_OPERATOR_NAME \
