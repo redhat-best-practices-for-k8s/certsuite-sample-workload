@@ -2,6 +2,8 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
 #check if operator-sdk is installed and install it if needed
@@ -21,6 +23,8 @@ fi
 "$SCRIPT_DIR"/create-secret.sh
 
 ADD_SECRET=""
+
+# shellcheck disable=SC2143 # Use grep -q.
 if [[ -n "$(oc get secret -n "$TNF_EXAMPLE_CNF_NAMESPACE" | awk '{print $1}'| grep "$SECRET_NAME")" ]];
 then
   ADD_SECRET="--ca-secret-name $SECRET_NAME"

@@ -2,6 +2,8 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 # apply the crds and wait for them
 oc apply --filename ./scripts/operator-ce.yaml
