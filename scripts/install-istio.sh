@@ -2,6 +2,7 @@
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+# shellcheck source=scripts/init-env.sh
 source "$SCRIPT_DIR"/init-env.sh
 
 ISTIO_DIR=istio-1.17.0
@@ -18,9 +19,9 @@ if ! $TNF_NON_OCP_CLUSTER; then
 fi
 
 ./$ISTIO_DIR/bin/istioctl install --set profile=$ISTIO_PROFILE -y
-oc label namespace $TNF_EXAMPLE_CNF_NAMESPACE istio-injection=enabled --overwrite
+oc label namespace "$TNF_EXAMPLE_CNF_NAMESPACE" istio-injection=enabled --overwrite
 
 if ! $TNF_NON_OCP_CLUSTER; then
-    oc adm policy add-scc-to-group anyuid system:serviceaccounts:$TNF_EXAMPLE_CNF_NAMESPACE
-    oc -n $TNF_EXAMPLE_CNF_NAMESPACE create -f ./test-target/nad-istio.yaml
+    oc adm policy add-scc-to-group anyuid system:serviceaccounts:"$TNF_EXAMPLE_CNF_NAMESPACE"
+    oc -n "$TNF_EXAMPLE_CNF_NAMESPACE" create -f ./test-target/nad-istio.yaml
 fi
