@@ -2,6 +2,8 @@
 # TODO: needs refactoring to work with kind
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
 "$SCRIPT_DIR"/create-local-registry.sh

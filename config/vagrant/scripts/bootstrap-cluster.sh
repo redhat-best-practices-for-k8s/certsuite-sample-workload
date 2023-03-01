@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2207
 
 # Download and install Kubernetes In Docker (Kind):
 sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.14.0/kind-linux-amd64
@@ -13,12 +14,12 @@ OPENSHIFT_VERSION=${SORTED_VERSIONS[${#SORTED_VERSIONS[@]} - 1]}
 OC_BIN_TAR="openshift-client-linux.tar.gz"
 OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
 
-curl -Lo oc.tar.gz ${OC_DL_URL}
+curl -Lo oc.tar.gz "${OC_DL_URL}"
 tar -xvf oc.tar.gz
 chmod +x oc kubectl
 sudo cp oc kubectl /usr/bin/.
 
 # create cluster
-cd partner
+cd partner || exit 1
 make rebuild-cluster
-make install 
+make install

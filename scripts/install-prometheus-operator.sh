@@ -2,6 +2,8 @@
 set -o errexit
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
+
+# shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
 if ! $TNF_NON_OCP_CLUSTER;then

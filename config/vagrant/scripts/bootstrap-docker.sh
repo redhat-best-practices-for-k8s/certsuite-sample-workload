@@ -1,7 +1,7 @@
 #!/bin/bash
 dnf update -y
 echo "192.168.56.10  k8shost" >> /etc/hosts
-        
+
 # Adding docker repository
 sudo dnf config-manager \
     --add-repo \
@@ -65,7 +65,7 @@ sudo systemctl enable containerd.service
 
 # Perform the post install ( https://docs.docker.com/engine/install/linux-postinstall )
 sudo groupadd docker
-sudo usermod -aG docker $USER
+sudo usermod -aG docker "$USER"
 
 # ensures docker is running
 #STATE=""
