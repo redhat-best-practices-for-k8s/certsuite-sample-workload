@@ -34,5 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: --external-sources
         with:
           ignore_names: mo

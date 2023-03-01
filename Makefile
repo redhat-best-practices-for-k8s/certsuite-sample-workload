@@ -84,6 +84,12 @@ install-prometheus :
 
 delete-prometheus :
 	./scripts/delete-prometheus-operator.sh
+
+install-istio :
+	./scripts/install-istio.sh
+
+delete-istio :
+	./scripts/delete-istio.sh
 	
 # delete deployment pods
 delete-deployment:
