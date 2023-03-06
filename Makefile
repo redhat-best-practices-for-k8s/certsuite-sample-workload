@@ -19,8 +19,8 @@ install:
 	./scripts/deploy-community-operator.sh
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
-	./scripts/install-prometheus-operator.sh
-	 ./scripts/deploy-operator-crd-scaling.sh
+	# ./scripts/install-prometheus-operator.sh
+	# ./scripts/deploy-operator-crd-scaling.sh
 
 # creates a k8s cluster instance
 rebuild-cluster:

@@ -1,5 +1,5 @@
 #!/bin/bash
-dnf update -y
+sudo dnf update -y
 echo "192.168.56.10  k8shost" >> /etc/hosts
 
 # Adding docker repository
