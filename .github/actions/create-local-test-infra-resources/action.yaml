@@ -52,7 +52,7 @@ runs:
       shell: bash
 
     - name: (PUT) Ensure that two deployment pods with the label are present
-      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app_deployment }}" -o name | wc -l) -eq "2" ]]'
+      run: '[[ $(oc get pods -l "app=${{ inputs.put_pod_label_app_deployment }}" -o name | wc -l) -eq "4" ]]'
       shell: bash
 
     - name: (PUT) Discover the name of the first test pod
