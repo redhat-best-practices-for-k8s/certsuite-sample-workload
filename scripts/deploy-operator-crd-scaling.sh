@@ -19,4 +19,5 @@ oc wait deployment new-pro-controller-manager -n "$TNF_EXAMPLE_CNF_NAMESPACE" --
 
 make addrole
 kubectl apply -f config/samples --validate=false
+sleep 10
 oc wait deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout=240s
