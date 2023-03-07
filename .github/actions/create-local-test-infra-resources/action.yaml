@@ -12,7 +12,7 @@ inputs:
     default: 120s
   put_deployment_name:
     description: "The expected value of the test deployment name"
-    default: test
+    default: jack
   put_pod_label_app_statefulset:
     description: "The expected value of the test statefulset's `app` label"
     default: testss
