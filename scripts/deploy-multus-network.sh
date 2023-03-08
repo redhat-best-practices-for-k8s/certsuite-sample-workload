@@ -30,6 +30,7 @@ then
 
   # Install macvlan and other default plugins
   echo "## install CNIs"
+  sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/cni-install.yml -i
   kubectl create -f temp/multus-cni/e2e/cni-install.yml
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 

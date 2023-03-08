@@ -28,9 +28,15 @@ Vagrant.configure('2') do |config|
     # Triggers reload to setup docker rootless permissions.
     k8shost.vm.provision :reload
 
-    # Configures kubernetes.
+    # Download KIND and Kubectl/OC binaries
     k8shost.vm.provision 'shell',
                          path: 'scripts/bootstrap-cluster.sh',
                          privileged: false
+    
+    # Build the KIND cluster and install the resources
+    k8shost.vm.provision 'shell',
+                         inline: 'cd partner; make rebuild-cluster'
+    k8shost.vm.provision 'shell',
+                         inline: 'cd partner; make install'
   end
 end
