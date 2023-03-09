@@ -18,8 +18,3 @@ curl -Lo oc.tar.gz "${OC_DL_URL}"
 tar -xvf oc.tar.gz
 chmod +x oc kubectl
 sudo cp oc kubectl /usr/bin/.
-
-# create cluster
-cd partner || exit 1
-make rebuild-cluster
-make install
