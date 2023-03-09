@@ -19,7 +19,7 @@ kubectl apply -f config/samples --validate=false
 BIT=5
 NUM=15
 for i in $(seq $NUM); do
-	printf 'Wait %d seconds for %d times...\n' $BIT $i
+	printf 'Wait %d seconds for %d times...\n' $BIT "$i"
 	sleep $BIT
 	kubectl get deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE" ||
 	continue
