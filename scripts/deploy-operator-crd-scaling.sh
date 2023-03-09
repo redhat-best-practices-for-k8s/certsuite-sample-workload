@@ -21,8 +21,8 @@ make addrole
 kubectl apply -f config/samples --validate=false
 BIT=5
 NUM=15
+i=0
 for i in $(seq $NUM); do
-  i++
   sleep $BIT
   kubectl get deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE" ||
     continue
