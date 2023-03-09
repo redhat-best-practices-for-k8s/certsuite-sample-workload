@@ -30,6 +30,7 @@ for i in $(seq $NUM); do
     --namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
     --timeout=240s
   exit
+  i++
 done
 printf >&2 'Exit by timeout after %d seconds.\n' $((BIT * NUM))
 exit 1
