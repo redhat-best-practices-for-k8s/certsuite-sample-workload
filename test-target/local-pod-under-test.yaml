@@ -7,7 +7,7 @@ metadata:
   name: test
   namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
 spec:
-  replicas: 2
+  replicas: {{ REPLICAS }}
   selector:
     matchLabels:
       app: {{ APP }}
