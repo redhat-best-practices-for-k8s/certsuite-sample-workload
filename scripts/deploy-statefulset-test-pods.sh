@@ -12,7 +12,7 @@ REPLICAS=2
 # adjust replicas for possible SNO clusters
 NUM_NODES=$(oc get nodes --no-headers | wc -l)
 if [[ $NUM_NODES == 1 ]]; then
-    REPLICAS=1
+	REPLICAS=1
 fi
 
 # shellcheck disable=SC2002 # Useless cat.
@@ -25,7 +25,7 @@ oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$TNF_EXAMPLE_CNF_NAMESP
 
 # Wait if there is more than one replica
 if [[ $REPLICAS -gt 1 ]]; then
-    oc wait -l statefulset.kubernetes.io/pod-name=test-1 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	oc wait -l statefulset.kubernetes.io/pod-name=test-1 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 fi
 
 # Only autoscale if there is more than one replica
