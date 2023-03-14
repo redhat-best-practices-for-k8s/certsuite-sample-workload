@@ -81,7 +81,7 @@ oc patch installplan \
 			grep "$COMMUNITY_OPERATOR_NAME" |
 			cut -f 1 -d \  \
 	)" || { printf >&2 'Unable to approve the installation plan.\n'; exit 1;}
-sleep 10
+sleep 30
 oc wait \
 	--for=jsonpath=\{.status.phase\}=Succeeded \
 	csv \
@@ -92,8 +92,8 @@ oc wait \
 	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 	exit 1
 }
+sleep 30
 oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
 
 # Label the community operator
 oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$TNF_EXAMPLE_CNF_NAMESPACE" test-network-function.com/operator=target
-
