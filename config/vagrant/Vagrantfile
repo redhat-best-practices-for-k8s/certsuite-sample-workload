@@ -35,8 +35,7 @@ Vagrant.configure('2') do |config|
     
     # Build the KIND cluster and install the resources
     k8shost.vm.provision 'shell',
-                         inline: 'cd partner; make rebuild-cluster'
-    k8shost.vm.provision 'shell',
-                         inline: 'cd partner; make install'
+                         inline: 'cd partner; make rebuild-cluster; make install',
+                         privileged: false
   end
 end
