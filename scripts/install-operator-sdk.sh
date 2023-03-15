@@ -17,7 +17,7 @@ else
   export ARCH OS
 
   ## Download executable
-  export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.27.0
+  export OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.28.0
   curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_"${OS}"_"${ARCH}"
 
   ## Download the auth key
