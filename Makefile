@@ -7,7 +7,7 @@
   install-prometheus
 
 # Deploys the partner and test pods and the operator
-install:
+install: clean
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
