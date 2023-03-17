@@ -3,27 +3,19 @@ description: Creates and configures a k8s cluster for all things TNF-related
 inputs:
   working_directory:
     default: .
-  kind_version:
-    default: v0.14.0
   oc_kcm_timeout:
     default: 5m
 
 runs:
   using: 'composite'
   steps:
-    - name: Download cluster bootstrap executable
-      run: |
-        curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/${{ inputs.kind_version }}/kind-linux-amd64
+    - name: Run Bootstrap Cluster
+      run: make bootstrap-cluster-fedora-local
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
-    - name: Install cluster bootstrap executable
-      run: chmod +x kind; sudo cp kind /usr/bin/kind
-      working-directory: ${{ inputs.working_directory }}
-      shell: bash
-
-    - name: Configure docker
-      run: make new-docker-config
+    - name: Run Bootstrap Cluster
+      run: make bootstrap-docker-fedora-local
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 

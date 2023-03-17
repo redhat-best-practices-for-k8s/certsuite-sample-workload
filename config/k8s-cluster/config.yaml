@@ -1,7 +1,5 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
-featureGates:
-  LocalStorageCapacityIsolation: false
 networking:
   ipFamily: dual
   disableDefaultCNI: true
@@ -9,10 +7,10 @@ networking:
   apiServerPort: 6443
 nodes:
   - role: control-plane
-    image: kindest/node:v1.24.4@sha256:ba6a8a1bc35139cc0947a9269a6db577cf7a6ba37cab8088fd04142546dc0c21
+    image: kindest/node:v1.25.3@sha256:f1de3b0670462f43280114eccceab8bf1b9576d2afe0582f8f74529da6fd0365
   - role: worker
-    image: kindest/node:v1.24.4@sha256:ba6a8a1bc35139cc0947a9269a6db577cf7a6ba37cab8088fd04142546dc0c21
+    image: kindest/node:v1.25.3@sha256:f1de3b0670462f43280114eccceab8bf1b9576d2afe0582f8f74529da6fd0365
   - role: worker
-    image: kindest/node:v1.24.4@sha256:ba6a8a1bc35139cc0947a9269a6db577cf7a6ba37cab8088fd04142546dc0c21
+    image: kindest/node:v1.25.3@sha256:f1de3b0670462f43280114eccceab8bf1b9576d2afe0582f8f74529da6fd0365
   - role: worker
-    image: kindest/node:v1.24.4@sha256:ba6a8a1bc35139cc0947a9269a6db577cf7a6ba37cab8088fd04142546dc0c21
+    image: kindest/node:v1.25.3@sha256:f1de3b0670462f43280114eccceab8bf1b9576d2afe0582f8f74529da6fd0365
