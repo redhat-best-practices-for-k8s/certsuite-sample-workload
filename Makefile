@@ -33,8 +33,11 @@ bootstrap-cluster-fedora-local:
 	cd config/vagrant/scripts; ./bootstrap-cluster.sh
 
 # creates a k8s cluster instance
-rebuild-cluster:
+rebuild-cluster: delete-cluster
 	./scripts/deploy-k8s-cluster.sh
+
+delete-cluster:
+	./scripts/delete-k8s-cluster.sh
 
 # launch Vagrant env
 vagrant-build:
@@ -85,16 +88,16 @@ install-crds:
 install-litmus:
 	./scripts/install-litmus-operator.sh
 
-install-prometheus :
+install-prometheus:
 	./scripts/install-prometheus-operator.sh
 
-delete-prometheus :
+delete-prometheus:
 	./scripts/delete-prometheus-operator.sh
 
-install-istio :
+install-istio:
 	./scripts/install-istio.sh
 
-delete-istio :
+delete-istio:
 	./scripts/delete-istio.sh
 	
 # delete deployment pods
