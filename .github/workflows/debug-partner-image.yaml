@@ -1,9 +1,14 @@
 name: 'Test/push the `debug-partner` image'
 on:
-  push:
-    paths:
-      - 'test-partner/Dockerfile.debug-partner'
-  pull_request:
+  # Run the workflow every day at 5 am UTC (1 am EST, 7am CET)
+  # This is useful for keeping the image up-to-date with security
+  # patches provided in the UBI.
+  # Disclaimer: There is no guarantee that scheduled workflows will
+  # run at the predefined time, if at all. The delay is usually
+  # around 10-30 minutes.
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
 defaults:
   run:
     shell: bash
