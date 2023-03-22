@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:latest
+FROM registry.access.redhat.com/ubi8/ubi:8.7
 
 ARG USERNAME=tnf-user
 ARG USER_UID=1000
