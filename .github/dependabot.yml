@@ -5,3 +5,11 @@ updates:
     directory: "/test-partner/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/testapp/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
