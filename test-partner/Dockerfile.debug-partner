@@ -1,9 +1,18 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.7
-
 RUN \
-    yum -y update && \
-    yum -y install pciutils util-linux net-tools procps-ng iputils iproute jq libselinux-utils iptables nftables ethtool && \
-    yum clean all -y && \
-    rm -rf /var/cache/yum
-
+	dnf update --assumeyes --disableplugin=subscription-manager \
+	&& dnf install --assumeyes --disableplugin=subscription-manager \
+		ethtool-2:5.13 \
+		iproute-5.18.0 \
+		iptables-1.8.4 \
+		iputils-20180629 \
+		jq-1.6 \
+		libselinux-utils-2.9 \
+		net-tools-2.0 \
+		nftables-1:0.9.3 \
+		pciutils-3.7.0 \
+		procps-ng-3.3.15 \
+		util-linux \
+	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
+	&& rm -fr /var/cache/yum
 VOLUME ["/host"]

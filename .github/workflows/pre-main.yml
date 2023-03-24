@@ -6,14 +6,21 @@ name: Test Incoming Changes
   pull_request:
     branches: [main]
   workflow_dispatch:
-
 jobs:
-  yamllint:
+  linters:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: yaml-lint
-        uses: ibiqlik/action-yamllint@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: "Dockerfile*"
+          recursive: true
+      - uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: --external-sources
+        with:
+          ignore_names: mo
+      - uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |
             extends: default
@@ -28,13 +35,3 @@ jobs:
                 level: warning
               braces:
                 level: warning
-  shellcheck:
-    name: Shellcheck
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ludeeus/action-shellcheck@master
-        env:
-          SHELLCHECK_OPTS: --external-sources
-        with:
-          ignore_names: mo
