@@ -5,7 +5,7 @@ SCRIPT_DIR="$(dirname "$0")"
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 CRD_SCALING_URL=https://github.com/test-network-function/crd-operator-scaling.git
-CRD_SCALING_TAG=v0.0.1
+CRD_SCALING_TAG=v0.0.2
 rm -rf crd-operator-scaling
 git clone $CRD_SCALING_URL -b $CRD_SCALING_TAG || exit 1
 ## install the operator
