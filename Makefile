@@ -7,8 +7,9 @@
   install-prometheus
 
 # Deploys the partner and test pods and the operator
-install: clean
+install:
 	./scripts/fix-node-labels.sh
+	./scripts/deploy-calico.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
@@ -19,8 +20,20 @@ install: clean
 	./scripts/deploy-community-operator.sh
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
-	# ./scripts/install-prometheus-operator.sh
-	 ./scripts/deploy-operator-crd-scaling.sh
+	./scripts/deploy-operator-crd-scaling.sh
+
+install-ocp:
+	./scripts/fix-node-labels.sh
+	./scripts/deploy-multus-network.sh
+	./scripts/deploy-resource-quota.sh
+	./scripts/deploy-test-pods.sh
+	./scripts/deploy-statefulset-test-pods.sh
+	./scripts/deploy-pod-disruption-budget.sh
+	# ./scripts/deploy-test-crds.sh
+	./scripts/install-olm.sh
+	# ./scripts/deploy-community-operator.sh
+	./scripts/manage-service.sh deploy
+	./scripts/deploy-network-policies.sh
 
 # Bootstrap Fedora Machine Locally
 bootstrap-docker-fedora-local:
@@ -35,6 +48,7 @@ bootstrap-cluster-fedora-local:
 # creates a k8s cluster instance
 rebuild-cluster: delete-cluster
 	./scripts/deploy-k8s-cluster.sh
+	./scripts/deploy-calico.sh
 
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh

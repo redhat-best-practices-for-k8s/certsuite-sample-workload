@@ -49,7 +49,7 @@ export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
 
 #Partner repo
 export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
-export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
+export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-600s}"
 
 # Number of multus interfaces to create
 MULTUS_IF_NUM="${MULTUS_IF_NUM:-2}"
@@ -61,6 +61,11 @@ NET_NAME="mynet"
 # Checks for non-OCP cluster.
 oc version | grep Server >/dev/null ||
 	{ printf 'Non-OCP cluster.\n'; TNF_NON_OCP_CLUSTER=true; }
+
+if [[ "$OCP_CLUSTER_OVERRIDE" == "true" ]]; then
+  echo 'OCP_CLUSTER_OVERRIDE is set to true, forcing OCP cluster'
+  TNF_NON_OCP_CLUSTER=false
+fi
 
 # create Multus annotations
 create_multus_annotation(){

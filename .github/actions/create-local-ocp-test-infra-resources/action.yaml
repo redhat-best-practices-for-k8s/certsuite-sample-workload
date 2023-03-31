@@ -1,0 +1,44 @@
+name: create-local-ocp-test-infra-resources
+description: Creates `local-ocp-test-infra` OpenShift resources
+inputs:
+  default_namespace:
+    default: default
+  working_directory:
+    default: .
+  oc_namespace:
+    default: tnf
+  oc_pod_timeout:
+    description: "Timeout for the `oc wait` command"
+    default: 120s
+  put_deployment_name:
+    description: "The expected value of the test deployment name"
+    default: test
+  put_pod_label_app_statefulset:
+    description: "The expected value of the test statefulset's `app` label"
+    default: testss
+  put_pod_label_app_deployment:
+    description: "The expected value of the test deployment's `app` label"
+    default: testdp
+  put_pod_name_env_var:
+    description: "The environment variable the test pod's name will be saved to"
+    default: PUT_POD_NAME
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Create `local-test-infra` OpenShift resources
+      run: |
+        make install-ocp
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+      env:
+        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
+
+    - name: Set the current context to use the correct TNF namespace
+      run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
+      shell: bash
+
+    - name: Display all pods in all namespaces
+      run: oc get pods -A -o wide
+      shell: bash

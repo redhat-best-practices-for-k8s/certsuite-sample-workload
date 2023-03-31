@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
 
@@ -11,6 +13,8 @@ mkdir -p ./temp
 REPLICAS=2
 # adjust replicas for possible SNO clusters
 NUM_NODES=$(oc get nodes --no-headers | wc -l)
+NUM_NODES="${NUM_NODES#"${NUM_NODES%%[![:space:]]*}"}"
+NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}"   
 if [[ $NUM_NODES == 1 ]]; then
     REPLICAS=1
 fi
@@ -20,4 +24,4 @@ cat ./test-target/local-pod-under-test.yaml | APP="testdp" RESOURCE_TYPE="Deploy
 oc apply --filename ./temp/rendered-local-pod-under-test-template.yaml
 rm ./temp/rendered-local-pod-under-test-template.yaml
 
-oc wait deployment test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+# oc wait deployment test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout="$TNF_DEPLOYMENT_TIMEOUT"

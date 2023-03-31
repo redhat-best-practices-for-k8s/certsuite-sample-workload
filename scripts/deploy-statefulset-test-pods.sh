@@ -11,6 +11,8 @@ mkdir -p ./temp
 REPLICAS=2
 # adjust replicas for possible SNO clusters
 NUM_NODES=$(oc get nodes --no-headers | wc -l)
+NUM_NODES="${NUM_NODES#"${NUM_NODES%%[![:space:]]*}"}"
+NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}" 
 if [[ $NUM_NODES == 1 ]]; then
 	REPLICAS=1
 fi
@@ -21,7 +23,7 @@ oc apply --filename ./temp/rendered-local-statefulset-pod-under-test-template.ya
 rm ./temp/rendered-local-statefulset-pod-under-test-template.yaml
 sleep 3
 
-oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+# oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
 # Wait if there is more than one replica
 if [[ $REPLICAS -gt 1 ]]; then

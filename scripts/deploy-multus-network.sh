@@ -62,5 +62,5 @@ then
 
   sleep 3
 else 
-  echo "Minukube not detected, Skipping Multus installation"
+  echo "OCP Cluster detected, Skipping Multus installation"
 fi
