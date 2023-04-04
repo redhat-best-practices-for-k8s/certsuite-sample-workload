@@ -1,0 +1,42 @@
+name: 'Test the `local-test-infra-mac` config'
+on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test-local-test-infra-mac:
+    name: 'Test the `local-test-infra-mac` configuration on k8s cluster'
+    runs-on: macos-latest
+    env:
+      TNF_NAMESPACE: tnf
+      PUT_CONTAINER_NAME: test
+      TPP_CONTAINER_NAME: partner
+      DEFAULT_NAMESPACE: default
+      DEFAULT_TIMEOUT: 90s
+      SHELL: /bin/bash
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install brew binaries
+        run: |
+          brew update
+          brew install --cask vagrant
+          brew install --cask virtualbox
+          brew upgrade vagrant
+
+      - name: Run make vagrant-build
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: make vagrant-build
+          on_retry_command: ps aux | grep -i virtualbox | awk '{ print $2 }' | xargs kill -9; make vagrant-destroy
+
+      # Cleanup
+      - name: Delete OpenShift resources
+        run: make clean-all
+
+      - name: 'Test: Check if `make clean` removed all TNF pods'
+        run: '[[ "$(oc get pods -o name | wc -l)" -eq "0" ]]'

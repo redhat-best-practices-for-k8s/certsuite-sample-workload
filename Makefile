@@ -22,6 +22,17 @@ install: clean
 	# ./scripts/install-prometheus-operator.sh
 	 ./scripts/deploy-operator-crd-scaling.sh
 
+install-ocp:
+	./scripts/fix-node-labels.sh
+	./scripts/deploy-multus-network.sh
+	./scripts/deploy-resource-quota.sh
+	./scripts/deploy-test-pods.sh
+	./scripts/deploy-statefulset-test-pods.sh
+	./scripts/deploy-pod-disruption-budget.sh
+	./scripts/install-olm.sh
+	./scripts/manage-service.sh deploy
+	./scripts/deploy-network-policies.sh
+
 # Bootstrap Fedora Machine Locally
 bootstrap-docker-fedora-local:
 	cd config/vagrant/scripts; ./bootstrap-docker.sh
@@ -48,7 +59,7 @@ vagrant-build:
 
 # destroy Vagrant env
 vagrant-destroy:
-	cd config/vagrant;vagrant destroy
+	cd config/vagrant;vagrant destroy -f
 
 # suspend the vagrant vm
 vagrant-suspend:

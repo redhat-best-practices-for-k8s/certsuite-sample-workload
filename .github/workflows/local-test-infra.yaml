@@ -7,7 +7,10 @@ defaults:
 jobs:
   shellcheck:
     name: Shellcheck
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-latest]
     steps:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
