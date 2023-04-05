@@ -6,6 +6,24 @@ name: Test Incoming Changes
   pull_request:
     branches: [main]
   workflow_dispatch:
+env:
+  REGISTRY: quay.io
+  REGISTRY_LOCAL: localhost
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_TAG: unstable
+  OCT_IMAGE_NAME: testnetworkfunction/oct
+  OCT_IMAGE_TAG: latest
+  TNF_CONTAINER_CLIENT: docker
+  TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
+  TNF_DISABLE_CONFIG_AUTODISCOVER: false
+  TNF_CONFIG_DIR: /tmp/tnf/config
+  TNF_OUTPUT_DIR: /tmp/tnf/output
+  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
 jobs:
   linters:
     runs-on: ubuntu-22.04
@@ -35,3 +53,77 @@ jobs:
                 level: warning
               braces:
                 level: warning
+  smoke-tests:
+    name: Run Smoke Tests
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+
+    steps:
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.20.2
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Start the k8s cluster
+        uses: ./.github/actions/start-k8s-cluster
+
+      - name: Create `local-test-infra` OpenShift resources
+        uses: ./.github/actions/create-local-test-infra-resources
+
+      - name: Check out `cnf-certification-test`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/cnf-certification-test
+          path: cnf-certification-test
+
+      # Clone and run the cnf-certification-test repo as a container
+      - name: Build the `cnf-certification-test` image
+        run: |
+          make build-image-local
+        env:
+          IMAGE_TAG: ${TNF_IMAGE_TAG}
+        working-directory: cnf-certification-test
+
+      - name: Create required TNF config files and directories
+        run: |
+          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
+          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
+        shell: bash
+        working-directory: cnf-certification-test
+
+      - name: 'Test: Run without any TS, just get diagnostic information'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+        working-directory: cnf-certification-test
+          
+      - name: 'Test: Run Smoke Tests in a TNF container'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common"
+        working-directory: cnf-certification-test
+
+      - name: Upload container test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: smoke-tests-container
+          path: |
+            ${{ env.TNF_OUTPUT_DIR }}/*.xml
+            ${{ env.TNF_OUTPUT_DIR }}/claim.json
+            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
+            ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
