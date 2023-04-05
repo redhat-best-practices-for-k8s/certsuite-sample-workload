@@ -4,10 +4,12 @@ SCRIPT_DIR="$(dirname "$0")"
 
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
-CRD_SCALING_URL=https://github.com/test-network-function/crd-operator-scaling.git
-CRD_SCALING_TAG=v0.0.2
-rm -rf crd-operator-scaling
-git clone $CRD_SCALING_URL -b $CRD_SCALING_TAG || exit 1
+
+# clone the repo
+REPO_NAME=crd-operator-scaling
+rm -rf $REPO_NAME
+git clone "$CRD_SCALING_URL" -b "$CRD_SCALING_TAG" || exit 1
+
 ## install the operator
 cd crd-operator-scaling || exit 1
 ## install the crd
@@ -30,5 +32,9 @@ for i in $(seq $NUM); do
 		--timeout=240s
 	exit
 done
+
+# delete the repo after installing
+rm -rf "$REPO_NAME"
+
 printf >&2 'Exit by timeout after %d seconds.\n' $((BIT * NUM))
 exit 1
