@@ -12,7 +12,6 @@ install: clean
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
-	./scripts/deploy-cpu-scheduling-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
 	./scripts/deploy-pod-disruption-budget.sh
 	./scripts/deploy-test-crds.sh
@@ -71,7 +70,7 @@ vagrant-recreate:
 # deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-debug-ds.sh
-
+	
 # Instal operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
@@ -100,7 +99,7 @@ install-istio:
 
 delete-istio:
 	./scripts/delete-istio.sh
-
+	
 # delete deployment pods
 delete-deployment:
 	./scripts/delete-test-pods.sh
@@ -124,7 +123,7 @@ clean:
 # deploy services
 deploy-services:
 	./scripts/manage-service.sh deploy
-
+	
 # delete services
 delete-services:
 	./scripts/manage-service.sh delete

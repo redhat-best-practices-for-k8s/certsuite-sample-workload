@@ -8,7 +8,6 @@ source "$SCRIPT_DIR"/init-env.sh
 
 # Delete tnf, partner and operator and litmus
 ./"$SCRIPT_DIR"/delete-test-pods.sh
-./"$SCRIPT_DIR"/delete-cpu-scheduling-test-pods.sh
 ./"$SCRIPT_DIR"/delete-hpa.sh
 ./"$SCRIPT_DIR"/delete-test-crds.sh
 ./"$SCRIPT_DIR"/delete-debug-ds.sh
