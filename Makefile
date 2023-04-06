@@ -35,6 +35,7 @@ bootstrap-cluster-fedora-local:
 # creates a k8s cluster instance
 rebuild-cluster: delete-cluster
 	./scripts/deploy-k8s-cluster.sh
+	./scripts/deploy-calico.sh
 
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh
