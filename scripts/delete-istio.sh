@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck source=scripts/init-env.sh
 source "$SCRIPT_DIR"/init-env.sh
 
-ISTIO_DIR=istio-1.17.0
+ISTIO_DIR=istio-1.17.2
 
 if [ ! -d "$ISTIO_DIR" ]; then
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.17.0 sh -
