@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck source=scripts/init-env.sh
 source "$SCRIPT_DIR"/init-env.sh
 
-ISTIO_DIR=istio-1.17.0
+ISTIO_DIR=istio-1.17.2
 ISTIO_PROFILE=demo
 
 if [ ! -d "$ISTIO_DIR" ]; then
