@@ -9,11 +9,11 @@ RUN \
 		libseccomp-devel-2.5.2-1.el8 \
 		libassuan-devel-2.5.1-3.el8 \
 		python36-3.6.8-38.module+el8.5.0+12207+5c5719bc \
-    && dnf clean all \
+	&& dnf clean all \
 	&& git clone https://github.com/containers/podman.git
 WORKDIR /podman
 RUN \
-    git checkout v4.4.0 \
+	git checkout v4.4.0 \
 	&& make
 
 FROM registry.access.redhat.com/ubi8/ubi:8.7
