@@ -1,3 +1,21 @@
+FROM registry.access.redhat.com/ubi8/ubi:8.7 as podman-builder
+RUN \
+	dnf update --assumeyes --disableplugin=subscription-manager \
+	&& dnf install --assumeyes --disableplugin=subscription-manager \
+		git-2.31.1-3.el8_7 \
+		make-1:4.2.1-11.el8 \
+		golang-1.18.10-1.module+el8.7.0+18302+aa634922 \
+		gpgme-devel-1.13.1-11.el8 \
+		libseccomp-devel-2.5.2-1.el8 \
+		libassuan-devel-2.5.1-3.el8 \
+		python36-3.6.8-38.module+el8.5.0+12207+5c5719bc \
+	&& dnf clean all \
+	&& git clone https://github.com/containers/podman.git
+WORKDIR /podman
+RUN \
+	git checkout v4.4.0 \
+	&& make
+
 FROM registry.access.redhat.com/ubi8/ubi:8.7
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
@@ -14,5 +32,7 @@ RUN \
 		procps-ng-3.3.15 \
 		util-linux \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
-	&& rm -fr /var/cache/yum
+	&& rm -fr /var/cache/yum \
+	&& mkdir /root/podman
+COPY --from=podman-builder /podman/bin/podman /root/podman/
 VOLUME ["/host"]
