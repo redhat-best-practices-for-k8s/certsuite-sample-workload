@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length no-bare-urls -->
 # YAML Examples
 
 This folder is going to house some example YAMLs that will make the test suite fail if applied to a cluster.  Not all test suites have an example to show but more examples can be added in the future.
@@ -7,6 +8,7 @@ Please refer to the [CATALOG](https://github.com/test-network-function/test-netw
 ## Examples by Test Suite
 
 Please find an example below that ties to a specific test case you are interested in.
+
 ### accesscontrol
 
 * [cluster-role-bindings](examples/accesscontrol/clusterRoleBinding.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#cluster-role-bindings)
@@ -21,7 +23,7 @@ Creates necessary cluster role, role binding, service account, and pod that caus
 
 * namespace (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#namespace)
 
-* [pod-automount-service-account-token](examples/accesscontrol/serviceAccountTokenPod.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-automount-service-account-token) 
+* [pod-automount-service-account-token](examples/accesscontrol/serviceAccountTokenPod.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-automount-service-account-token)
 
 * [pod-role-bindings](examples/accesscontrol/podRoleBinding.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-role-bindings)
 
@@ -29,15 +31,12 @@ Creates necessary role, role binding, service account, and pod that causes a fai
 
 * [pod-service-account](examples/accesscontrol/serviceAccountPod.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-service-account)
 
-
-
 ### affiliated-certification
 
-No examples to show (yet)....
+No examples to show (yet)…
 
 * container-is-certified (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#container-is-certified)
 * operator-is-certified (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#operator-is-certified)
-
 
 ### lifecycle
 
@@ -72,7 +71,6 @@ Creates a pod with no "owner".  It does not belong to a replicaset or a deployme
 
 * stateful-scaling (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#statefulset-scaling)
 
-
 ### networking
 
 * icmpv4-connectivity (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#icmpv4-connectivity)
@@ -104,4 +102,3 @@ Creates an `echo-server` pod which does some logging to the stdout.  The test ch
 * isredhat-release (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#isredhat-release)
 * sysctl-config (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#sysctl-config)
 * tainted-node-kernel (no example) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#tainted-node-kernel)
-
