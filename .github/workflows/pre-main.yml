@@ -33,6 +33,9 @@ jobs:
         with:
           dockerfile: "Dockerfile*"
           recursive: true
+      - uses: nosborn/github-action-markdown-cli@v3.3.0
+        with:
+          files: .
       - uses: ludeeus/action-shellcheck@master
         env:
           SHELLCHECK_OPTS: --external-sources
