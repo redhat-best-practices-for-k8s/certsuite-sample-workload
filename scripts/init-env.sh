@@ -19,7 +19,7 @@ export \
 	SECRET_NAME=foo-cert-sec
 
 export CRD_SCALING_URL=https://github.com/test-network-function/crd-operator-scaling.git
-export CRD_SCALING_TAG=v0.0.2
+export CRD_SCALING_TAG=v0.0.3
 
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]];then
