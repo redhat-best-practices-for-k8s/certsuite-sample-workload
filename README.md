@@ -2,6 +2,7 @@
 # CNF Certification Partner
 
 [![tests](https://github.com/test-network-function/cnf-certification-test-partner/actions/workflows/pre-main.yml/badge.svg)](https://github.com/test-network-function/cnf-certification-test-partner/actions/workflows/pre-main.yml)
+[![release)](https://img.shields.io/github/v/release/test-network-function/cnf-certification-test-partner?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/test-network-function/cnf-certification-test-partner/releases)
 [![red hat](https://img.shields.io/badge/red%20hat---?color=gray&logo=redhat&logoColor=red&style=flat)](https://www.redhat.com)
 [![openshift](https://img.shields.io/badge/openshift---?color=gray&logo=redhatopenshift&logoColor=red&style=flat)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
 [![license](https://img.shields.io/github/license/test-network-function/cnf-certification-test-partner?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test-partner/blob/master/LICENSE)
