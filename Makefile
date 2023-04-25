@@ -22,14 +22,20 @@ install: clean
 	# ./scripts/install-prometheus-operator.sh
 	 ./scripts/deploy-operator-crd-scaling.sh
 
-# Bootstrap Fedora Machine Locally
+# Bootstrap Docker (Fedora)
 bootstrap-docker-fedora-local:
-	cd config/vagrant/scripts; ./bootstrap-docker.sh
+	cd config/vagrant/scripts; ./bootstrap-docker-fedora.sh
 
+# Bootstrap Docker (Ubuntu)
+bootstrap-docker-ubuntu-local:
+	cd config/vagrant/scripts; ./bootstrap-docker-ubuntu.sh
+
+# Bootstrap Golang (Fedora)
 bootstrap-golang-fedora-local:
-	cd config/vagrant/scripts; ./bootstrap-golang.sh
+	cd config/vagrant/scripts; ./bootstrap-golang-fedora.sh
 
-bootstrap-cluster-fedora-local:
+# Bootstrap Kubernetes/Kind
+bootstrap-cluster:
 	cd config/vagrant/scripts; ./bootstrap-cluster.sh
 
 # creates a k8s cluster instance
