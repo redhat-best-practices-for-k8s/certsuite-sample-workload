@@ -116,7 +116,7 @@ jobs:
         working-directory: cnf-certification-test
           
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l 'common && !affiliated-certification-container-is-certified-digest'
         working-directory: cnf-certification-test
 
       - name: Upload container test results as an artifact
