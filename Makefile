@@ -30,6 +30,14 @@ bootstrap-docker-fedora-local:
 bootstrap-docker-ubuntu-local:
 	cd config/vagrant/scripts; ./bootstrap-docker-ubuntu.sh
 
+# Bootstrap Python (Ubuntu)
+bootstrap-python-ubuntu-local:
+	cd config/vagrant/scripts; ./bootstrap-python-ubuntu.sh
+
+# Bootstrap Python (Fedora)
+bootstrap-python-fedora-local:
+	cd config/vagrant/scripts; ./bootstrap-python-fedora.sh
+
 # Bootstrap Golang (Fedora)
 bootstrap-golang-fedora-local:
 	cd config/vagrant/scripts; ./bootstrap-golang-fedora.sh

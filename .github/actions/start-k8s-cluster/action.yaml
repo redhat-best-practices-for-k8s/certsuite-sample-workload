@@ -19,6 +19,11 @@ runs:
       working-directory: ${{ inputs.working_directory }}
       shell: bash
 
+    - name: Run Bootstrap Python
+      run: make bootstrap-python-ubuntu-local
+      working-directory: ${{ inputs.working_directory }}
+      shell: bash
+
     - name: Start the cluster
       run: make rebuild-cluster
       working-directory: ${{ inputs.working_directory }}
