@@ -1,10 +1,10 @@
 .PHONY:
+	clean \
+	create-statefulset \
+	delete-deployment \
 	install \
-  clean \
-  delete-deployment \
-  create-statefulset \
-  install-litmus \
-  install-prometheus
+	install-litmus \
+	install-prometheus
 
 # Deploys the partner and test pods and the operator
 install: clean
@@ -19,34 +19,33 @@ install: clean
 	./scripts/deploy-community-operator.sh
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
-	# ./scripts/install-prometheus-operator.sh
-	 ./scripts/deploy-operator-crd-scaling.sh
+	./scripts/deploy-operator-crd-scaling.sh
 
 # Bootstrap Docker (Fedora)
 bootstrap-docker-fedora-local:
-	cd config/vagrant/scripts; ./bootstrap-docker-fedora.sh
+	cd config/vagrant/scripts && ./bootstrap-docker-fedora.sh
 
 # Bootstrap Docker (Ubuntu)
 bootstrap-docker-ubuntu-local:
-	cd config/vagrant/scripts; ./bootstrap-docker-ubuntu.sh
+	cd config/vagrant/scripts && ./bootstrap-docker-ubuntu.sh
 
 # Bootstrap Python (Ubuntu)
 bootstrap-python-ubuntu-local:
-	cd config/vagrant/scripts; ./bootstrap-python-ubuntu.sh
+	cd config/vagrant/scripts && ./bootstrap-python-ubuntu.sh
 
 # Bootstrap Python (Fedora)
 bootstrap-python-fedora-local:
-	cd config/vagrant/scripts; ./bootstrap-python-fedora.sh
+	cd config/vagrant/scripts && ./bootstrap-python-fedora.sh
 
 # Bootstrap Golang (Fedora)
 bootstrap-golang-fedora-local:
-	cd config/vagrant/scripts; ./bootstrap-golang-fedora.sh
+	cd config/vagrant/scripts && ./bootstrap-golang-fedora.sh
 
 # Bootstrap Kubernetes/Kind
 bootstrap-cluster:
-	cd config/vagrant/scripts; ./bootstrap-cluster.sh
+	cd config/vagrant/scripts && ./bootstrap-cluster.sh
 
-# creates a k8s cluster instance
+# Creates a k8s cluster instance
 rebuild-cluster: delete-cluster
 	./scripts/deploy-k8s-cluster.sh
 	./scripts/deploy-calico.sh
@@ -54,39 +53,39 @@ rebuild-cluster: delete-cluster
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh
 
-# launch Vagrant env
+# Launchs Vagrant env
 vagrant-build:
 	mkdir -p config/vagrant/kubeconfig
 	vagrant plugin install vagrant-reload
-	cd config/vagrant;vagrant up;cd ../..
+	cd config/vagrant && vagrant up && cd -
 	cp config/vagrant/kubeconfig/config ~/.kube/config
 
-# destroy Vagrant env
+# Destroys Vagrant env
 vagrant-destroy:
-	cd config/vagrant;vagrant destroy
+	cd config/vagrant && vagrant destroy
 
-# suspend the vagrant vm
+# Suspends the vagrant vm
 vagrant-suspend:
-	cd config/vagrant;vagrant suspend
+	cd config/vagrant && vagrant suspend
 
-# resume the vagrant vm
+# Resumes the vagrant vm
 vagrant-resume:
-	cd config/vagrant;vagrant resume
+	cd config/vagrant && vagrant resume
 
-# update the vagrant vm
+# Updates the vagrant vm
 vagrant-update:
-	cd config/vagrant;vagrant box update
+	cd config/vagrant && vagrant box update
 
-# one command to recreate the environment
+# One command to recreate the environment
 vagrant-recreate:
-	cd config/vagrant;vagrant destroy -f
+	cd config/vagrant && vagrant destroy -f
 	make vagrant-build
 
-# deploys the partner pods
+# Deploys the partner pods
 install-partner-pods:
 	./scripts/deploy-debug-ds.sh
-	
-# Instal operator requires OLM and operator SDK
+
+# Installs operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
 
@@ -96,7 +95,7 @@ install-community-operator:
 delete-community-operator:
 	./scripts/delete-community-operator.sh
 
-# Install test CRDs
+# Installs test CRDs
 install-crds:
 	./scripts/deploy-test-crds.sh
 
@@ -114,32 +113,32 @@ install-istio:
 
 delete-istio:
 	./scripts/delete-istio.sh
-	
-# delete deployment pods
+
+# Deletes deployment pods
 delete-deployment:
 	./scripts/delete-test-pods.sh
 
-# create statefulset pods
+# Creates statefulset pods
 create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
 
 delete-litmus:
 	./scripts/delete-litmus-operator.sh
 
-# deletes the namespace completely
+# Deletes the namespace completely
 clean-all:
 	./scripts/clean-all.sh
 
-# deletes, the partner and test pods and the operator
+# Deletes, the partner and test pods and the operator
 # pre-existing objects are preserved
 clean:
 	./scripts/clean.sh
 
-# deploy services
+# Deploys services
 deploy-services:
 	./scripts/manage-service.sh deploy
-	
-# delete services
+
+# Deletes services
 delete-services:
 	./scripts/manage-service.sh delete
 
