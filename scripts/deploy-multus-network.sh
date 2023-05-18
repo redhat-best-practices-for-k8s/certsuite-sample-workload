@@ -17,21 +17,25 @@ then
   oc rollout status daemonset calico-node -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   rm -rf ./temp
-  git clone --depth 1 $MULTUS_GIT_URL  -b v3.9.3 ./temp/multus-cni
+  git clone --depth 1 $MULTUS_GIT_URL  -b v4.0.1 ./temp/multus-cni
 
   # fix for dimensioning bug
-  sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml -i
+  sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick.yml -i
 
   # Deploy Multus
-  oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick-plugin.yml
+  oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick.yml
   
   # Wait for all multus daemonset pods to be running
   oc rollout status daemonset kube-multus-ds -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   # Install macvlan and other default plugins
   echo "## install CNIs"
-  sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/cni-install.yml -i
-  kubectl create -f temp/multus-cni/e2e/cni-install.yml
+  pushd temp/multus-cni/e2e || exit
+  ./get_tools.sh
+  ./generate_yamls.sh
+  popd || exit
+  sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
+  kubectl create -f temp/multus-cni/e2e/yamls/cni-install.yml
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   # Install whereabouts at specific released version
