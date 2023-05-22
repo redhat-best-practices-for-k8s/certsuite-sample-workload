@@ -12,7 +12,7 @@ RUN \
 		make-1:4.2.1 \
 		openssh-8.0p1 \
 		openssh-clients-8.0p1 \
-		podman-3:4.2.0 \
+		podman-3:4.4.1 \
 		psmisc-23.1 \
 		wget-1.19.5 \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
