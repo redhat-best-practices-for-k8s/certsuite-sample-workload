@@ -87,4 +87,5 @@ jobs:
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
-          tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}'
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
