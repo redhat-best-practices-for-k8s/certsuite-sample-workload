@@ -2,19 +2,20 @@ FROM registry.access.redhat.com/ubi8/ubi:8.7
 ARG USERNAME=tnf-user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+# hadolint ignore=DL3041
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
-		ethtool-2:5.13 \
-		hostname-3.20 \
-		iproute-5.18.0 \
-		iputils-20180629 \
-		make-1:4.2.1 \
-		openssh-8.0p1 \
-		openssh-clients-8.0p1 \
-		podman-3:4.4.1 \
-		psmisc-23.1 \
-		wget-1.19.5 \
+		ethtool \
+		hostname \
+		iproute \
+		iputils \
+		make \
+		openssh \
+		openssh-clients \
+		podman \
+		psmisc \
+		wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
 
