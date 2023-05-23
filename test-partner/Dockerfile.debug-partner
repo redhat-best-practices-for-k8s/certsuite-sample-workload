@@ -3,7 +3,7 @@ FROM registry.access.redhat.com/ubi8/ubi:8.7 as podman-builder
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
-		git\
+		git \
 		make \
 		golang \
 		gpgme-devel \
