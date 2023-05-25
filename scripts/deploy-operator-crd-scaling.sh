@@ -5,6 +5,12 @@ SCRIPT_DIR="$(dirname "$0")"
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
+# Skip the install if MacOS
+if [[ "$(uname -s)" == "Darwin"* ]]; then
+  echo "Skipping operator crd scaling install on MacOS"
+  exit 0
+fi
+
 # clone the repo
 REPO_NAME=crd-operator-scaling
 rm -rf $REPO_NAME

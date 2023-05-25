@@ -7,7 +7,7 @@
 	install-prometheus
 
 # Deploys the partner and test pods and the operator
-install: clean
+install:
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
@@ -144,3 +144,6 @@ delete-services:
 
 deploy-test-crd-scaling-operator:
 	./scripts/deploy-operator-crd-scaling.sh
+
+lint:
+	shellcheck scripts/*.sh
