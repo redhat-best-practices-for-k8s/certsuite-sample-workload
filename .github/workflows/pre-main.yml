@@ -11,8 +11,6 @@ env:
   REGISTRY_LOCAL: localhost
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   TNF_IMAGE_TAG: unstable
-  OCT_IMAGE_NAME: testnetworkfunction/oct
-  OCT_IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
   TNF_ALLOW_PREFLIGHT_INSECURE: false
