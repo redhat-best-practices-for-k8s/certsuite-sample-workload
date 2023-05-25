@@ -9,7 +9,7 @@ ISTIO_DIR=istio-1.17.2
 ISTIO_PROFILE=demo
 
 if [ ! -d "$ISTIO_DIR" ]; then
-    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.17.0 sh -
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.17.2 sh -
 fi
 
 oc create namespace istio-system
