@@ -7,7 +7,6 @@ SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
 MULTUS_GIT_URL="https://github.com/k8snetworkplumbingwg/multus-cni.git"
-WHEREABOUTS_GIT_URL="https://github.com/k8snetworkplumbingwg/whereabouts"
 
 if $TNF_NON_OCP_CLUSTER
 then
@@ -38,14 +37,6 @@ then
   kubectl create -f temp/multus-cni/e2e/yamls/cni-install.yml
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
-  # Install whereabouts at specific released version
-  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.1
-  oc apply \
-    -f whereabouts/doc/crds/daemonset-install.yaml \
-    -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
-    -f whereabouts/doc/crds/whereabouts.cni.cncf.io_overlappingrangeipreservations.yaml \
-
-  rm -rf whereabouts
   # Whereabout does not support dual stack so creating 2 sets of single stack multus interfaces
   create_nets(){
     for (( NUM=0; NUM<MULTUS_IF_NUM; NUM++ ))

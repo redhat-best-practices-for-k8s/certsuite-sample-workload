@@ -10,7 +10,6 @@ spec:
       "master": "eth0",
       "mode": "bridge",
       "ipam": {
-        "type": "whereabouts",
         "range": "{{ IP_NUM }}"
       }
     }'
