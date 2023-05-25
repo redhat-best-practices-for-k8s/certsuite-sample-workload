@@ -1,0 +1,85 @@
+---
+name: MacOS Tests
+'on':
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+env:
+    TNF_CONTAINER_CLIENT: docker
+
+jobs:
+    lint:
+        runs-on: macos-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v3
+
+            - name: Install dependencies
+              run: |
+                brew install shellcheck
+
+            - name: Run shellcheck
+              run: |
+                shellcheck ./scripts/*.sh
+    smoke-tests:
+        runs-on: macos-latest
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v3
+
+            - name: Set up Go 1.20
+              uses: actions/setup-go@v4
+              with:
+                  go-version: 1.20.4
+
+            - name: Disable default go problem matcher
+              run: echo "::remove-matcher owner=go::"
+
+            - name: Install brew binaries (MacOS)
+              run: |
+                brew install coreutils
+                brew install kind
+                brew install operator-sdk --ignore-dependencies
+                brew install bash
+                brew install openshift-cli
+                brew install kubernetes-cli
+                brew install gnu-sed
+                brew install helm
+                brew install jq
+                brew install docker
+                brew install colima
+                brew install python3
+                pip3 install --upgrade pip
+                pip3 install j2cli
+
+            
+            - name: Start colima
+              run: |
+                colima start
+
+            # - name: Setup tmate session
+            #   uses: mxschmitt/action-tmate@v3
+
+            - name: Adjust PATH for gnu-sed
+              run: |
+                echo "/usr/local/opt/gnu-sed/libexec/gnubin" >> $GITHUB_PATH
+
+            - name: Run the Mac precheck script
+              run: |
+                ./scripts/mac-precheck.sh
+
+            - name: Start the cluster
+              uses: nick-fields/retry@v2
+              with:
+                  timeout_minutes: 15
+                  max_attempts: 10
+                  command: make rebuild-cluster
+
+            - name: Install resources
+              uses: nick-fields/retry@v2
+              with:
+                  timeout_minutes: 30
+                  max_attempts: 3
+                  command: make install

@@ -49,6 +49,9 @@ cmd_exists \
 	kind \
 	kubectl \
 	oc \
-	operator-sdk \
-	sed ||
+  sed \
+  gsed \
+  operator-sdk \
+	python3 \
+  go ||
 	exit 1
