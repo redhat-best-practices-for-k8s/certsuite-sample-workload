@@ -50,6 +50,7 @@ cmd_exists \
   sed \
   gsed \
   operator-sdk \
+	python3 \
   go ||
 	exit 1
 
