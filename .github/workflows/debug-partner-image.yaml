@@ -8,6 +8,9 @@ on:
   # around 10-30 minutes.
   schedule:
     - cron: '0 5 * * *'
+  push:
+    tags:
+      - v*
   workflow_dispatch:
 defaults:
   run:
@@ -77,10 +80,9 @@ jobs:
             org.opencontainers.image.description=CNF Certification Test uses it.
             org.opencontainers.image.vendor=Red Hat, Inc.
           tags: |
-            type=semver,pattern={{major}}.{{minor}},priority=901
+            type=raw,value=latest
+            type=schedule,pattern=nightly
             type=semver,pattern={{version}}
-            type=sha,priority=201
-            type=raw,value={{date 'YYYYMMDD-HHmmss'}}
 
       - name: 'Build and push the new `debug-partner` image'
         uses: docker/build-push-action@v4
