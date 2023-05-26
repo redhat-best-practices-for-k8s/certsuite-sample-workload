@@ -17,7 +17,7 @@ then
   oc rollout status daemonset calico-node -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   rm -rf ./temp
-  git clone --depth 1 $MULTUS_GIT_URL  -b v4.0.1 ./temp/multus-cni
+  git clone --depth 1 $MULTUS_GIT_URL  -b v4.0.2 ./temp/multus-cni
 
   # fix for dimensioning bug
   sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick.yml -i
