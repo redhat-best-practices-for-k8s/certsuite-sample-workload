@@ -11,36 +11,63 @@ if [[ "$(uname -s)" == "Darwin"* ]]; then
   exit 0
 fi
 
-# clone the repo
-REPO_NAME=crd-operator-scaling
-rm -rf $REPO_NAME
-git clone "$CRD_SCALING_URL" -b "$CRD_SCALING_TAG" || exit 1
+# Clone the repo.
+CHECKOUT_FOLDER=crd-operator-scaling
+rm -rf ${CHECKOUT_FOLDER}
 
-## install the operator
-cd crd-operator-scaling || exit 1
-## install the crd
-make manifests
-make install
-make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:latest
+echo "Cloning crd operator version ${CHECKOUT_FOLDER}."
+git clone "$CRD_SCALING_URL" -b "$CRD_SCALING_TAG" "${CHECKOUT_FOLDER}" || exit 1
+
+## Operator installation.
+## Change to checkout folder first.
+pushd "${CHECKOUT_FOLDER}" || exit 1
+
+## Deploy operator using container matching the checkout version ($CRD_SCALING_TAG).
+echo "Deplying operator with container image version ${CRD_SCALING_TAG}"
+
+make deploy IMG=quay.io/testnetworkfunction/crd-operator-scaling:"${CRD_SCALING_TAG}"
 oc wait deployment new-pro-controller-manager -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout=240s
+
+# Deploy custom cluster role needed by the deployment that the controller will create.
 make addrole
-kubectl apply -f config/samples --validate=false
-BIT=5
-NUM=15
-for i in $(seq $NUM); do
-	printf 'Wait %d seconds for %d times...\n' $BIT "$i"
-	sleep $BIT
-	kubectl get deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE" ||
-		continue
-	oc wait deployment jack \
-		--for=condition=available \
-		--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
-		--timeout=240s
-	exit
+
+# Deploy CR samples to trigger the controller.
+oc apply -f config/samples --validate=false
+
+TIMEOUT_MINS="10"
+# Wait for deployment "jack" to be created.
+END_TIME=$(date -ud "${TIMEOUT_MINS} minute" +%s)
+
+echo "Waiting for deployment jack to appear until $(date --date=@"${END_TIME}")"
+
+DEPLOYMENT_FOUND=false
+while [[ $(date -u +%s) -le $END_TIME ]]; do
+  if kubectl get deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE" ; then
+    DEPLOYMENT_FOUND=true
+    break
+  fi
+
+  echo "Deployment jack not found yet. Waiting 5 secs..."
+  sleep 5
 done
 
-# delete the repo after installing
-rm -rf "$REPO_NAME"
+if ! ${DEPLOYMENT_FOUND} ; then
+	echo "Timeout waiting for operator's deployment."
+	exit 1
+fi
 
-printf >&2 'Exit by timeout after %d seconds.\n' $((BIT * NUM))
-exit 1
+# Wait until jack deployment's pods are ready.
+echo "Waiting ${TIMEOUT_MINS}m for operator's deployment jack in namespace ${TNF_EXAMPLE_CNF_NAMESPACE} to be ready."
+oc wait deployment jack \
+	--for=condition=available \
+	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--timeout="${TIMEOUT_MINS}"m
+
+oc get deployment jack -n "$TNF_EXAMPLE_CNF_NAMESPACE"
+
+# Return from the checkout folder.
+popd || exit 1
+
+# Delete the checkout folder after installation.
+echo "Removing crd operator checkout folder ${CHECKOUT_FOLDER}"
+rm -rf "${CHECKOUT_FOLDER}"
