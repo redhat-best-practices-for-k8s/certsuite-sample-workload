@@ -39,7 +39,15 @@ then
   kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
   # Install whereabouts at specific released version
-  git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.1
+  # git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.1
+  git clone $WHEREABOUTS_GIT_URL --depth 1
+  pushd whereabouts || exit
+  git checkout d15b4d5456ee910a81bf15e9e242a136823d22fd
+  popd || exit
+
+  # Replace the image in the daemonset-install.yaml
+  sed 's/whereabouts\/whereabouts:latest-amd64/whereabouts\/whereabouts:v0.6.1-amd64/g' whereabouts/doc/crds/daemonset-install.yaml -i
+
   oc apply \
     -f whereabouts/doc/crds/daemonset-install.yaml \
     -f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
