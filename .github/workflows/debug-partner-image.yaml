@@ -47,18 +47,6 @@ jobs:
       - name: 'Test: Check if ip is installed'
         run: docker run $IMAGE_NAME:$IMAGE_TAG which ip
 
-  push-debug-partner-image:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    name: 'Push the new `debug-partner` image to Quay.io'
-    needs: test-debug-partner-image
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Checkout the main branch
-        uses: actions/checkout@v3
-        with:
-          ref: main
-
       - name: Authenticate against Quay.io
         uses: docker/login-action@v2
         with:
