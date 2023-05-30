@@ -8,9 +8,8 @@ on:
   # around 10-30 minutes.
   schedule:
     - cron: '0 5 * * *'
-  push:
-    tags:
-      - v*
+  release:
+    types: [published]
   workflow_dispatch:
 defaults:
   run:
