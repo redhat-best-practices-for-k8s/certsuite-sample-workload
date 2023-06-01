@@ -13,10 +13,11 @@ COLOR_RESET="\033[0m"
 # If `date` command fails, it will print the error output instead and will
 # exit with status code 1.
 timestamp() {
-	local tms
+	local err tms
 	tms="$(date +%Y%m%d-%H:%M:%S 2>&1)" || {
+		err=$?
 		printf >&2 "%s\n" "Failed to run date command: $tms"
-		exit 1
+		exit $err
 	}
 	printf %s "$tms"
 }
