@@ -278,8 +278,8 @@ brew install kind podman qemu
 kind create cluster
 export KIND_EXPERIMENTAL_PROVIDER=podman
 git clone git@github.com:rdavid/cnf-certification-test-partner.git &&
-	cd cnf-certification-test-partner &&
-	make
+  cd cnf-certification-test-partner &&
+  make
 ```
 
 ## License
