@@ -271,6 +271,17 @@ user@fedora vagrant]$ vagrant ssh
 
 The partner repo scripts are located in ~/partner
 
+## Setup with podman, qemu, and kind (Mac OS Ventura)
+
+```sh
+brew install kind podman qemu
+kind create cluster
+export KIND_EXPERIMENTAL_PROVIDER=podman
+git clone git@github.com:test-network-function/cnf-certification-test-partner.git &&
+  cd cnf-certification-test-partner &&
+  make rebuild-cluster; make install
+```
+
 ## License
 
 CNF Certification Test Partner is copyright [Red Hat, Inc.](https://www.redhat.com) and available
