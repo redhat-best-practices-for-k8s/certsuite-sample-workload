@@ -277,7 +277,7 @@ The partner repo scripts are located in ~/partner
 brew install kind podman qemu
 kind create cluster
 export KIND_EXPERIMENTAL_PROVIDER=podman
-git clone git@github.com:rdavid/cnf-certification-test-partner.git &&
+git clone git@github.com:test-network-function/cnf-certification-test-partner.git &&
   cd cnf-certification-test-partner &&
   make
 ```
