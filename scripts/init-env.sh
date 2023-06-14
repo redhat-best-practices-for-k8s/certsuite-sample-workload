@@ -21,6 +21,9 @@ export \
 export CRD_SCALING_URL=https://github.com/test-network-function/crd-operator-scaling.git
 export CRD_SCALING_TAG=v0.0.4
 
+export COLLECTOR_URL=https://github.com/test-network-function/collector-deployment.git
+# export COLLECTOR_TAG=v0.0.1 # Re-enable this when the version is released
+
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]];then
     export OPERATOR_REGISTRY_POD_NAME=${OPERATOR_REGISTRY_POD_NAME_FULL: -63}
