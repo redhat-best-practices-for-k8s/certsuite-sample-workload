@@ -21,9 +21,11 @@ else
   echo "operator-sdk was found in the path, no need to install it"
 fi
 
-# Install OLM
-operator-sdk olm uninstall
-operator-sdk olm install --version=v0.24.0
+curl -L https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.25.0/install.sh -o install.sh
+chmod +x install.sh
+./install.sh v0.25.0
+rm install.sh
+
 # Wait for all OLM pods to be ready
 kubectl wait --for=condition=ready pod --all=true -nolm --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 sleep 5
