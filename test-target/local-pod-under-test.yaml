@@ -25,6 +25,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 30
       automountServiceAccountToken: false
+      serviceAccountName: test-pod-sa
       containers:
         - image: quay.io/testnetworkfunction/cnf-test-partner:latest
           imagePullPolicy: IfNotPresent
