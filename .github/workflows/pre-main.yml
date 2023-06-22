@@ -85,9 +85,6 @@ jobs:
       - name: Start the k8s cluster
         uses: ./.github/actions/start-k8s-cluster
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Create `local-test-infra` OpenShift resources
         uses: ./.github/actions/create-local-test-infra-resources
 
