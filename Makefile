@@ -5,7 +5,7 @@
 	install \
 	install-litmus \
 	install-prometheus
-
+##test
 # Deploys the partner and test pods and the operator
 install:
 	./scripts/fix-node-labels.sh
