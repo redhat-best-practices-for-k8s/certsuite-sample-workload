@@ -44,6 +44,7 @@ fi
 cmd_exists \
 	go \
 	gsed \
+	j2 \
 	jq \
 	kind \
 	kubectl \
