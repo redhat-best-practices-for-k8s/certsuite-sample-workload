@@ -1,6 +1,3 @@
 [default.extend-words]
 hel = "hel"
 OT = "OT"
-
-[files]
-extend-exclude = ["go.mod", "results.html", "results-embed.html"]
