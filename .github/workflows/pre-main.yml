@@ -39,6 +39,7 @@ jobs:
           SHELLCHECK_OPTS: --external-sources
         with:
           ignore_names: mo
+      - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |

@@ -53,7 +53,7 @@ rebuild-cluster: delete-cluster
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh
 
-# Launchs Vagrant env
+# Launches Vagrant env.
 vagrant-build:
 	mkdir -p config/vagrant/kubeconfig
 	vagrant plugin install vagrant-reload

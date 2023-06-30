@@ -19,7 +19,7 @@ operator-sdk init --domain "$REGISTRY_NAME" --plugins helm
 operator-sdk create api --group cnftest --version v0 --kind Nginx
 
 # Logging registry before using
-${CONTAINER_CLIENT} logs registry 
+${CONTAINER_CLIENT} logs registry
 
 # Build and push the operator image.
 make docker-build docker-push IMG="$OPERATOR_IMAGE_FULL_NAME"
@@ -27,8 +27,8 @@ make docker-build docker-push IMG="$OPERATOR_IMAGE_FULL_NAME"
 # Configure the operator manifest
 mkdir -p config/manifests/bases
 
-# Create configration
-cat > config/manifests/bases/nginx-operator.clusterserviceversion.yaml <<-'EOF'
+# Create configuration.
+cat >config/manifests/bases/nginx-operator.clusterserviceversion.yaml <<-'EOF'
 apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
