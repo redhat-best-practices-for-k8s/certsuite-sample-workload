@@ -44,6 +44,11 @@ else
 	export CATALOG_NAMESPACE="openshift-marketplace"
 fi
 
+# Pre-pull the image for the operator
+docker pull "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
+docker save "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION" > ./temp/"$COMMUNITY_OPERATOR_BASE"-"$COMMUNITY_OPERATOR_IMAGEVERSION".tar
+kind load image-archive ./temp/"$COMMUNITY_OPERATOR_BASE"-"$COMMUNITY_OPERATOR_IMAGEVERSION".tar
+
 # Create the operator group
 mkdir -p ./temp
 
