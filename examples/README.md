@@ -57,7 +57,7 @@ Image in this pod has a pull policy of 'Always' which is incorrect.
 
 Creates a pod without a terminationGracePeriod set correctly.
 
-* [pod-high-availablility](examples/lifecycle/highAvailability.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-high-availability)
+* [pod-high-availability](examples/lifecycle/highAvailability.yaml) - [Catalog Link](https://github.com/test-network-function/test-network-function/blob/main/CATALOG.md#pod-high-availability)
 
 Creates a deployment with a replica count of 2 but with no pod anti affinity rules.
 
