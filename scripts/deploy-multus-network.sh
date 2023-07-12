@@ -20,10 +20,11 @@ then
   git clone --depth 1 $MULTUS_GIT_URL  -b v4.0.2 ./temp/multus-cni
 
   # fix for dimensioning bug
-  sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick.yml -i
+  # sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick.yml -i
 
   # Deploy Multus
-  oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick.yml
+  # oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick.yml
+  oc apply --filename ./temp/multus-cni/deployments/multus-daemonset.yml
   
   # Wait for all multus daemonset pods to be running
   oc rollout status daemonset kube-multus-ds -n kube-system  --timeout="$TNF_DEPLOYMENT_TIMEOUT"
