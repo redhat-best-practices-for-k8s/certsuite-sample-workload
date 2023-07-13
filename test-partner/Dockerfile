@@ -46,7 +46,7 @@ ENV PATH="/bin/":"/usr/local/go/bin":${GOPATH}"/bin/":"${PATH}"
 # Configure SSH daemon
 WORKDIR /home/${USERNAME}/sshd
 RUN \
-	printf "Port 2222\nHostKey /home/${USERNAME}/sshd/ssh_host_rsa_key\nPidFile /home/${USERNAME}/sshd/sshd.pid\n" >> sshd_config \
+	printf 'Port 2222\nHostKey /home/%s/sshd/ssh_host_rsa_key\nPidFile /home/%s/sshd/sshd.pid\n' "$USERNAME" "$USERNAME" >> sshd_config \
 	&& ssh-keygen -t rsa -f /home/${USERNAME}/sshd/ssh_host_rsa_key -N '' \
 	&& chown -R $USERNAME:$USERNAME /home/${USERNAME}/sshd
 
