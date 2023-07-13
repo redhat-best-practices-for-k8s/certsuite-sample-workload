@@ -7,8 +7,8 @@ source "$SCRIPT_DIR"/init-env.sh
 
 # Skip the delete if MacOS
 if [[ "$(uname -s)" == "Darwin"* ]]; then
-  echo "Skipping operator crd scaling delete on MacOS"
-  exit 0
+	echo "Skipping operator crd scaling delete on MacOS"
+	exit 0
 fi
 
 # clone the repo

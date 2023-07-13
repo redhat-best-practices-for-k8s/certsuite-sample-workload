@@ -3,7 +3,7 @@
 # See documentation for more information on limit ranges:
 # https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
 
-# Note: This YAML is not installed by default as part of `make install` because we decided to 
+# Note: This YAML is not installed by default as part of `make install` because we decided to
 #        go with ResourceQuota only.  Possibly adding this in later.
 
 # Initialization
