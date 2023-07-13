@@ -11,13 +11,18 @@ RUN \
 		iproute \
 		iputils \
 		make \
-		openssh \
+		openssh-server \
 		openssh-clients \
 		podman \
 		psmisc \
 		wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
+
+# Create user and group
+RUN \
+	groupadd --gid $USER_GID $USERNAME \
+	&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
 
 # Install Go binary
 ENV \
@@ -38,6 +43,13 @@ RUN \
 # Add go and oc binary directory to $PATH
 ENV PATH="/bin/":"/usr/local/go/bin":${GOPATH}"/bin/":"${PATH}"
 
+# Configure SSH daemon
+WORKDIR /home/${USERNAME}/sshd
+RUN \
+	printf 'Port 2222\nHostKey /home/%s/sshd/ssh_host_rsa_key\nPidFile /home/%s/sshd/sshd.pid\n' "$USERNAME" "$USERNAME" >> sshd_config \
+	&& ssh-keygen -t rsa -f /home/${USERNAME}/sshd/ssh_host_rsa_key -N '' \
+	&& chown -R $USERNAME:$USERNAME /home/${USERNAME}/sshd
+
 # Add arbitrary /licenses folder to pass preflight
 RUN \
 	mkdir /licenses \
@@ -50,8 +62,6 @@ WORKDIR /app/testapp
 RUN make build
 ARG LIVENESS_PROBE_DEFAULT_PORT=8080
 EXPOSE ${LIVENESS_PROBE_DEFAULT_PORT}
-RUN \
-	groupadd --gid $USER_GID $USERNAME \
-	&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+
 USER $USERNAME
 CMD ["./bin/app"]
