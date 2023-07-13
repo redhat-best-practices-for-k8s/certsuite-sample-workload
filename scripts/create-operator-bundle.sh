@@ -29,50 +29,50 @@ mkdir -p config/manifests/bases
 
 # Create configuration.
 cat >config/manifests/bases/nginx-operator.clusterserviceversion.yaml <<-'EOF'
-apiVersion: operators.coreos.com/v1alpha1
-kind: ClusterServiceVersion
-metadata:
-  annotations:
-    alm-examples: '[]'
-    capabilities: Basic Install
-    test-network-function.com/subscription_name: '["nginx-operator-v0-0-1-sub"]'
-  name: nginx-operator.v0.0.0
-  namespace: placeholder
-  labels:
-    test-network-function.com/operator: target
-spec:
-  apiservicedefinitions: {}
-  customresourcedefinitions: {}
-  description: cnftest
-  displayName: test-operator
-  icon:
-  - base64data: ""
-    mediatype: ""
-  install:
-    spec:
-      deployments: null
-    strategy: ""
-  installModes:
-  - supported: false
-    type: OwnNamespace
-  - supported: false
-    type: SingleNamespace
-  - supported: false
-    type: MultiNamespace
-  - supported: true
-    type: AllNamespaces
-  keywords:
-  - cnftest
-  links:
-  - name: Nginx Operator
-    url: https://nginx-operator.domain
-  maintainers:
-  - email: deliedit@redhat.com
-    name: david
-  maturity: alpha
-  provider:
-    name: redhat
-  version: 0.0.0
+	apiVersion: operators.coreos.com/v1alpha1
+	kind: ClusterServiceVersion
+	metadata:
+	  annotations:
+	    alm-examples: '[]'
+	    capabilities: Basic Install
+	    test-network-function.com/subscription_name: '["nginx-operator-v0-0-1-sub"]'
+	  name: nginx-operator.v0.0.0
+	  namespace: placeholder
+	  labels:
+	    test-network-function.com/operator: target
+	spec:
+	  apiservicedefinitions: {}
+	  customresourcedefinitions: {}
+	  description: cnftest
+	  displayName: test-operator
+	  icon:
+	  - base64data: ""
+	    mediatype: ""
+	  install:
+	    spec:
+	      deployments: null
+	    strategy: ""
+	  installModes:
+	  - supported: false
+	    type: OwnNamespace
+	  - supported: false
+	    type: SingleNamespace
+	  - supported: false
+	    type: MultiNamespace
+	  - supported: true
+	    type: AllNamespaces
+	  keywords:
+	  - cnftest
+	  links:
+	  - name: Nginx Operator
+	    url: https://nginx-operator.domain
+	  maintainers:
+	  - email: deliedit@redhat.com
+	    name: david
+	  maturity: alpha
+	  provider:
+	    name: redhat
+	  version: 0.0.0
 EOF
 
 # Make and push the operator bundle

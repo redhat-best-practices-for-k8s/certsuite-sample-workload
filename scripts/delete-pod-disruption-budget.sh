@@ -10,6 +10,6 @@ source "$SCRIPT_DIR"/init-env.sh
 mkdir -p ./temp
 
 # shellcheck disable=SC2002 # Useless cat.
-cat ./test-target/pod-disruption-budget.yaml | APP_1="testdp" APP_2="testss" "$SCRIPT_DIR"/mo > ./temp/rendered-pod-disruption-budget-template.yaml
+cat ./test-target/pod-disruption-budget.yaml | APP_1="testdp" APP_2="testss" "$SCRIPT_DIR"/mo >./temp/rendered-pod-disruption-budget-template.yaml
 oc delete --filename ./temp/rendered-pod-disruption-budget-template.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE" --ignore-not-found=true
 rm ./temp/rendered-pod-disruption-budget-template.yaml
