@@ -6,11 +6,11 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # File not following.
 source "$SCRIPT_DIR"/init-env.sh
 
-ISTIO_DIR=istio-1.18.0
+ISTIO_DIR=istio-1.18.1
 ISTIO_PROFILE=demo
 
 if [ ! -d "$ISTIO_DIR" ]; then
-	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.18.0 sh -
+	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.18.1 sh -
 fi
 oc create namespace istio-system
 if ! $TNF_NON_OCP_CLUSTER; then
