@@ -8,7 +8,6 @@ name: Test Incoming Changes
   workflow_dispatch:
 env:
   REGISTRY: quay.io
-  REGISTRY_LOCAL: localhost
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   TNF_IMAGE_TAG: unstable
   TNF_CONTAINER_CLIENT: docker
@@ -18,7 +17,7 @@ env:
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
   TNF_SMOKE_TESTS_LOG_LEVEL: trace
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
@@ -96,14 +95,6 @@ jobs:
         with:
           repository: test-network-function/cnf-certification-test
           path: cnf-certification-test
-
-      # Clone and run the cnf-certification-test repo as a container
-      - name: Build the `cnf-certification-test` image
-        run: |
-          make build-image-local
-        env:
-          IMAGE_TAG: ${TNF_IMAGE_TAG}
-        working-directory: cnf-certification-test
 
       - name: Create required TNF config files and directories
         run: |
