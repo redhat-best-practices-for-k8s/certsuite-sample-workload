@@ -20,6 +20,7 @@ install:
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
 	./scripts/deploy-operator-crd-scaling.sh
+	./scripts/delete-standard-storageclass.sh
 
 # Bootstrap Docker (Fedora)
 bootstrap-docker-fedora-local:
