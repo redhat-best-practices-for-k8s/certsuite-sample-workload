@@ -43,16 +43,6 @@ else
 	export CATALOG_NAMESPACE="openshift-marketplace"
 fi
 
-mkdir -p ./temp
-
-# Pre-pull the image for the operator (if using Kind)
-if $TNF_NON_OCP_CLUSTER; then
-	docker pull "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
-	docker save "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION" >./temp/"$COMMUNITY_OPERATOR_BASE"-"$COMMUNITY_OPERATOR_IMAGEVERSION".tar
-	kind load image-archive ./temp/"$COMMUNITY_OPERATOR_BASE"-"$COMMUNITY_OPERATOR_IMAGEVERSION".tar
-	rm ./temp/"$COMMUNITY_OPERATOR_BASE"-"$COMMUNITY_OPERATOR_IMAGEVERSION".tar
-fi
-
 # Create the operator group
 mkdir -p ./temp
 
