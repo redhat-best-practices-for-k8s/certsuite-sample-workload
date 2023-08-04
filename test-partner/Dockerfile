@@ -26,7 +26,7 @@ RUN \
 
 # Install Go binary
 ENV \
-	GO_BIN_TAR=go1.20.6.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.20.7.linux-amd64.tar.gz \
 	GO_DL_URL=https://golang.org/dl \
 	GOPATH=/root/go \
 	TEMP_DIR=/tmp
