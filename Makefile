@@ -50,6 +50,7 @@ bootstrap-cluster:
 rebuild-cluster: delete-cluster
 	./scripts/deploy-k8s-cluster.sh
 	./scripts/deploy-calico.sh
+	./scripts/preload-images.sh
 
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh
