@@ -28,6 +28,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: 'Build the `cnf-test-partner` image'
         run: docker build  -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
         working-directory: .
