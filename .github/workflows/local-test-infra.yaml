@@ -28,6 +28,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Start the k8s cluster
         uses: ./.github/actions/start-k8s-cluster
 
