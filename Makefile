@@ -10,6 +10,7 @@
 # MacOS has FreeBSD sed by default, which fails on --version.
 install:
 	sed --version >/dev/null 2>&1 || { printf >&2 'Install GNU sed.\n'; exit 1; }
+	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
 	./scripts/deploy-test-pods.sh
