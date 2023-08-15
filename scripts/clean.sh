@@ -18,3 +18,4 @@ source "$SCRIPT_DIR"/init-env.sh
 ./"$SCRIPT_DIR"/delete-resource-quota.sh
 ./"$SCRIPT_DIR"/delete-pod-disruption-budget.sh
 ./"$SCRIPT_DIR"/delete-operator-crd-scaling.sh
+./"$SCRIPT_DIR"/delete-cr-scale-operator.sh
