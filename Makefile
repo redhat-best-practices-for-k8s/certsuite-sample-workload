@@ -6,8 +6,10 @@
 	install-litmus \
 	install-prometheus
 
-# Deploys the partner and test pods and the operator
+# Deploys the partner and test pods and the operator. GNU sed is required.
+# MacOS has FreeBSD sed by default, which fails on --version.
 install:
+	sed --version >/dev/null 2>&1 || { printf >&2 'Install GNU sed.\n'; exit 1; }
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
