@@ -23,6 +23,7 @@ install:
 	./scripts/deploy-network-policies.sh
 	./scripts/deploy-operator-crd-scaling.sh
 	./scripts/delete-standard-storageclass.sh
+	./scripts/deploy-cr-scale-operator.sh
 
 # Bootstrap Docker (Fedora)
 bootstrap-docker-fedora-local:
@@ -149,6 +150,9 @@ delete-services:
 
 deploy-test-crd-scaling-operator:
 	./scripts/deploy-operator-crd-scaling.sh
+
+deploy-cr-scale-operator:
+	./scripts/deploy-cr-scale-operator.sh
 
 lint:
 	shellcheck scripts/*.sh
