@@ -36,5 +36,3 @@ popd || exit 1
 
 log_info "Removing cr operator checkout folder ${CR_SCALE_OPERATOR_DIR}."
 rm -rf $CR_SCALE_OPERATOR_DIR
-
-
