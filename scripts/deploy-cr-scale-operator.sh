@@ -16,7 +16,7 @@ CR_SCALE_OPERATOR_DIR=cr-scale-operator
 
 # Clone the repo.
 rm -rf ${CR_SCALE_OPERATOR_DIR}
-log_info "Cloning crd operator version ${CR_SCALE_OPERATOR_DIR}."
+log_info "Cloning cr operator version ${CR_SCALE_OPERATOR_DIR}."
 git clone "$CR_SCALE_OPERATOR_GIT_REPO" -b "$TAG" "${CR_SCALE_OPERATOR_DIR}" || exit 1
 
 ## Change to checkout folder first.
@@ -34,7 +34,7 @@ oc get pods
 # Return from the checkout folder.
 popd || exit 1
 
-log_info "Removing crd operator checkout folder ${CR_SCALE_OPERATOR_DIR}"
+log_info "Removing cr operator checkout folder ${CR_SCALE_OPERATOR_DIR}."
 rm -rf $CR_SCALE_OPERATOR_DIR
 
 

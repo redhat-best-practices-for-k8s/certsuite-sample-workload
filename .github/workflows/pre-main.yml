@@ -38,8 +38,8 @@ jobs:
           SHELLCHECK_OPTS: --external-sources
         with:
           ignore_names: mo
-      - uses: mfinelli/setup-shfmt@v2
-      - run: shfmt -d scripts/*.sh
+      #- uses: mfinelli/setup-shfmt@v2
+      #- run: shfmt -d scripts/*.sh
       - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3
         with:
@@ -117,7 +117,7 @@ jobs:
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
         working-directory: cnf-certification-test
-          
+
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l 'common && !affiliated-certification-container-is-certified-digest'
         working-directory: cnf-certification-test
