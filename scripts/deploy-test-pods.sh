@@ -17,8 +17,10 @@ if [[ $NUM_NODES == 1 ]]; then
 fi
 
 # shellcheck disable=SC2002 # Useless cat.
+cat ./test-target/test-service-account.yaml | "$SCRIPT_DIR"/mo >./temp/rendered-test-service-account-template.yaml
+# shellcheck disable=SC2002 # Useless cat.
 cat ./test-target/local-pod-under-test.yaml | APP="testdp" RESOURCE_TYPE="Deployment" MULTUS_ANNOTATION=$MULTUS_ANNOTATION REPLICAS=$REPLICAS "$SCRIPT_DIR"/mo >./temp/rendered-local-pod-under-test-template.yaml
-oc apply --filename ./test-target/test-service-account.yaml
+oc apply --filename ./temp/rendered-test-service-account-template.yaml
 oc apply --filename ./temp/rendered-local-pod-under-test-template.yaml
-rm ./temp/rendered-local-pod-under-test-template.yaml
+rm ./temp/rendered-test-service-account-template.yaml ./temp/rendered-local-pod-under-test-template.yaml
 oc wait deployment test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout="$TNF_DEPLOYMENT_TIMEOUT"
