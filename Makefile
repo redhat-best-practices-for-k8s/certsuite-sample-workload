@@ -55,6 +55,7 @@ rebuild-cluster: delete-cluster
 	./scripts/deploy-calico.sh
 	./scripts/preload-images.sh
 	./scripts/delete-standard-storageclass.sh
+	./scripts/remove-control-plane-taint.sh
 
 delete-cluster:
 	./scripts/delete-k8s-cluster.sh
