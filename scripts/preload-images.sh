@@ -9,26 +9,21 @@ source "$SCRIPT_DIR"/init-env.sh
 # Exit script on error
 set -e
 
-# Preload httpd from QE
-HTTPD_IMAGE=httpd:2.4.57
-docker pull $HTTPD_IMAGE
-kind load docker-image $HTTPD_IMAGE
+# Create array for images to preload
+IMAGES_TO_PRELOAD=(
+	httpd:2.4.57
+	"$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
+	quay.io/testnetworkfunction/cnf-test-partner:latest
+	quay.io/testnetworkfunction/debug-partner:latest
+	quay.io/testnetworkfunction/crd-operator-scaling:"${CRD_SCALING_TAG}"
+	gcr.io/distroless/static:nonroot
+	ubuntu:latest
+	quay.io/calico/node:v3.26.1
+	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
+)
 
-# Preload hazelcast-platform-operator
-docker pull "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
-kind load docker-image "$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
-
-# Preload test-partner image since we use that for testing
-PARTNER_IMAGE=quay.io/testnetworkfunction/cnf-test-partner:latest
-docker pull $PARTNER_IMAGE
-kind load docker-image $PARTNER_IMAGE
-
-# Preload debug-partner image for the daemonset
-DEBUG_PARTNER_IMAGE=quay.io/testnetworkfunction/debug-partner:latest
-docker pull $DEBUG_PARTNER_IMAGE
-kind load docker-image $DEBUG_PARTNER_IMAGE
-
-# Preload crd-operator-scaling image
-CRD_SCALING_IMAGE=quay.io/testnetworkfunction/crd-operator-scaling:${CRD_SCALING_TAG}
-docker pull "$CRD_SCALING_IMAGE"
-kind load docker-image "$CRD_SCALING_IMAGE"
+# Preload images
+for image in "${IMAGES_TO_PRELOAD[@]}"; do
+	docker pull "$image"
+	kind load docker-image "$image"
+done

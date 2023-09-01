@@ -25,6 +25,15 @@ install:
 	./scripts/delete-standard-storageclass.sh
 	./scripts/deploy-cr-scale-operator.sh
 
+# Creates an install path specifically for the Kind QE clusters to use
+install-for-qe:
+	sed --version >/dev/null 2>&1 || { printf >&2 'Install GNU sed.\n'; exit 1; }
+	./scripts/fix-node-labels.sh
+	./scripts/deploy-multus-network.sh
+	./scripts/install-olm.sh
+	./scripts/delete-standard-storageclass.sh
+	./scripts/deploy-cr-scale-operator.sh
+
 # Bootstrap Docker (Fedora)
 bootstrap-docker-fedora-local:
 	cd config/vagrant/scripts && ./bootstrap-docker-fedora.sh
