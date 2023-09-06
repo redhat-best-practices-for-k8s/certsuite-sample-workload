@@ -17,9 +17,12 @@ IMAGES_TO_PRELOAD=(
 	quay.io/testnetworkfunction/debug-partner:latest
 	quay.io/testnetworkfunction/crd-operator-scaling:"${CRD_SCALING_TAG}"
 	gcr.io/distroless/static:nonroot
-	ubuntu:latest
 	quay.io/calico/node:v3.26.1
 	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
+	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
+	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick
+	registry.access.redhat.com/ubi8/ubi:latest
+	registry.access.redhat.com/ubi8/ubi-minimal:latest
 )
 
 # Preload images
