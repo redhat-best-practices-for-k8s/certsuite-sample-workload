@@ -25,7 +25,7 @@ jobs:
   linters:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: "Dockerfile*"
@@ -91,7 +91,7 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -102,7 +102,7 @@ jobs:
         uses: ./.github/actions/create-local-test-infra-resources
 
       - name: Check out `cnf-certification-test`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test
           path: cnf-certification-test
