@@ -74,7 +74,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: 'Build and push the new `cnf-test-partner` image(s)'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
