@@ -38,7 +38,7 @@ jobs:
           SHELLCHECK_OPTS: --external-sources
         with:
           ignore_names: mo
-      - uses: mfinelli/setup-shfmt@v2
+      - uses: mfinelli/setup-shfmt@v3
       - run: shfmt -d scripts/*.sh
       - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3
