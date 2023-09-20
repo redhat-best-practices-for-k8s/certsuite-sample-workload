@@ -41,7 +41,7 @@ jobs:
           swap-storage: true
 
       - name: 'Build the `debug-partner` image'
-        run: docker build --no-cache -f Dockerfile.debug-partner -t $IMAGE_NAME:$IMAGE_TAG .
+        run: docker build --pull --no-cache -f Dockerfile.debug-partner -t $IMAGE_NAME:$IMAGE_TAG .
 
       - name: 'Test: Check if lscpu is installed'
         run: docker run $IMAGE_NAME:$IMAGE_TAG which lscpu

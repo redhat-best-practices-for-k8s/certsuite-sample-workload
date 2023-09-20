@@ -40,7 +40,7 @@ jobs:
           swap-storage: true
 
       - name: 'Build the `cnf-test-partner` image'
-        run: docker build  -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
+        run: docker build --pull -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
         working-directory: .
 
       - name: 'Test: Check if ping is installed'
