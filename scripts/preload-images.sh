@@ -15,7 +15,7 @@ IMAGES_TO_PRELOAD=(
 	"$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
 	quay.io/testnetworkfunction/cnf-test-partner:latest
 	quay.io/testnetworkfunction/debug-partner:latest
-	quay.io/testnetworkfunction/crd-operator-scaling:"${CRD_SCALING_TAG}"
+	quay.io/testnetworkfunction/cr-scale-operator:"${CR_SCALE_OPERATOR_TAG}"
 	gcr.io/distroless/static:nonroot
 	quay.io/calico/node:v3.26.1
 	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
