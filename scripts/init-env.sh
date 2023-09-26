@@ -20,8 +20,6 @@ export \
 	OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE \
 	SECRET_NAME=foo-cert-sec
 
-export CR_SCALE_OPERATOR_TAG=v0.0.1
-
 export COLLECTOR_URL=https://github.com/test-network-function/collector-deployment.git
 # export COLLECTOR_TAG=v0.0.1 # Re-enable this when the version is released
 
