@@ -39,6 +39,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: 'Build the `debug-partner` image'
         run: docker build --no-cache -f Dockerfile.debug-partner -t $IMAGE_NAME:$IMAGE_TAG .
