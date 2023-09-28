@@ -38,6 +38,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: 'Build the `cnf-test-partner` image'
         run: docker build  -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH

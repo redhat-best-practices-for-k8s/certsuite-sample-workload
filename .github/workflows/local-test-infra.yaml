@@ -38,6 +38,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: Start the k8s cluster
         uses: ./.github/actions/start-k8s-cluster
