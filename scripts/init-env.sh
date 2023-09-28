@@ -20,9 +20,6 @@ export \
 	OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE \
 	SECRET_NAME=foo-cert-sec
 
-export CRD_SCALING_URL=https://github.com/test-network-function/crd-operator-scaling.git
-export CRD_SCALING_TAG=v0.0.14
-
 export COLLECTOR_URL=https://github.com/test-network-function/collector-deployment.git
 # export COLLECTOR_TAG=v0.0.1 # Re-enable this when the version is released
 

@@ -21,7 +21,6 @@ install:
 	./scripts/deploy-community-operator.sh
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
-	./scripts/deploy-operator-crd-scaling.sh
 	./scripts/delete-standard-storageclass.sh
 	./scripts/deploy-cr-scale-operator.sh
 
@@ -157,9 +156,6 @@ deploy-services:
 # Deletes services
 delete-services:
 	./scripts/manage-service.sh delete
-
-deploy-test-crd-scaling-operator:
-	./scripts/deploy-operator-crd-scaling.sh
 
 deploy-cr-scale-operator:
 	./scripts/deploy-cr-scale-operator.sh
