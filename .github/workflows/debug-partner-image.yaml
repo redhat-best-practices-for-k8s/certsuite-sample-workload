@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Free Disk Space (Ubuntu)
-        uses: edcdavid/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
           android: true
