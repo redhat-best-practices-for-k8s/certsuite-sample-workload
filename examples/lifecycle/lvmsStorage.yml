@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lvms1
+  namespace: tnf
+  labels:
+    test-network-function.com/generic: target
+spec:
+  volumes:
+    - name: lvms1
+      persistentVolumeClaim:
+        claimName: lvms1
+  containers:
+    - name: task-pv-container
+      image: quay.io/fedora/fedora:latest
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: lvms1
+      command: ["/bin/bash", "-c", "--"]
+      args: ["while true; do sleep 30; done;"]
+      securityContext:
+        runAsUser: 2000
+        runAsGroup: 3000
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lvms1
+  namespace: tnf
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: lvms-vg1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lvms1
+  namespace: tnf
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: lvms-vg1
+  local:
+    path: /tmp
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - clus0-0

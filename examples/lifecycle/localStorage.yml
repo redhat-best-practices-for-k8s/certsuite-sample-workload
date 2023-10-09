@@ -9,7 +9,7 @@ volumeBindingMode: WaitForFirstConsumer
 apiVersion: v1
 kind: Pod
 metadata:
-  name: task-pv-pod
+  name: local-storage
   namespace: tnf
   labels:
     test-network-function.com/generic: target
@@ -26,13 +26,13 @@ spec:
           name: "http-server"
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
-          name: task-pv-storage   
-      command: [ "/bin/bash", "-c", "--" ]
-      args: [ "while true; do sleep 30; done;" ]
+          name: task-pv-storage
+      command: ["/bin/bash", "-c", "--"]
+      args: ["while true; do sleep 30; done;"]
       securityContext:
         runAsUser: 2000
-        runAsGroup: 3000 
----          
+        runAsGroup: 3000
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -43,9 +43,9 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi 
-  storageClassName: local-storage    
----  
+      storage: 5Gi
+  storageClassName: local-storage
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -67,4 +67,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - master-2.clus0.t5g.lab.eng.rdu2.redhat.com
+                - clus1-0
