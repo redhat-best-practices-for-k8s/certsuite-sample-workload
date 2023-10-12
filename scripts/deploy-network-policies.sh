@@ -21,4 +21,7 @@ cat ./test-target/pod-to-pod-np.yaml | TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CN
 
 # Apply policies to allow pod-to-pod communication (aka make the ping test work)
 oc apply --filename ./temp/rendered-pod-to-pod-np.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+
+# Apply the same pod-to-pod YAML to the default namespace
+oc apply --filename ./temp/rendered-pod-to-pod-np.yaml --namespace default
 rm ./temp/rendered-pod-to-pod-np.yaml
