@@ -28,6 +28,8 @@ runs:
       run: make rebuild-cluster
       working-directory: ${{ inputs.working_directory }}
       shell: bash
+      env:
+        SKIP_PRELOAD_IMAGES: true
 
     # Wait for all pods to be ready
     - name: Wait for all pods ready
