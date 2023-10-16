@@ -6,6 +6,12 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
+# check if SKIP_PRELOAD_IMAGES is set to true
+if [[ "$SKIP_PRELOAD_IMAGES" == "true" ]]; then
+	echo "Skipping image preloading"
+	exit 0
+fi
+
 # Exit script on error
 set -e
 
