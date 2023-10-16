@@ -47,18 +47,6 @@ The repository can be cloned to local machine using:
 git clone git@github.com:test-network-function/cnf-certification-test-partner.git
 ```
 
-# Installing the partner pod
-
-In order to create and deploy the partner debug pods (daemonset), use the following:
-
-```shell-script
-make install-partner-pods
-```
-
-This will create a deployment named "partner" in the "default" namespace. This Pod is the test partner for running CNF tests.
-For disconnected environments, override the default image repo `quay.io/testnetworkfunction` by setting the environment variable named `TNF_PARTNER_REPO` to the local repo.
-For environments with slow internet connection, override the default deployment timeout value (120s) by setting the environment variable named `TNF_DEPLOYMENT_TIMEOUT`.
-
 # Installing the Test-target
 
 Although any CNF Certification results should be generated using a proper CNF Certification cluster, there are times

@@ -104,10 +104,6 @@ vagrant-recreate:
 	cd config/vagrant && vagrant destroy -f
 	make vagrant-build
 
-# Deploys the partner pods
-install-partner-pods:
-	./scripts/deploy-debug-ds.sh
-
 # Installs operator requires OLM and operator SDK
 install-operator:
 	./scripts/deploy-operator.sh
