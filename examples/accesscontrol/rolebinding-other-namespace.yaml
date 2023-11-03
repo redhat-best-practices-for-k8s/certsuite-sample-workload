@@ -10,9 +10,9 @@ metadata:
   namespace: test2
   name: testadmin
 rules:
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -20,10 +20,10 @@ metadata:
   name: testadminbinding
   namespace: test2
 subjects:
-- kind: ServiceAccount
-  name: test-pod-sa
-  namespace: tnf
-  apiGroup: ""
+  - kind: ServiceAccount
+    name: test-pod-sa
+    namespace: tnf
+    apiGroup: ""
 roleRef:
   kind: Role
   name: testadmin
