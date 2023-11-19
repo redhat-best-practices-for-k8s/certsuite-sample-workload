@@ -5,9 +5,9 @@ SCRIPT_DIR=$(dirname "$0")
 
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
-ISTIO_DIR=istio-1.19.3
+ISTIO_DIR=istio-1.20.0
 if [ ! -d "$ISTIO_DIR" ]; then
-	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.19.3 sh -
+	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.0 sh -
 fi
 ./$ISTIO_DIR/bin/istioctl uninstall -y --purge
 oc label namespace "$TNF_EXAMPLE_CNF_NAMESPACE" istio-injection-
