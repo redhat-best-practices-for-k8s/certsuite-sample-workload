@@ -25,15 +25,16 @@ inputs:
 
 runs:
   using: 'composite'
+  env:
+    TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
+    DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
   steps:
     - name: Create `local-test-infra` OpenShift resources
-      run: |
-        make install
-      working-directory: ${{ inputs.working_directory }}
-      shell: bash
-      env:
-        TNF_EXAMPLE_CNF_NAMESPACE: ${{ inputs.oc_namespace }}
-        DEFAULT_NAMESPACE: ${{ inputs.default_namespace }}
+      uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 90
+        max_retries: 3
+        command: make install
 
     - name: Set the current context to use the correct TNF namespace
       run: oc config set-context $(oc config current-context) --namespace=${{ inputs.oc_namespace }}
