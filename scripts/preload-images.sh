@@ -17,7 +17,7 @@ set -e
 
 # Create array for images to preload
 IMAGES_TO_PRELOAD=(
-	httpd:2.4.57
+	httpd:2.4.58
 	"$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
 	quay.io/testnetworkfunction/cnf-test-partner:latest
 	quay.io/testnetworkfunction/debug-partner:latest
