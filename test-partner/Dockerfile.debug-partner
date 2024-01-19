@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1067 as podman-builder
+FROM registry.access.redhat.com/ubi8/ubi:8.9-1107.1705420509 as podman-builder
 # hadolint ignore=DL3041
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
@@ -17,7 +17,7 @@ RUN \
 	git checkout v4.8.3 \
 	&& make
 
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1067
+FROM registry.access.redhat.com/ubi8/ubi:8.9-1107.1705420509
 # hadolint ignore=DL3041
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
