@@ -1,4 +1,6 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1476 as podman-builder
+# IMPORTANT: podman must be build from ubi8.x only. Do not upgrade it to ubi9.
+FROM registry.access.redhat.com/ubi8/ubi:8.9-1107.1706791207 as podman-builder
+
 # hadolint ignore=DL3041
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
