@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-# update docker config
-sudo bash -c 'cat <<- EOF > /etc/docker/daemon.json
-{
-  "ipv6": true,
-  "fixed-cidr-v6": "2001:db8:1::/64"
-}
-EOF'
+# update docker config to include ipv6 support
+jq '. +={"ipv6": true, "fixed-cidr-v6": "2001:db8:1::/64"}' < /etc/docker/daemon.json > /tmp/new-docker-daemon.json
+sudo cp /tmp/new-docker-daemon.json /etc/docker/daemon.json
+rm /tmp/new-docker-daemon.json
 
 # restart docker
 sudo systemctl restart docker
