@@ -22,7 +22,7 @@ fi
 # shellcheck disable=SC2143 # Use ! grep -q.
 if [[ -z "$(oc get packagemanifests | grep hazelcast 2>/dev/null)" ]]; then
 	echo "hazelcast package was not found in the catalog, skipping installation"
-	exit 0
+	exit 1
 fi
 echo "hazelcast package found, starting installation"
 
