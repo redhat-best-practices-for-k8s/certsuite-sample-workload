@@ -16,12 +16,6 @@ if $TNF_NON_OCP_CLUSTER; then
 
 	rm -rf ./temp
 	git clone --depth 1 $MULTUS_GIT_URL -b v4.0.2 ./temp/multus-cni
-
-	# fix for dimensioning bug
-	# sed 's/memory: "50Mi"/memory: "100Mi"/g' temp/multus-cni/deployments/multus-daemonset-thick.yml -i
-
-	# Deploy Multus
-	# oc apply --filename ./temp/multus-cni/deployments/multus-daemonset-thick.yml
 	oc apply --filename ./temp/multus-cni/deployments/multus-daemonset.yml
 
 	# Wait for all multus daemonset pods to be running
@@ -33,20 +27,14 @@ if $TNF_NON_OCP_CLUSTER; then
 	./get_tools.sh
 	./generate_yamls.sh
 	popd || exit
-	sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
+
+	# Temporarily commenting this out as we are currently not running this in a non-allowlisted environment
+	# sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
 	kubectl create -f temp/multus-cni/e2e/yamls/cni-install.yml
 	kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
 
 	# Install whereabouts at specific released version
-	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.2
-
-	# git clone $WHEREABOUTS_GIT_URL --depth 1
-	pushd whereabouts || exit
-	git checkout d15b4d5456ee910a81bf15e9e242a136823d22fd
-	popd || exit
-
-	# Replace the image in the daemonset-install.yaml
-	# sed 's/whereabouts\/whereabouts:latest-amd64/whereabouts\/whereabouts:v0.6.1-amd64/g' whereabouts/doc/crds/daemonset-install.yaml -i
+	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.3
 
 	oc apply \
 		-f whereabouts/doc/crds/daemonset-install.yaml \
