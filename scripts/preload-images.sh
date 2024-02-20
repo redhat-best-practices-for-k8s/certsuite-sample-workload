@@ -23,7 +23,7 @@ IMAGES_TO_PRELOAD=(
 	quay.io/testnetworkfunction/debug-partner:latest
 	quay.io/testnetworkfunction/cr-scale-operator:latest
 	gcr.io/distroless/static:nonroot
-	quay.io/calico/node:v3.27.0
+	quay.io/calico/node:v3.27.2
 	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
 	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
 	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick
