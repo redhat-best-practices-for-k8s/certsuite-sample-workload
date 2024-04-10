@@ -56,6 +56,6 @@ metadata:
   namespace: tnf
   name: crdexample-role
 rules:
-- apiGroups: ["test-network-function.com"]
-  resources: ["crdexamples"]
-  verbs: ["get", "watch", "list"]
+  - apiGroups: ["test-network-function.com"]
+    resources: ["crdexamples"]
+    verbs: ["get", "watch", "list"]
