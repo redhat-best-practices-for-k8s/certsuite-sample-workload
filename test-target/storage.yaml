@@ -3,10 +3,10 @@ kind: PersistentVolume
 metadata:
   name: test-pv
   labels:
-    role: test                                                                                                                                                                                
+    role: test
 spec:
   capacity:
-    storage: 1Gi 
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -23,7 +23,8 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi 
+      storage: 1Gi
   selector:
     matchLabels:
       role: test
+
