@@ -13,6 +13,7 @@ install:
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
 	./scripts/deploy-resource-quota.sh
+	./scripts/deploy-storage.sh
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
 	./scripts/deploy-pod-disruption-budget.sh

@@ -73,6 +73,10 @@ spec:
             periodSeconds: 5
           command: ["./bin/app"]
           terminationMessagePolicy: FallbackToLogsOnError
+      volumes:
+        - name: test-volume
+          persistentVolumeClaim:
+            claimName: test-pvc
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
