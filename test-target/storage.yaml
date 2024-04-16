@@ -6,7 +6,7 @@ metadata:
     role: test
 spec:
   capacity:
-    storage: 1Gi
+    storage: 10Mi
   accessModes:
     - ReadWriteOnce
   hostPath:
@@ -23,7 +23,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Mi
   selector:
     matchLabels:
       role: test
