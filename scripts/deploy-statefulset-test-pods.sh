@@ -15,9 +15,7 @@ NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}"
 if [[ $NUM_NODES == 1 ]]; then
 	REPLICAS=1
 fi
-
-# shellcheck disable=SC2002 # Useless cat.
-cat ./test-target/local-pod-under-test.yaml | APP="testss" RESOURCE_TYPE="StatefulSet" MULTUS_ANNOTATION=$MULTUS_ANNOTATION REPLICAS=$REPLICAS "$SCRIPT_DIR"/mo >./temp/rendered-local-statefulset-pod-under-test-template.yaml
+APP="testss" RESOURCE_TYPE="StatefulSet" MULTUS_ANNOTATION=$MULTUS_ANNOTATION REPLICAS=$REPLICAS "$SCRIPT_DIR"/mo ./test-target/local-pod-under-test.yaml >./temp/rendered-local-statefulset-pod-under-test-template.yaml
 oc apply --filename ./temp/rendered-local-statefulset-pod-under-test-template.yaml
 rm ./temp/rendered-local-statefulset-pod-under-test-template.yaml
 sleep 3
