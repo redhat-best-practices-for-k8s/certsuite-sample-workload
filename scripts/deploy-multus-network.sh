@@ -49,8 +49,8 @@ if $TNF_NON_OCP_CLUSTER; then
 			# Creates the network attachment with ptp plugin on partner namespace
 			mkdir -p ./temp
 
-			# shellcheck disable=SC2002,SC2001 # Useless cat, echo.
-			cat ./config/k8s-cluster/multus.yaml | IP_NUM=$(echo "$2" | sed 's/NUM/'"${NUM}"'/g') NET_NAME_NUM="$NET_NAME-$1-$NUM" "$SCRIPT_DIR"/mo >./temp/rendered-multus.yaml
+			# shellcheck disable=SC2001 # Useless echo.
+			IP_NUM=$(echo "$2" | sed 's/NUM/'"${NUM}"'/g') NET_NAME_NUM="$NET_NAME-$1-$NUM" "$SCRIPT_DIR"/mo ./config/k8s-cluster/multus.yaml >./temp/rendered-multus.yaml
 			oc apply --filename ./temp/rendered-multus.yaml
 			rm ./temp/rendered-multus.yaml
 		done
