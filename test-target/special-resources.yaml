@@ -1,0 +1,92 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: special-dp
+  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  labels:
+    test-network-function.com/generic: target
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: special-dp
+  template:
+    metadata:
+      labels:
+        test-network-function.com/generic: target
+        test-network-function.com/container: target
+        app: special-dp
+        AffinityRequired: "true"
+      name: special-dp
+    spec:
+      terminationGracePeriodSeconds: 30
+      automountServiceAccountToken: false
+      serviceAccountName: test-pod-sa
+      containers:
+        - image: quay.io/testnetworkfunction/cnf-test-partner:latest
+          imagePullPolicy: IfNotPresent
+          name: test
+          ports:
+            - name: "http-probe"
+              containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 0.25
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /tmp/message"]
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "killall -0 tail"]
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+                - name: health-check
+                  value: liveness
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+              httpHeaders:
+                - name: health-check
+                  value: readiness
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              httpHeaders:
+                - name: health-check
+                  value: startup
+            failureThreshold: 10
+            periodSeconds: 5
+          command: ["./bin/app"]
+          terminationMessagePolicy: FallbackToLogsOnError
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node-role.kubernetes.io/worker
+                    operator: In
+                    values:
+                      - ""
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: special-pdb
+  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: special-dp
