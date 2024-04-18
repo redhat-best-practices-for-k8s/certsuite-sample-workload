@@ -17,6 +17,7 @@ install:
 	./scripts/deploy-test-pods.sh
 	./scripts/deploy-statefulset-test-pods.sh
 	./scripts/deploy-pod-disruption-budget.sh
+	./scripts/deploy-special-resources.sh
 	./scripts/deploy-test-crds.sh
 	./scripts/install-olm.sh
 	./scripts/deploy-community-operator.sh
