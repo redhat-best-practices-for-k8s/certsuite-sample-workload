@@ -15,8 +15,8 @@ OPERATOR_REGISTRY_POD_NAME_FULL=$(echo $OPERATOR_BUNDLE_IMAGE_FULL_NAME | sed 's
 export \
 	COMMUNITY_OPERATOR_IMAGEREPO=docker.io/hazelcast \
 	COMMUNITY_OPERATOR_BASE=hazelcast-platform-operator \
-	COMMUNITY_OPERATOR_NAME=hazelcast-platform-operator.v5.10.0 \
-	COMMUNITY_OPERATOR_IMAGEVERSION=5.10.0 \
+	COMMUNITY_OPERATOR_NAME=hazelcast-platform-operator.v5.12.0 \
+	COMMUNITY_OPERATOR_IMAGEVERSION=5.12.0 \
 	OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE \
 	SECRET_NAME=foo-cert-sec
 
@@ -87,6 +87,7 @@ if $TNF_NON_OCP_CLUSTER; then
 	create_multus_annotation ipv6
 
 	# Remove the last character (comma)
+	#  https://unix.stackexchange.com/questions/144298/delete-the-last-character-of-a-string-using-string-manipulation-in-shell-script
 	MULTUS_ANNOTATION="${MULTUS_ANNOTATION%?}"
 fi
 
