@@ -11,7 +11,7 @@ source "$SCRIPT_DIR"/logging.sh
 # Variables for deployment
 CR_SCALE_OPERATOR_GIT_REPO="https://github.com/test-network-function/cr-scale-operator.git"
 TAG="main"
-IMG="quay.io/testnetworkfunction/cr-scale-operator"
+IMG="quay.io/testnetworkfunction/cr-scale-operator:latest"
 CR_SCALE_OPERATOR_DIR=cr-scale-operator
 
 # Clone the repo.
