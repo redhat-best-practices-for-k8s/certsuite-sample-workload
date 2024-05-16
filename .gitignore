@@ -8,3 +8,6 @@ config/vagrant/.vagrant
 checksums.txt
 checksums.txt.asc
 bin/
+.venv/
+lib/
+pyvenv.cfg
