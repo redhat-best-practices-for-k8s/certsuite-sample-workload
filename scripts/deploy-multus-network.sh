@@ -24,7 +24,7 @@ if $TNF_NON_OCP_CLUSTER; then
 	# Install macvlan and other default plugins
 	echo "## install CNIs"
 	pushd temp/multus-cni/e2e || exit
-	if [ "${ARCH}" != arm64 ]; then
+	if [ "$CPU_ARCH" != arm64 ]; then
 		./get_tools.sh
 	fi
 	./generate_yamls.sh
