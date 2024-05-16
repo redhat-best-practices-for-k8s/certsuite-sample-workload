@@ -31,6 +31,7 @@ else
 fi
 
 # Container executable
+TNF_CONTAINER_CLIENT="docker"
 export CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
 
 # Test Namespace
