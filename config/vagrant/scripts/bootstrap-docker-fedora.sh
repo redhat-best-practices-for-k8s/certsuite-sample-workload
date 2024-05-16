@@ -25,6 +25,10 @@ sudo dnf -y install docker-ce docker-ce-cli containerd.io jq
 
 # Configure IPv6 in docker ( https://docs.docker.com/config/daemon/ipv6/ )
 sudo mkdir /etc/docker
+
+# Create the daemon.json file if it does not exist
+sudo touch -a /etc/docker/daemon.json
+
 sudo bash -c 'cat <<- EOF > /etc/docker/daemon.json
 {
   "ipv6": true,

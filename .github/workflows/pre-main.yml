@@ -24,7 +24,7 @@ env:
   SMOKE_TESTS_LABELS_FILTER: all
 jobs:
   linters:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: hadolint/hadolint-action@v3.1.0
@@ -59,7 +59,7 @@ jobs:
                 level: warning
   smoke-tests:
     name: Run Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -69,6 +69,12 @@ jobs:
       # Restart docker using /mnt/docker-storage (sdb) instead of /var/lib/docker (sda).
       # This step needs to be done right after the partner repo's bootstrap scripts, as they
       # overwrite the docker's daemon.json.
+      - name: Create docker/daemon.json if it does not exist
+        run: |
+          if [ ! -f /etc/docker/daemon.json ]; then
+            echo '{}' | sudo tee /etc/docker/daemon.json
+          fi
+
       - name: Make docker to use /mnt (sdb) for storage
         run: |
           df -h

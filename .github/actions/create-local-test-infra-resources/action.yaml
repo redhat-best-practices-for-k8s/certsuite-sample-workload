@@ -28,6 +28,11 @@ runs:
   steps:
     - name: Create `local-test-infra` OpenShift resources
       run: |
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install --upgrade pip
+        pip install jinjanator
+        cp .venv/bin/jinjanate .venv/bin/j2
         make install
       working-directory: ${{ inputs.working_directory }}
       shell: bash
