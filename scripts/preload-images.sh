@@ -17,7 +17,7 @@ set -e
 
 # Create array for images to preload
 IMAGES_TO_PRELOAD=(
-	httpd:2.4.58
+	docker.io/library/httpd:2.4.58
 	"$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
 	quay.io/testnetworkfunction/cnf-test-partner:latest
 	quay.io/testnetworkfunction/debug-partner:latest
@@ -26,7 +26,6 @@ IMAGES_TO_PRELOAD=(
 	quay.io/calico/node:v3.28.0
 	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
 	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
-	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick
 	registry.access.redhat.com/ubi9/ubi:latest
 	registry.access.redhat.com/ubi9/ubi-minimal:latest
 	quay.io/operator-framework/configmap-operator-registry:latest
@@ -37,6 +36,6 @@ IMAGES_TO_PRELOAD=(
 
 # Preload images
 for image in "${IMAGES_TO_PRELOAD[@]}"; do
-	docker pull "$image"
-	kind load docker-image "$image"
+	${CONTAINER_CLIENT} pull "$image"
+	${CONTAINER_CLIENT} save "$image" -o image.tar && kind load image-archive image.tar && rm image.tar
 done

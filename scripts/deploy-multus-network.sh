@@ -24,9 +24,15 @@ if $TNF_NON_OCP_CLUSTER; then
 	# Install macvlan and other default plugins
 	echo "## install CNIs"
 	pushd temp/multus-cni/e2e || exit
-	./get_tools.sh
+	if [ "$CPU_ARCH" != arm64 ]; then
+		./get_tools.sh
+	fi
 	./generate_yamls.sh
 	popd || exit
+
+	if [ "$CPU_ARCH" == arm64 ]; then
+		sed -i 's/amd64/arm64/g' temp/multus-cni/e2e/yamls/cni-install.yml
+	fi
 
 	# Temporarily commenting this out as we are currently not running this in a non-allowlisted environment
 	# sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
