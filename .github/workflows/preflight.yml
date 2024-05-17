@@ -9,7 +9,7 @@ name: Preflight
 
 jobs:
   preflight-debug-partner:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       IMAGE_NAME: quay.io/testnetworkfunction/debug-partner:latest
@@ -50,7 +50,7 @@ jobs:
 
 
   preflight-cnf-test-partner:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       IMAGE_NAME: quay.io/testnetworkfunction/cnf-test-partner:latest
