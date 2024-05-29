@@ -24,7 +24,7 @@ env:
   SMOKE_TESTS_LABELS_FILTER: all
 jobs:
   linters:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: hadolint/hadolint-action@v3.1.0
@@ -59,7 +59,7 @@ jobs:
                 level: warning
   smoke-tests:
     name: Run Smoke Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -133,11 +133,11 @@ jobs:
         working-directory: cnf-certification-test
 
       - name: Build the TNF tool
-        run: make build-tnf-tool
+        run: make build-certsuite-tool
         working-directory: cnf-certification-test
 
       - name: Check the smoke test results against the expected results template
-        run: ./tnf check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
         working-directory: cnf-certification-test
 
       - name: Upload container test results as an artifact
