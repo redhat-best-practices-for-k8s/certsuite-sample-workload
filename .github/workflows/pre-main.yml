@@ -137,7 +137,7 @@ jobs:
         working-directory: cnf-certification-test
 
       - name: Check the smoke test results against the expected results template
-        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
+        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/certsuite.log
         working-directory: cnf-certification-test
 
       - name: Upload container test results as an artifact
@@ -150,4 +150,4 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/claim.json
             ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
             ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/cnf-certsuite.log
+            ${{ env.TNF_OUTPUT_DIR }}/certsuite.log
