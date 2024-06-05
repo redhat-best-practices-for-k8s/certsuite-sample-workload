@@ -36,8 +36,11 @@ if $TNF_NON_OCP_CLUSTER; then
 
 	# Temporarily commenting this out as we are currently not running this in a non-allowlisted environment
 	# sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
-	kubectl create -f temp/multus-cni/e2e/yamls/cni-install.yml
+	kubectl apply -f temp/multus-cni/e2e/yamls/cni-install.yml
 	kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+
+	# If the whereabouts folder exists, remove it
+	rm -rf whereabouts
 
 	# Install whereabouts at specific released version
 	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.3

@@ -21,5 +21,5 @@ fi
 oc label namespace "$TNF_EXAMPLE_CNF_NAMESPACE" istio-injection=enabled --overwrite
 if ! $TNF_NON_OCP_CLUSTER; then
 	oc adm policy add-scc-to-group anyuid system:serviceaccounts:"$TNF_EXAMPLE_CNF_NAMESPACE"
-	oc -n "$TNF_EXAMPLE_CNF_NAMESPACE" create -f ./test-target/nad-istio.yaml
+	oc -n "$TNF_EXAMPLE_CNF_NAMESPACE" apply -f ./test-target/nad-istio.yaml
 fi

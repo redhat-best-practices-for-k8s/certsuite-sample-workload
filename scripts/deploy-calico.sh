@@ -6,5 +6,5 @@ curl https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/ca
 	sed s/docker.io/quay.io/g >temp-calico.yaml
 
 # Deploy calico
-oc create -f temp-calico.yaml
+oc apply -f temp-calico.yaml
 rm temp-calico.yaml
