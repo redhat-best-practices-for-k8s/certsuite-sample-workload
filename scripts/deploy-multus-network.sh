@@ -45,6 +45,9 @@ if $TNF_NON_OCP_CLUSTER; then
 	# Install whereabouts at specific released version
 	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.6.3
 
+	# sed replace whereabouts:latest with whereabouts:v0.6.3
+	sed 's/whereabouts:latest/whereabouts:v0.6.3/g' whereabouts/doc/crds/daemonset-install.yaml -i
+
 	oc apply \
 		-f whereabouts/doc/crds/daemonset-install.yaml \
 		-f whereabouts/doc/crds/whereabouts.cni.cncf.io_ippools.yaml \
