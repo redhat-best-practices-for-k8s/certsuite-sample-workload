@@ -10,7 +10,7 @@
 This repository contains two main sections:
 
 * test-partner:  Partner debug pods definition for use on a k8s CNF Certification cluster. Used to run platform and networking tests.
-* test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/test-network-function) test suites on a development machine.
+* test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/cnf-certification-test) test suites on a development machine.
 
 Together, they make up the basic infrastructure required for "testing the tester". The partner debug pod is always required for platform tests and networking tests.
 
@@ -190,7 +190,7 @@ make install
 ```
 
 This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
-example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/test-network-function)
+example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/cnf-certification-test)
 will use this local infrastructure by default.
 
 Note that this command also creates OT and CRD resources.
