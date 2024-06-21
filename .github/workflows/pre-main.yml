@@ -8,19 +8,12 @@ name: Test Incoming Changes
   workflow_dispatch:
 env:
   REGISTRY: quay.io
-  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  TNF_IMAGE_TAG: unstable
-  TNF_CONTAINER_CLIENT: docker
-  TNF_NON_INTRUSIVE_ONLY: false
-  TNF_ALLOW_PREFLIGHT_INSECURE: false
-  TNF_DISABLE_CONFIG_AUTODISCOVER: false
-  TNF_CONFIG_DIR: /tmp/tnf/config
-  TNF_OUTPUT_DIR: /tmp/tnf/output
-  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  TNF_SMOKE_TESTS_LOG_LEVEL: trace
-  ON_DEMAND_DEBUG_PODS: false
+  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  CERTSUITE_IMAGE_TAG: unstable
+  CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
+  CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
   TERM: xterm-color
+  SMOKE_TESTS_LOG_LEVEL: debug
   SMOKE_TESTS_LABELS_FILTER: all
 jobs:
   linters:
@@ -117,19 +110,45 @@ jobs:
           repository: test-network-function/cnf-certification-test
           path: cnf-certification-test
 
-      - name: Create required TNF config files and directories
+      - name: Create required Certsuite config files and directories
         run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
+          mkdir -p $CERTSUITE_CONFIG_DIR $CERTSUITE_OUTPUT_DIR
+          cp /home/runner/.kube/config $CERTSUITE_CONFIG_DIR/kubeconfig
+          cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
+          cp cnf-certification-test/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
         working-directory: cnf-certification-test
 
       - name: 'Test: Run without any TS, just get diagnostic information'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
+            ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
         working-directory: cnf-certification-test
 
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
+        run: |
+          docker run --rm --network host \
+            -v $CERTSUITE_CONFIG_DIR:/usr/certsuite/config:Z \
+            -v $CERTSUITE_OUTPUT_DIR:/usr/certsuite/output:Z \
+            ${REGISTRY}/${CERTSUITE_IMAGE_NAME}:${CERTSUITE_IMAGE_TAG} \
+            certsuite run \
+            --output-dir=/usr/certsuite/output \
+            --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
+            --offline-db=/usr/offline-db \
+            --enable-data-collection=true \
+            --log-level=${SMOKE_TESTS_LOG_LEVEL} \
+            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --kubeconfig=/usr/certsuite/config/kubeconfig \
+            --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
         working-directory: cnf-certification-test
 
       - name: Build the TNF tool
@@ -137,17 +156,5 @@ jobs:
         working-directory: cnf-certification-test
 
       - name: Check the smoke test results against the expected results template
-        run: ./certsuite check results --log-file="${TNF_OUTPUT_DIR}"/certsuite.log
+        run: ./certsuite check results --log-file="${CERTSUITE_OUTPUT_DIR}"/certsuite.log
         working-directory: cnf-certification-test
-
-      - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: smoke-tests-container
-          path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.xml
-            ${{ env.TNF_OUTPUT_DIR }}/claim.json
-            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
-            ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/certsuite.log
