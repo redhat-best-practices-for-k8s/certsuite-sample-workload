@@ -19,7 +19,7 @@ RUN \
 	git checkout v4.9.5 \
 	&& make
 
-FROM registry.access.redhat.com/ubi9/ubi:9.4-1123
+FROM registry.access.redhat.com/ubi9/ubi:9.4-1123.1719560047
 # hadolint ignore=DL3041
 RUN \
 	dnf update --assumeyes --disableplugin=subscription-manager \
