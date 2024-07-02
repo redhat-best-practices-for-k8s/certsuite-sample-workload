@@ -21,7 +21,7 @@ git clone "$CR_SCALE_OPERATOR_GIT_REPO" -b "$TAG" "${CR_SCALE_OPERATOR_DIR}" || 
 cd $CR_SCALE_OPERATOR_DIR || exit 1
 
 # Delete custom resource deploymed earlier.
-oc delete -f config/samples/cache_v1_memcached.yaml
+oc delete -f config/samples/cache_v1_memcached.yaml -n "${TNF_EXAMPLE_CNF_NAMESPACE}"
 
 # Clean up operator
 ./scripts/cleanup.sh
