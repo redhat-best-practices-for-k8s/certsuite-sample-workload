@@ -22,7 +22,6 @@ jobs:
       TNF_NAMESPACE: tnf
       PUT_CONTAINER_NAME: test
       TPP_CONTAINER_NAME: partner
-      DEFAULT_NAMESPACE: default
       DEFAULT_TIMEOUT: 90s
 
     steps:

@@ -47,9 +47,6 @@ oc create \
 	--output yaml |
 	oc apply --filename -
 
-# Default Namespace
-export DEFAULT_NAMESPACE="${DEFAULT_NAMESPACE:-default}"
-
 # Debug on-demand by default
 export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
 
