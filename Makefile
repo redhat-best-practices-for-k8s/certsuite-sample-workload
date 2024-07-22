@@ -3,7 +3,6 @@
 	create-statefulset \
 	delete-deployment \
 	install \
-	install-litmus \
 	install-prometheus
 
 # Deploys the partner and test pods and the operator. GNU sed is required.
@@ -112,9 +111,6 @@ delete-community-operator:
 install-crds:
 	./scripts/deploy-test-crds.sh
 
-install-litmus:
-	./scripts/install-litmus-operator.sh
-
 install-prometheus:
 	./scripts/install-prometheus-operator.sh
 
@@ -134,9 +130,6 @@ delete-deployment:
 # Creates statefulset pods
 create-statefulset:
 	./scripts/deploy-statefulset-test-pods.sh
-
-delete-litmus:
-	./scripts/delete-litmus-operator.sh
 
 # Deletes the namespace completely
 clean-all:
