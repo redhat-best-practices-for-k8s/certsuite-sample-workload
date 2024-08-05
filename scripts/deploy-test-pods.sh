@@ -21,4 +21,4 @@ APP="testdp" RESOURCE_TYPE="Deployment" MULTUS_ANNOTATION=$MULTUS_ANNOTATION REP
 oc apply --filename ./temp/rendered-test-service-account-template.yaml
 oc apply --filename ./temp/rendered-local-pod-under-test-template.yaml
 rm ./temp/rendered-test-service-account-template.yaml ./temp/rendered-local-pod-under-test-template.yaml
-oc wait deployment test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+oc wait deployment test -n "$CERTSUITE_EXAMPLE_NAMESPACE" --for=condition=available --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"

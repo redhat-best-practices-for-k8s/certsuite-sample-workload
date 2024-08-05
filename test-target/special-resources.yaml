@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: special-dp
-  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
   labels:
     test-network-function.com/generic: target
 spec:
@@ -84,7 +84,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: special-pdb
-  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
 spec:
   minAvailable: 1
   selector:

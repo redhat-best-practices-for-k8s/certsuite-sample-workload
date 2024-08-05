@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: cpu-exclusive-sched-rt-app
-  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
   labels:
     test-network-function.com/container: target
     test-network-function.com/generic: target

@@ -12,4 +12,4 @@ oc apply --filename ./temp/rendered-cpu-exclusive-pool-rt-sched-policy-pod.yaml
 oc apply --filename ./temp/rendered-cpu-shared-pool-non-rt-sched-policy-pod.yaml
 rm ./temp/rendered-cpu-exclusive-pool-rt-sched-policy-pod.yaml
 rm ./temp/rendered-cpu-shared-pool-non-rt-sched-policy-pod.yaml
-oc wait deployment test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=available --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+oc wait deployment test -n "$CERTSUITE_EXAMPLE_NAMESPACE" --for=condition=available --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"

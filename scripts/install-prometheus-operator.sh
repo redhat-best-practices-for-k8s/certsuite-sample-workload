@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname "$0")
 
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
-if ! $TNF_NON_OCP_CLUSTER; then
+if ! $CERTSUITE_NON_OCP_CLUSTER; then
 	echo "OCP cluster detected, skipping prometheus operator installation"
 	exit 0
 fi
@@ -21,12 +21,12 @@ oc wait \
 	--for condition=Established \
 	--all CustomResourceDefinition \
 	--namespace=monitoring \
-	--timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	--timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 oc apply -f manifests/
 oc wait \
 	--for condition=available \
 	--all deployments \
 	--namespace=monitoring \
-	--timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	--timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 oc get pods -A | grep prometheus
 rm -rf kube-prometheus

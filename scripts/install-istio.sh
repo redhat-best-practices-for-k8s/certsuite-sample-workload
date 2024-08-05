@@ -13,13 +13,13 @@ if [ ! -d "$ISTIO_DIR" ]; then
 	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.21.2 sh -
 fi
 oc create namespace istio-system
-if ! $TNF_NON_OCP_CLUSTER; then
+if ! $CERTSUITE_NON_OCP_CLUSTER; then
 	ISTIO_PROFILE=openshift
 	oc adm policy add-scc-to-group anyuid system:serviceaccounts:istio-system
 fi
 ./$ISTIO_DIR/bin/istioctl install --set profile=$ISTIO_PROFILE -y
-oc label namespace "$TNF_EXAMPLE_CNF_NAMESPACE" istio-injection=enabled --overwrite
-if ! $TNF_NON_OCP_CLUSTER; then
-	oc adm policy add-scc-to-group anyuid system:serviceaccounts:"$TNF_EXAMPLE_CNF_NAMESPACE"
-	oc -n "$TNF_EXAMPLE_CNF_NAMESPACE" apply -f ./test-target/nad-istio.yaml
+oc label namespace "$CERTSUITE_EXAMPLE_NAMESPACE" istio-injection=enabled --overwrite
+if ! $CERTSUITE_NON_OCP_CLUSTER; then
+	oc adm policy add-scc-to-group anyuid system:serviceaccounts:"$CERTSUITE_EXAMPLE_NAMESPACE"
+	oc -n "$CERTSUITE_EXAMPLE_NAMESPACE" apply -f ./test-target/nad-istio.yaml
 fi

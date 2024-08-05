@@ -26,10 +26,10 @@ pushd "${CR_SCALE_OPERATOR_DIR}" || exit 1
 make deploy IMG=$IMG
 
 # Deploy custom resource
-oc apply -f config/samples/cache_v1_memcached.yaml -n "${TNF_EXAMPLE_CNF_NAMESPACE}"
+oc apply -f config/samples/cache_v1_memcached.yaml -n "${CERTSUITE_EXAMPLE_NAMESPACE}"
 
 # Check the pods
-oc get pods -n "${TNF_EXAMPLE_CNF_NAMESPACE}"
+oc get pods -n "${CERTSUITE_EXAMPLE_NAMESPACE}"
 
 # Return from the checkout folder.
 popd || exit 1

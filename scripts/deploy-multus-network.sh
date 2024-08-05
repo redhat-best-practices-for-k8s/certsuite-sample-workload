@@ -8,18 +8,18 @@ source "$SCRIPT_DIR"/init-env.sh
 
 MULTUS_GIT_URL="https://github.com/k8snetworkplumbingwg/multus-cni.git"
 WHEREABOUTS_GIT_URL="https://github.com/k8snetworkplumbingwg/whereabouts"
-if $TNF_NON_OCP_CLUSTER; then
+if $CERTSUITE_NON_OCP_CLUSTER; then
 	echo "non ocp cluster detected, deploying Multus"
 
 	# Wait for all calico and multus daemonset pods to be running
-	oc rollout status daemonset calico-node -n kube-system --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	oc rollout status daemonset calico-node -n kube-system --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 	rm -rf ./temp
 	git clone --depth 1 $MULTUS_GIT_URL -b v4.0.2 ./temp/multus-cni
 	oc apply --filename ./temp/multus-cni/deployments/multus-daemonset.yml
 
 	# Wait for all multus daemonset pods to be running
-	oc rollout status daemonset kube-multus-ds -n kube-system --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	oc rollout status daemonset kube-multus-ds -n kube-system --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 	# Install macvlan and other default plugins
 	echo "## install CNIs"
@@ -37,7 +37,7 @@ if $TNF_NON_OCP_CLUSTER; then
 	# Temporarily commenting this out as we are currently not running this in a non-allowlisted environment
 	# sed 's/alpine/quay.io\/jitesoft\/alpine:latest/g' temp/multus-cni/e2e/yamls/cni-install.yml -i
 	kubectl apply -f temp/multus-cni/e2e/yamls/cni-install.yml
-	kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	kubectl -n kube-system wait --for=condition=ready -l name="cni-plugins" pod --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 	# If the whereabouts folder exists, remove it
 	rm -rf whereabouts

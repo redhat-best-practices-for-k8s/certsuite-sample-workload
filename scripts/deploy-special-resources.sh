@@ -9,5 +9,5 @@ source "$SCRIPT_DIR"/init-env.sh
 mkdir -p ./temp
 
 "$SCRIPT_DIR"/mo ./test-target/special-resources.yaml >./temp/rendered-test-special-resources.yaml
-oc apply --filename ./temp/rendered-test-special-resources.yaml --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+oc apply --filename ./temp/rendered-test-special-resources.yaml --namespace "$CERTSUITE_EXAMPLE_NAMESPACE"
 rm ./temp/rendered-test-special-resources.yaml
