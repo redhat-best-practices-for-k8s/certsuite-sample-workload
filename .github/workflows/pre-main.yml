@@ -8,7 +8,7 @@ name: Test Incoming Changes
   workflow_dispatch:
 env:
   REGISTRY: quay.io
-  CERTSUITE_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  CERTSUITE_IMAGE_NAME: testnetworkfunction/k8s-best-practices-certsuite
   CERTSUITE_IMAGE_TAG: unstable
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output

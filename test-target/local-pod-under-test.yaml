@@ -5,7 +5,7 @@ metadata:
   labels:
     test-network-function.com/generic: target
   name: test
-  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
 spec:
   replicas: {{ REPLICAS }}
   selector:

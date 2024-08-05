@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname "$0")
 
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
-if ! $TNF_NON_OCP_CLUSTER; then
+if ! $CERTSUITE_NON_OCP_CLUSTER; then
 	echo "Assuming OLM is installed by default with OpenShift, skipping installation"
 	exit 0
 fi
@@ -24,5 +24,5 @@ chmod +x install.sh
 rm install.sh
 
 # Wait for all OLM pods to be ready
-kubectl wait --for=condition=ready pod --all=true -nolm --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+kubectl wait --for=condition=ready pod --all=true -nolm --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 sleep 5

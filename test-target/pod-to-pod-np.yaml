@@ -11,9 +11,9 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+              kubernetes.io/metadata.name: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
   egress:
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+              kubernetes.io/metadata.name: {{ CERTSUITE_EXAMPLE_NAMESPACE }}

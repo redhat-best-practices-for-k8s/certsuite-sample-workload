@@ -19,7 +19,7 @@ jobs:
     name: 'Test the `local-test-infra` configuration on k8s cluster'
     runs-on: ubuntu-22.04
     env:
-      TNF_NAMESPACE: tnf
+      CERTSUITE_NAMESPACE: tnf
       PUT_CONTAINER_NAME: test
       TPP_CONTAINER_NAME: partner
       DEFAULT_TIMEOUT: 90s

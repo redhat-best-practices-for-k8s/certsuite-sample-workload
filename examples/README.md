@@ -41,7 +41,7 @@ No examples to show (yet)…
 ### lifecycle
 
 Note: We might need the following flag set in the environment in which you are testing these YAMLs to avoid any draining, cluster-intrusive issues, etc.
-`export TNF_NON_INTRUSIVE_ONLY=true`
+`export CERTSUITE_NON_INTRUSIVE_ONLY=true`
 
 * [container-shutdown (prestop)](examples/lifecycle/preStop.yaml) - [Catalog Link](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md#container-shutdown)
 

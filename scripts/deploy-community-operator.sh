@@ -35,7 +35,7 @@ else
 fi
 
 # Select namespace based on OCP vs Kind
-if $TNF_NON_OCP_CLUSTER; then
+if $CERTSUITE_NON_OCP_CLUSTER; then
 	export CATALOG_SOURCE="operatorhubio-catalog"
 	export CATALOG_NAMESPACE="olm"
 else
@@ -45,7 +45,7 @@ fi
 
 # Create the operator group
 mkdir -p ./temp
-TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE "$SCRIPT_DIR"/mo ./test-target/community-operator-group.yaml >./temp/rendered-local-community-operator-group.yaml
+CERTSUITE_EXAMPLE_NAMESPACE=$CERTSUITE_EXAMPLE_NAMESPACE "$SCRIPT_DIR"/mo ./test-target/community-operator-group.yaml >./temp/rendered-local-community-operator-group.yaml
 oc apply --filename ./temp/rendered-local-community-operator-group.yaml
 cat ./temp/rendered-local-community-operator-group.yaml
 rm ./temp/rendered-local-community-operator-group.yaml
@@ -56,7 +56,7 @@ OPERATOR_BASE=$COMMUNITY_OPERATOR_BASE \
 	OPERATOR_NAME=$COMMUNITY_OPERATOR_NAME \
 	CATALOG_SOURCE=$CATALOG_SOURCE \
 	CATALOG_NAMESPACE=$CATALOG_NAMESPACE \
-	TNF_EXAMPLE_CNF_NAMESPACE=$TNF_EXAMPLE_CNF_NAMESPACE \
+	CERTSUITE_EXAMPLE_NAMESPACE=$CERTSUITE_EXAMPLE_NAMESPACE \
 	"$SCRIPT_DIR"/mo ./test-target/community-operator-subscription.yaml >./temp/rendered-local-community-operator-subscription.yaml
 oc apply --filename ./temp/rendered-local-community-operator-subscription.yaml
 cat ./temp/rendered-local-community-operator-subscription.yaml
@@ -66,12 +66,12 @@ rm ./temp/rendered-local-community-operator-subscription.yaml
 # version.
 sleep 30
 oc patch installplan \
-	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	--namespace "$CERTSUITE_EXAMPLE_NAMESPACE" \
 	--type merge \
 	--patch '{"spec":{"approved":true}}' \
 	"$(
 		oc get installplan \
-			--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" |
+			--namespace "$CERTSUITE_EXAMPLE_NAMESPACE" |
 			grep "$COMMUNITY_OPERATOR_NAME" |
 			cut -f 1 -d ' '
 	)" || {
@@ -82,15 +82,15 @@ sleep 30
 oc wait \
 	--for=jsonpath=\{.status.phase\}=Succeeded \
 	csv \
-	--namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
-	--selector=operators.coreos.com/hazelcast-platform-operator."${TNF_EXAMPLE_CNF_NAMESPACE}" \
+	--namespace "$CERTSUITE_EXAMPLE_NAMESPACE" \
+	--selector=operators.coreos.com/hazelcast-platform-operator."${CERTSUITE_EXAMPLE_NAMESPACE}" \
 	--timeout=600s || {
 	printf >&2 'Timed out waiting for the operator to succeed.\n'
-	oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+	oc get csv --namespace "$CERTSUITE_EXAMPLE_NAMESPACE"
 	exit 1
 }
 sleep 30
-oc get csv --namespace "$TNF_EXAMPLE_CNF_NAMESPACE"
+oc get csv --namespace "$CERTSUITE_EXAMPLE_NAMESPACE"
 
 # Label the community operator
-oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$TNF_EXAMPLE_CNF_NAMESPACE" test-network-function.com/operator=target
+oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$CERTSUITE_EXAMPLE_NAMESPACE" test-network-function.com/operator=target

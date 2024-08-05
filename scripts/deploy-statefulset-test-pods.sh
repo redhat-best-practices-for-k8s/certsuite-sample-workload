@@ -20,17 +20,17 @@ APP="testss" RESOURCE_TYPE="StatefulSet" MULTUS_ANNOTATION=$MULTUS_ANNOTATION RE
 oc apply --filename ./temp/rendered-local-statefulset-pod-under-test-template.yaml
 rm ./temp/rendered-local-statefulset-pod-under-test-template.yaml
 sleep 3
-oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+oc wait -l statefulset.kubernetes.io/pod-name=test-0 -n "$CERTSUITE_EXAMPLE_NAMESPACE" --for=condition=ready pod --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 # Wait if there is more than one replica
 if [[ $REPLICAS -gt 1 ]]; then
-	oc wait -l statefulset.kubernetes.io/pod-name=test-1 -n "$TNF_EXAMPLE_CNF_NAMESPACE" --for=condition=ready pod --timeout="$TNF_DEPLOYMENT_TIMEOUT"
+	oc wait -l statefulset.kubernetes.io/pod-name=test-1 -n "$CERTSUITE_EXAMPLE_NAMESPACE" --for=condition=ready pod --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 fi
 
 # Only autoscale if there is more than one replica
 if [[ $REPLICAS -gt 1 ]]; then
 	# Check for existing HPA first
-	if ! oc get hpa test -n "$TNF_EXAMPLE_CNF_NAMESPACE"; then
-		oc autoscale statefulset test -n "$TNF_EXAMPLE_CNF_NAMESPACE" --cpu-percent=50 --min=2 --max=3
+	if ! oc get hpa test -n "$CERTSUITE_EXAMPLE_NAMESPACE"; then
+		oc autoscale statefulset test -n "$CERTSUITE_EXAMPLE_NAMESPACE" --cpu-percent=50 --min=2 --max=3
 	fi
 fi

@@ -18,7 +18,7 @@ Together, they make up the basic infrastructure required for "testing the tester
 
 * Pod Under Test (PUT): The Vendor Pod, usually provided by a CNF Partner.
 * Operator Under Test (OT): The Vendor Operator, usually provided by a CNF Partner.
-* Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "default" namespace
+* Debug Pod (DP): A Pod running [a UBI8-based support image](https://quay.io/repository/testnetworkfunction/debug-partner) deployed as part of a daemon set for accessing node information. DPs is deployed in "cnf-suite" namespace
 * CRD Under Test (CRD): A basic CustomResourceDefinition.
 
 # Prerequisites
@@ -28,7 +28,7 @@ Together, they make up the basic infrastructure required for "testing the tester
 By default, DP are deployed in "default" namespace. all the other deployment files in this repository use ``tnf`` as default namespace. A specific namespace can be configured using:
 
 ```shell-script
-export TNF_EXAMPLE_CNF_NAMESPACE="tnf" #tnf for example
+export CERTSUITE_EXAMPLE_NAMESPACE="tnf" #tnf for example
 ```
 
 ## On-demand vs always on debug pods
@@ -189,7 +189,7 @@ To create the resources, issue the following command:
 make install
 ```
 
-This will create a PUT named "test" in `TNF_EXAMPLE_CNF_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
+This will create a PUT named "test" in `CERTSUITE_EXAMPLE_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
 example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/cnf-certification-test)
 will use this local infrastructure by default.
 
@@ -198,7 +198,7 @@ Note that this command also creates OT and CRD resources.
 To verify `test` pods are running:
 
 ```shell-script
-oc get pods -n $TNF_EXAMPLE_CNF_NAMESPACE -o wide
+oc get pods -n $CERTSUITE_EXAMPLE_NAMESPACE -o wide
 ```
 
 You should see something like this (note that the 2 test pods are running on different nodes due to a anti-affinity rule):

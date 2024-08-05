@@ -17,7 +17,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: test-pvc
-  namespace: {{ TNF_EXAMPLE_CNF_NAMESPACE }}
+  namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
 spec:
   accessModes:
     - ReadWriteOnce

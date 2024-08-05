@@ -31,18 +31,18 @@ else
 fi
 
 # Container executable
-TNF_CONTAINER_CLIENT="docker"
-export CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$TNF_CONTAINER_CLIENT}"
+CERTSUITE_CONTAINER_CLIENT="docker"
+export CONTAINER_CLIENT="${CONTAINER_EXECUTABLE:-$CERTSUITE_CONTAINER_CLIENT}"
 
 # Test Namespace
-export TNF_EXAMPLE_CNF_NAMESPACE="${TNF_EXAMPLE_CNF_NAMESPACE:-tnf}"
+export CERTSUITE_EXAMPLE_NAMESPACE="${CERTSUITE_EXAMPLE_NAMESPACE:-tnf}"
 
 # catalog source namespace
-export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$TNF_EXAMPLE_CNF_NAMESPACE}"
+export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$CERTSUITE_EXAMPLE_NAMESPACE}"
 
 # Creates namespace if it does not exist.
 oc create \
-	namespace "$TNF_EXAMPLE_CNF_NAMESPACE" \
+	namespace "$CERTSUITE_EXAMPLE_NAMESPACE" \
 	--dry-run=client \
 	--output yaml |
 	oc apply --filename -
@@ -51,20 +51,20 @@ oc create \
 export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
 
 #Partner repo
-export TNF_PARTNER_REPO="${TNF_PARTNER_REPO:-quay.io/testnetworkfunction}"
-export TNF_DEPLOYMENT_TIMEOUT="${TNF_DEPLOYMENT_TIMEOUT:-240s}"
+export CERTSUITE_PARTNER_REPO="${CERTSUITE_PARTNER_REPO:-quay.io/testnetworkfunction}"
+export CERTSUITE_DEPLOYMENT_TIMEOUT="${CERTSUITE_DEPLOYMENT_TIMEOUT:-240s}"
 
 # Number of multus interfaces to create
 MULTUS_IF_NUM="${MULTUS_IF_NUM:-2}"
 
-TNF_NON_OCP_CLUSTER=false
+CERTSUITE_NON_OCP_CLUSTER=false
 MULTUS_ANNOTATION=""
 NET_NAME="mynet"
 
 # Checks for non-OCP cluster.
 oc version | grep Server >/dev/null || {
 	printf 'Non-OCP cluster.\n'
-	TNF_NON_OCP_CLUSTER=true
+	CERTSUITE_NON_OCP_CLUSTER=true
 }
 
 # create Multus annotations
@@ -75,7 +75,7 @@ create_multus_annotation() {
 }
 
 # Only add annotation in non OCP clusters
-if $TNF_NON_OCP_CLUSTER; then
+if $CERTSUITE_NON_OCP_CLUSTER; then
 	echo 'creating multus annotations'
 
 	# IPv4
