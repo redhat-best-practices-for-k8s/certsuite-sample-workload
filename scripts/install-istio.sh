@@ -6,11 +6,11 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # File not following.
 source "$SCRIPT_DIR"/init-env.sh
 
-ISTIO_DIR=istio-1.21.2
+ISTIO_DIR=istio-1.22.3
 ISTIO_PROFILE=demo
 
 if [ ! -d "$ISTIO_DIR" ]; then
-	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.21.2 sh -
+	curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.22.3 sh -
 fi
 oc create namespace istio-system
 if ! $CERTSUITE_NON_OCP_CLUSTER; then
