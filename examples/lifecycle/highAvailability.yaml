@@ -18,8 +18,8 @@ spec:
       creationTimestamp: null
       labels:
         app: replicatest
-        test-network-function.com/generic: target
-        test-network-function.com/container: target
+        redhat-best-practices-for-k8s.com/generic: target
+        redhat-best-practices-for-k8s.com/container: target
     spec:
       terminationGracePeriodSeconds: 50
       containers:

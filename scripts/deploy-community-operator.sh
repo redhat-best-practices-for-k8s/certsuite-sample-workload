@@ -93,4 +93,4 @@ sleep 30
 oc get csv --namespace "$CERTSUITE_EXAMPLE_NAMESPACE"
 
 # Label the community operator
-oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$CERTSUITE_EXAMPLE_NAMESPACE" test-network-function.com/operator=target
+oc label clusterserviceversions.operators.coreos.com "$COMMUNITY_OPERATOR_NAME" -n "$CERTSUITE_EXAMPLE_NAMESPACE" redhat-best-practices-for-k8s.com/operator=target

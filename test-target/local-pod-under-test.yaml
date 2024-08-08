@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: {{ RESOURCE_TYPE }}
 metadata:
   labels:
-    test-network-function.com/generic: target
+    redhat-best-practices-for-k8s.com/generic: target
   name: test
   namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
 spec:
@@ -15,11 +15,11 @@ spec:
     metadata:
       labels:
         app: {{ APP }}
-        test-network-function.com/generic: target
-        test-network-function.com/container: target
+        redhat-best-practices-for-k8s.com/generic: target
+        redhat-best-practices-for-k8s.com/container: target
       annotations:
-        test-network-function.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
-        test-network-function.com/defaultnetworkinterface: '"eth0"' # optional
+        redhat-best-practices-for-k8s.com/container_tests: '["PRIVILEGED_POD","PRIVILEGED_ROLE"]' # optional
+        redhat-best-practices-for-k8s.com/defaultnetworkinterface: '"eth0"' # optional
         k8s.v1.cni.cncf.io/networks: '{{ MULTUS_ANNOTATION }}'
       name: test
     spec:

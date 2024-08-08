@@ -12,7 +12,7 @@ metadata:
   name: local-storage
   namespace: tnf
   labels:
-    test-network-function.com/generic: target
+    redhat-best-practices-for-k8s.com/generic: target
 spec:
   volumes:
     - name: task-pv-storage
