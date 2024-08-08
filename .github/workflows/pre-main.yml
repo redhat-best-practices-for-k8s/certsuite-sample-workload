@@ -93,7 +93,7 @@ jobs:
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
-      - name: Check out `cnf-certification-test-partner`
+      - name: Check out `certsuite-sample-workload`
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
@@ -107,7 +107,7 @@ jobs:
       - name: Check out `cnf-certification-test`
         uses: actions/checkout@v4
         with:
-          repository: test-network-function/cnf-certification-test
+          repository: redhat-best-practices-for-k8s/certsuite
           path: cnf-certification-test
 
       - name: Create required Certsuite config files and directories
