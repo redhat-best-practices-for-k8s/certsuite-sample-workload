@@ -1,16 +1,16 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # CNF Certification Partner
 
-[![tests](https://github.com/test-network-function/cnf-certification-test-partner/actions/workflows/pre-main.yml/badge.svg)](https://github.com/test-network-function/cnf-certification-test-partner/actions/workflows/pre-main.yml)
-[![release)](https://img.shields.io/github/v/release/test-network-function/cnf-certification-test-partner?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/test-network-function/cnf-certification-test-partner/releases)
+[![tests](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/pre-main.yml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite/actions/workflows/pre-main.yml)
+[![release)](https://img.shields.io/github/v/release/redhat-best-practices-for-k8s/certsuite?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/redhat-best-practices-for-k8s/certsuite/releases)
 [![red hat](https://img.shields.io/badge/red%20hat---?color=gray&logo=redhat&logoColor=red&style=flat)](https://www.redhat.com)
 [![openshift](https://img.shields.io/badge/openshift---?color=gray&logo=redhatopenshift&logoColor=red&style=flat)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
-[![license](https://img.shields.io/github/license/test-network-function/cnf-certification-test-partner?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test-partner/blob/master/LICENSE)
+[![license](https://img.shields.io/github/license/redhat-best-practices-for-k8s/certsuite?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/master/LICENSE)
 
 This repository contains two main sections:
 
 * test-partner:  Partner debug pods definition for use on a k8s CNF Certification cluster. Used to run platform and networking tests.
-* test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/test-network-function/cnf-certification-test) test suites on a development machine.
+* test-target:  A trivial example CNF (including a replicaset/deployment, a CRD and an operator), primarily intended to be used to run [test-network-function](https://github.com/redhat-best-practices-for-k8s/certsuite) test suites on a development machine.
 
 Together, they make up the basic infrastructure required for "testing the tester". The partner debug pod is always required for platform tests and networking tests.
 
@@ -44,7 +44,7 @@ export ON_DEMAND_DEBUG_PODS=false
 The repository can be cloned to local machine using:
 
 ```shell-script
-git clone git@github.com:test-network-function/cnf-certification-test-partner.git
+git clone git@github.com:redhat-best-practices-for-k8s/certsuite-sample-workload.git
 ```
 
 # Installing the Test-target
@@ -190,7 +190,7 @@ make install
 ```
 
 This will create a PUT named "test" in `CERTSUITE_EXAMPLE_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
-example `tnf_config.yml` in [`test-network-function`](https://github.com/test-network-function/cnf-certification-test)
+example `tnf_config.yml` in [`test-network-function`](https://github.com/redhat-best-practices-for-k8s/certsuite)
 will use this local infrastructure by default.
 
 Note that this command also creates OT and CRD resources.
@@ -265,8 +265,8 @@ The partner repo scripts are located in ~/partner
 brew install kind podman qemu
 kind create cluster
 export KIND_EXPERIMENTAL_PROVIDER=podman
-git clone git@github.com:test-network-function/cnf-certification-test-partner.git &&
-  cd cnf-certification-test-partner &&
+git clone git@github.com:redhat-best-practices-for-k8s/certsuite-sample-workload.git &&
+  cd certsuite-sample-workload &&
   make rebuild-cluster; make install
 ```
 
@@ -274,4 +274,4 @@ git clone git@github.com:test-network-function/cnf-certification-test-partner.gi
 
 CNF Certification Test Partner is copyright [Red Hat, Inc.](https://www.redhat.com) and available
 under an
-[Apache 2 license](https://github.com/test-network-function/cnf-certification-test-partner/blob/main/LICENSE).
+[Apache 2 license](https://github.com/redhat-best-practices-for-k8s/certsuite/blob/main/LICENSE).
