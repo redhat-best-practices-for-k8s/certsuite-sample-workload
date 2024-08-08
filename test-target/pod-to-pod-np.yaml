@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      test-network-function.com/container: target
+      redhat-best-practices-for-k8s.com/container: target
   ingress:
     - from:
         - namespaceSelector:

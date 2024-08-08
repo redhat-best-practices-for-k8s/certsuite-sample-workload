@@ -5,7 +5,7 @@ metadata:
   name: special-dp
   namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
   labels:
-    test-network-function.com/generic: target
+    redhat-best-practices-for-k8s.com/generic: target
 spec:
   replicas: 2
   selector:
@@ -14,8 +14,8 @@ spec:
   template:
     metadata:
       labels:
-        test-network-function.com/generic: target
-        test-network-function.com/container: target
+        redhat-best-practices-for-k8s.com/generic: target
+        redhat-best-practices-for-k8s.com/container: target
         app: special-dp
         AffinityRequired: "true"
       name: special-dp

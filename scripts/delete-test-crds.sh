@@ -10,4 +10,4 @@ source "$SCRIPT_DIR"/init-env.sh
 oc delete role crdexample-role -n "${CERTSUITE_EXAMPLE_NAMESPACE}" --ignore-not-found=true
 
 # Delete CRD
-oc delete crd crdexamples.test-network-function.com --ignore-not-found=true
+oc delete crd crdexamples.redhat-best-practices-for-k8s.com --ignore-not-found=true

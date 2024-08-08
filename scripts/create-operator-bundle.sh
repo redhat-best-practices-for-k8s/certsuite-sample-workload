@@ -35,11 +35,11 @@ cat >config/manifests/bases/nginx-operator.clusterserviceversion.yaml <<-'EOF'
 	  annotations:
 	    alm-examples: '[]'
 	    capabilities: Basic Install
-	    test-network-function.com/subscription_name: '["nginx-operator-v0-0-1-sub"]'
+	    redhat-best-practices-for-k8s.com/subscription_name: '["nginx-operator-v0-0-1-sub"]'
 	  name: nginx-operator.v0.0.0
 	  namespace: placeholder
 	  labels:
-	    test-network-function.com/operator: target
+	    redhat-best-practices-for-k8s.com/operator: target
 	spec:
 	  apiservicedefinitions: {}
 	  customresourcedefinitions: {}

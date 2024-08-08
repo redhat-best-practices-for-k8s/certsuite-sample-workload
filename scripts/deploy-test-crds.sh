@@ -8,4 +8,4 @@ source "$SCRIPT_DIR"/init-env.sh
 
 oc apply --filename ./test-target/local-crd-under-test.yaml
 
-oc wait crd crdexamples.test-network-function.com --timeout=5s --for=condition=established
+oc wait crd crdexamples.redhat-best-practices-for-k8s.com --timeout=5s --for=condition=established

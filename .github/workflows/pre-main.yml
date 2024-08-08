@@ -104,11 +104,11 @@ jobs:
       - name: Create `local-test-infra` OpenShift resources
         uses: ./.github/actions/create-local-test-infra-resources
 
-      - name: Check out `cnf-certification-test`
+      - name: Check out `certsuite`
         uses: actions/checkout@v4
         with:
           repository: redhat-best-practices-for-k8s/certsuite
-          path: cnf-certification-test
+          path: certsuite
 
       - name: Create required Certsuite config files and directories
         run: |
@@ -117,7 +117,7 @@ jobs:
           cp /home/runner/.docker/config $CERTSUITE_CONFIG_DIR/dockerconfig
           cp config/*.yml $CERTSUITE_CONFIG_DIR
         shell: bash
-        working-directory: cnf-certification-test
+        working-directory: certsuite
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: |
@@ -132,7 +132,7 @@ jobs:
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
             --config-file=/usr/certsuite/config/tnf_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
-        working-directory: cnf-certification-test
+        working-directory: certsuite
 
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: |
@@ -149,12 +149,12 @@ jobs:
             --config-file=/usr/certsuite/config/tnf_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
-        working-directory: cnf-certification-test
+        working-directory: certsuite
 
       - name: Build the TNF tool
         run: make build-certsuite-tool
-        working-directory: cnf-certification-test
+        working-directory: certsuite
 
       - name: Check the smoke test results against the expected results template
         run: ./certsuite check results --log-file="${CERTSUITE_OUTPUT_DIR}"/certsuite.log
-        working-directory: cnf-certification-test
+        working-directory: certsuite

@@ -38,8 +38,8 @@ metadata:
   labels:
     run: clusterrolebindingpod
     app: test
-    test-network-function.com/generic: target
-    test-network-function.com/container: target
+    redhat-best-practices-for-k8s.com/generic: target
+    redhat-best-practices-for-k8s.com/container: target
   name: clusterrolebindingpod
   namespace: tnf
 spec:

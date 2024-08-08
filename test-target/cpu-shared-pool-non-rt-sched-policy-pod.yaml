@@ -5,8 +5,8 @@ metadata:
   name: cpu-shared-sched-non-rt-app
   namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
   labels:
-    test-network-function.com/container: target
-    test-network-function.com/generic: target
+    redhat-best-practices-for-k8s.com/container: target
+    redhat-best-practices-for-k8s.com/generic: target
 spec:
   securityContext:
     runAsUser: 1000

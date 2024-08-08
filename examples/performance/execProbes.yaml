@@ -5,7 +5,7 @@ metadata:
     test: liveness
   name: liveness-http
   namespace: tnf
-  test-network-function.com/generic: target
+  redhat-best-practices-for-k8s.com/generic: target
 spec:
   containers:
     - name: liveness
