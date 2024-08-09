@@ -1,0 +1,145 @@
+name: 'Test/push the `certsuite-sample-workload` image'
+on:
+  # Run the workflow every day at 5 am UTC (1 am EST, 7am CET)
+  # This is useful for keeping the image up-to-date with security
+  # patches provided in the UBI.
+  # Disclaimer: There is no guarantee that scheduled workflows will
+  # run at the predefined time, if at all. The delay is usually
+  # around 10-30 minutes.
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+
+env:
+  REGISTRY: quay.io
+  IMAGE_NAME: redhat-best-practices-for-k8s/certsuite-sample-workload
+  IMAGE_NAME_LEGACY: testnetworkfunction/cnf-test-partner
+  IMAGE_TAG: latest
+  IMAGE_CONTAINER_FILE_PATH: ./test-partner/Dockerfile
+  SPECIFIC_IMAGE_TAG: tag1
+
+jobs:
+  test-cnf-test-partner-image-legacy:
+    name: 'Build and test the `cnf-test-partner` image'
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Build the `cnf-test-partner` image'
+        run: docker build  -t $IMAGE_NAME_LEGACY:$IMAGE_TAG -t $IMAGE_NAME_LEGACY:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
+        working-directory: .
+
+      - name: 'Test: Check if ping is installed'
+        run: docker run $IMAGE_NAME_LEGACY:$IMAGE_TAG which ping
+
+      - name: 'Test: Check if ip is installed'
+        run: docker run $IMAGE_NAME_LEGACY:$IMAGE_TAG which ip
+
+      - name: 'Test: Check if ssh is installed'
+        run: docker run $IMAGE_NAME_LEGACY:$IMAGE_TAG which ssh
+
+  push-cnf-test-partner-image-legacy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: 'Push the new `cnf-test-partner` image to Quay.io'
+    needs: test-cnf-test-partner-image-legacy
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout the main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate against Quay.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          # Use a Robot Account to authenticate against Quay.io
+          # https://docs.quay.io/glossary/robot-accounts.html
+          username: ${{ secrets.QUAY_ROBOT_USERNAME }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN }}
+
+      - name: 'Build and push the new `cnf-test-partner` image(s)'
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
+          tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}:${{ env.IMAGE_TAG }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}:${{ env.SPECIFIC_IMAGE_TAG }}'
+          platforms: linux/amd64,linux/arm64
+
+      - name: If failed to create the image, send alert msg to dev team.
+        if: ${{ failure() }}
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: 'Failed to create debug partner image version ${{ env.IMAGE_TAG }}'
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
+
+  test-certsuite-sample-workload-image:
+    name: 'Build and test the `certsuite-sample-workload` image'
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 'Build the `certsuite-sample-workload` image'
+        run: docker build  -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
+        working-directory: .
+
+      - name: 'Test: Check if ping is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ping
+
+      - name: 'Test: Check if ip is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ip
+
+      - name: 'Test: Check if ssh is installed'
+        run: docker run $IMAGE_NAME:$IMAGE_TAG which ssh
+
+  push-certsuite-sample-workload-image:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: 'Push the new `certsuite-sample-workload` image to Quay.io'
+    needs: test-certsuite-sample-workload-image
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout the main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate against Quay.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          # Use a Robot Account to authenticate against Quay.io
+          # https://docs.quay.io/glossary/robot-accounts.html
+          username: ${{ secrets.QUAY_ROBOT_USERNAME_K8S }}
+          password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
+
+      - name: 'Build and push the new `certsuite-sample-workload` image(s)'
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
+          tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SPECIFIC_IMAGE_TAG }}'
+          platforms: linux/amd64,linux/arm64
+
+      - name: If failed to create the image, send alert msg to dev team.
+        if: ${{ failure() }}
+        uses: ./.github/actions/slack-webhook-sender
+        with:
+          message: 'Failed to create debug parter image version ${{ env.IMAGE_TAG }}'
+          slack_webhook: '${{ secrets.SLACK_ALERT_WEBHOOK_URL }}'
