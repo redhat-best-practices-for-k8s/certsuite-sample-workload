@@ -49,11 +49,11 @@ jobs:
           done
 
 
-  preflight-cnf-test-partner:
+  preflight-certsuite-sample-workload:
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
-      IMAGE_NAME: quay.io/testnetworkfunction/cnf-test-partner:latest
+      IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
 
     steps:
       - uses: actions/checkout@v4
