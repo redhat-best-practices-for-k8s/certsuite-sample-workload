@@ -17,7 +17,7 @@ spec:
     runAsGroup: 1000900000
     fsGroup: 1000900000
   containers:
-    - image: quay.io/testnetworkfunction/cnf-test-partner:latest
+    - image: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
       name: test
       resources: {}
       securityContext:

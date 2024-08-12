@@ -19,7 +19,7 @@ set -e
 IMAGES_TO_PRELOAD=(
 	docker.io/library/httpd:2.4.58
 	"$COMMUNITY_OPERATOR_IMAGEREPO"/"$COMMUNITY_OPERATOR_BASE":"$COMMUNITY_OPERATOR_IMAGEVERSION"
-	quay.io/testnetworkfunction/cnf-test-partner:latest
+	quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
 	quay.io/testnetworkfunction/debug-partner:latest
 	quay.io/testnetworkfunction/cr-scale-operator:latest
 	gcr.io/distroless/static:nonroot
