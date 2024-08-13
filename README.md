@@ -273,6 +273,6 @@ git clone git@github.com:redhat-best-practices-for-k8s/certsuite-sample-workload
 
 ## License
 
-CNF Certification Test Partner is copyright [Red Hat, Inc.](https://www.redhat.com) and available
+CertSuite Sample Workload is copyright [Red Hat, Inc.](https://www.redhat.com) and available
 under an
 [Apache 2 license](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload/blob/main/LICENSE).
