@@ -1,7 +1,6 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # CertSuite Sample Workload
 
-
 [![tests](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload/actions/workflows/pre-main.yml/badge.svg)](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload/actions/workflows/pre-main.yml)
 [![release)](https://img.shields.io/github/v/release/redhat-best-practices-for-k8s/certsuite-sample-workload?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/redhat-best-practices-for-k8s/certsuite-sample-workload/releases)
 [![red hat](https://img.shields.io/badge/red%20hat---?color=gray&logo=redhat&logoColor=red&style=flat)](https://www.redhat.com)
