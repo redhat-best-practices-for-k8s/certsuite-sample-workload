@@ -145,7 +145,7 @@ sudo systemctl restart docker
 Download and install Kubernetes In Docker (Kind):
 
 ```shell-script
-curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.23.0/kind-linux-amd64
+curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.24.0/kind-linux-amd64
 ```
 
 Configure a cluster with 4 worker nodes and one master node ( dual stack ):
@@ -190,7 +190,7 @@ make install
 ```
 
 This will create a PUT named "test" in `CERTSUITE_EXAMPLE_NAMESPACE` [namespace](#namespace) and Debug Daemonset named "debug". The
-example `tnf_config.yml` in [`certsuite`](https://github.com/redhat-best-practices-for-k8s/certsuite)
+example `certsuite_config.yml` in [`certsuite`](https://github.com/redhat-best-practices-for-k8s/certsuite)
 will use this local infrastructure by default.
 
 Note that this command also creates OT and CRD resources.
