@@ -8,7 +8,7 @@ name: Test Incoming Changes
   workflow_dispatch:
 env:
   REGISTRY: quay.io
-  CERTSUITE_IMAGE_NAME: testnetworkfunction/k8s-best-practices-certsuite
+  CERTSUITE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite
   CERTSUITE_IMAGE_TAG: unstable
   CERTSUITE_CONFIG_DIR: /tmp/certsuite/config
   CERTSUITE_OUTPUT_DIR: /tmp/certsuite/output
@@ -130,7 +130,7 @@ jobs:
             --preflight-dockerconfig=/usr/certsuite/config/dockerconfig \
             --offline-db=/usr/offline-db \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
         working-directory: certsuite
 
@@ -146,7 +146,7 @@ jobs:
             --offline-db=/usr/offline-db \
             --enable-data-collection=true \
             --log-level=${SMOKE_TESTS_LOG_LEVEL} \
-            --config-file=/usr/certsuite/config/tnf_config.yml \
+            --config-file=/usr/certsuite/config/certsuite_config.yml \
             --kubeconfig=/usr/certsuite/config/kubeconfig \
             --label-filter="${SMOKE_TESTS_LABELS_FILTER}"
         working-directory: certsuite
