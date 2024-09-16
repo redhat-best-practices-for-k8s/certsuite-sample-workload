@@ -15,7 +15,7 @@ if $CERTSUITE_NON_OCP_CLUSTER; then
 	oc rollout status daemonset calico-node -n kube-system --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 	rm -rf ./temp
-	git clone --depth 1 $MULTUS_GIT_URL -b v4.0.2 ./temp/multus-cni
+	git clone --depth 1 $MULTUS_GIT_URL -b v4.1.1 ./temp/multus-cni
 	oc apply --filename ./temp/multus-cni/deployments/multus-daemonset.yml
 
 	# Wait for all multus daemonset pods to be running
