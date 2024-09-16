@@ -20,9 +20,6 @@ export \
 	OPERATOR_IMAGE_FULL_NAME=$REGISTRY$DIRECTORY$OPERATOR_IMAGE \
 	SECRET_NAME=foo-cert-sec
 
-export COLLECTOR_URL=https://github.com/test-network-function/collector-deployment.git
-# export COLLECTOR_TAG=v0.0.1 # Re-enable this when the version is released
-
 # Truncate registry pod name if more than 63 characters
 if [[ ${#OPERATOR_REGISTRY_POD_NAME_FULL} -gt 63 ]]; then
 	export OPERATOR_REGISTRY_POD_NAME=${OPERATOR_REGISTRY_POD_NAME_FULL: -63}
