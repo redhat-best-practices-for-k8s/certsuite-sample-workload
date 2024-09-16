@@ -7,7 +7,7 @@ metadata:
   labels:
     redhat-best-practices-for-k8s.com/generic: target
 spec:
-  replicas: 2
+  replicas: {{ REPLICAS }}
   selector:
     matchLabels:
       app: special-dp
@@ -76,9 +76,7 @@ spec:
             nodeSelectorTerms:
               - matchExpressions:
                   - key: node-role.kubernetes.io/worker
-                    operator: In
-                    values:
-                      - worker
+                    operator: Exists
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
