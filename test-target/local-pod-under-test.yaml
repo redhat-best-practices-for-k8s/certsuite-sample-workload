@@ -28,7 +28,7 @@ spec:
       serviceAccountName: test-pod-sa
       securityContext:
         runAsNonRoot: true
-        {{ SC_RUN_AS_USER }}
+        runAsUser: {{ SC_RUN_AS_USER }}
       containers:
         - image: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
           imagePullPolicy: IfNotPresent

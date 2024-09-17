@@ -101,7 +101,7 @@ if [[ $NUM_NODES == 1 ]]; then
 fi
 
 # adjust pod's securityContext.runAsUser field.
-export SC_RUN_AS_USER=""
+export SC_RUN_AS_USER=null
 if $CERTSUITE_NON_OCP_CLUSTER; then
-	export SC_RUN_AS_USER="runAsUser: 1001"
+	export SC_RUN_AS_USER=1001
 fi
