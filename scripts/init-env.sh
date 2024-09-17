@@ -89,3 +89,13 @@ fi
 CPU_ARCH="$(uname -m)"
 export CPU_ARCH
 echo "CPU_ARCH=$CPU_ARCH"
+
+export REPLICAS=2
+
+# adjust replicas for possible SNO clusters
+NUM_NODES=$(oc get nodes --no-headers | wc -l)
+NUM_NODES="${NUM_NODES#"${NUM_NODES%%[![:space:]]*}"}"
+NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}"
+if [[ $NUM_NODES == 1 ]]; then
+	export REPLICAS=1
+fi
