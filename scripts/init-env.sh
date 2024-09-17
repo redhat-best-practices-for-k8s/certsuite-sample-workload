@@ -99,3 +99,9 @@ NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}"
 if [[ $NUM_NODES == 1 ]]; then
 	export REPLICAS=1
 fi
+
+# adjust pod's securityContext.runAsUser field.
+export SC_RUN_AS_USER=""
+if $CERTSUITE_NON_OCP_CLUSTER; then
+    export SC_RUN_AS_USER="runAsUser: 1001"
+fi
