@@ -103,5 +103,5 @@ fi
 # adjust pod's securityContext.runAsUser field.
 export SC_RUN_AS_USER=""
 if $CERTSUITE_NON_OCP_CLUSTER; then
-    export SC_RUN_AS_USER="runAsUser: 1001"
+	export SC_RUN_AS_USER="runAsUser: 1001"
 fi
