@@ -78,6 +78,7 @@ spec:
           terminationMessagePolicy: FallbackToLogsOnError
           securityContext:
             runAsNonRoot: true
+            readOnlyRootFilesystem: true
       volumes:
         - name: test-volume
           persistentVolumeClaim:
