@@ -122,7 +122,7 @@ KIND_CONTAINER_SECURITY_CONTEXT='
 '
 
 if $CERTSUITE_NON_OCP_CLUSTER; then
-    # shellcheck disable=SC2090
+	# shellcheck disable=SC2090
 	export KIND_POD_SECURITY_CONTEXT
 	# shellcheck disable=SC2090
 	export KIND_CONTAINER_SECURITY_CONTEXT
