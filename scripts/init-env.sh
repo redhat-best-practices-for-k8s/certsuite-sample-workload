@@ -101,7 +101,27 @@ if [[ $NUM_NODES == 1 ]]; then
 fi
 
 # adjust pod's securityContext.runAsUser field.
-export SC_RUN_AS_USER=null
+KIND_POD_SECURITY_CONTEXT='
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+        seLinuxOptions:
+          level: s0
+'
+KIND_CONTAINER_SECURITY_CONTEXT='
+            runAsNonRoot: true
+            runAsUser: 1001
+            fsGroup: 1001
+            seLinuxOptions:
+              level: s0
+            capabilities:
+              drop: [ "MKNOD", "SETUID", "SETGID", "KILL" ]
+'
+
 if $CERTSUITE_NON_OCP_CLUSTER; then
-	export SC_RUN_AS_USER=1001
+	export KIND_POD_SECURITY_CONTEXT
+	export KIND_CONTAINER_SECURITY_CONTEXT
+else
+	export KIND_POD_SECURITY_CONTEXT=null
+	export KIND_CONTAINER_SECURITY_CONTEXT=null
 fi
