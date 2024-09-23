@@ -101,6 +101,7 @@ if [[ $NUM_NODES == 1 ]]; then
 fi
 
 # adjust pod's securityContext.runAsUser field.
+# shellcheck disable=SC2089
 KIND_POD_SECURITY_CONTEXT='
         runAsNonRoot: true
         runAsUser: 1001
@@ -108,6 +109,8 @@ KIND_POD_SECURITY_CONTEXT='
         seLinuxOptions:
           level: s0
 '
+
+# shellcheck disable=SC2089
 KIND_CONTAINER_SECURITY_CONTEXT='
             runAsNonRoot: true
             runAsUser: 1001
@@ -119,7 +122,9 @@ KIND_CONTAINER_SECURITY_CONTEXT='
 '
 
 if $CERTSUITE_NON_OCP_CLUSTER; then
+    # shellcheck disable=SC2090
 	export KIND_POD_SECURITY_CONTEXT
+	# shellcheck disable=SC2090
 	export KIND_CONTAINER_SECURITY_CONTEXT
 else
 	export KIND_POD_SECURITY_CONTEXT=null
