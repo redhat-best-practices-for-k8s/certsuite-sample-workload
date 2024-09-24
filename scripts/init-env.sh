@@ -114,19 +114,34 @@ KIND_POD_SECURITY_CONTEXT='
 KIND_CONTAINER_SECURITY_CONTEXT='
             runAsNonRoot: true
             runAsUser: 1001
-            fsGroup: 1001
+            readOnlyRootFilesystem: true
             seLinuxOptions:
               level: s0
             capabilities:
               drop: [ "MKNOD", "SETUID", "SETGID", "KILL" ]
 '
 
+# shellcheck disable=SC2089
+OCP_POD_SECURITY_CONTEXT='
+        runAsNonRoot: true
+        runAsUser: 1000690000
+'
+
+# shellcheck disable=SC2089
+OCP_CONTAINER_SECURITY_CONTEXT='
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+'
+
+
 if $CERTSUITE_NON_OCP_CLUSTER; then
 	# shellcheck disable=SC2090
-	export KIND_POD_SECURITY_CONTEXT
+	export POD_SECURITY_CONTEXT=$KIND_POD_SECURITY_CONTEXT
 	# shellcheck disable=SC2090
-	export KIND_CONTAINER_SECURITY_CONTEXT
+	export CONTAINER_SECURITY_CONTEXT=$KIND_CONTAINER_SECURITY_CONTEXT
 else
-	export KIND_POD_SECURITY_CONTEXT=null
-	export KIND_CONTAINER_SECURITY_CONTEXT=null
+	# shellcheck disable=SC2090
+	export POD_SECURITY_CONTEXT=$OCP_POD_SECURITY_CONTEXT
+	# shellcheck disable=SC2090
+	export CONTAINER_SECURITY_CONTEXT=$OCP_CONTAINER_SECURITY_CONTEXT
 fi

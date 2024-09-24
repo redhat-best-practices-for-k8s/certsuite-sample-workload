@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 30
       automountServiceAccountToken: false
       serviceAccountName: test-pod-sa
-      securityContext: {{ KIND_POD_SECURITY_CONTEXT }}
+      securityContext: {{ POD_SECURITY_CONTEXT }}
       containers:
         - image: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
           imagePullPolicy: IfNotPresent
@@ -71,7 +71,7 @@ spec:
             periodSeconds: 5
           command: ["./bin/app"]
           terminationMessagePolicy: FallbackToLogsOnError
-          securityContext: {{ KIND_CONTAINER_SECURITY_CONTEXT}}
+          securityContext: {{ CONTAINER_SECURITY_CONTEXT}}
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
