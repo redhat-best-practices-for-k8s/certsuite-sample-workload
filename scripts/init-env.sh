@@ -129,10 +129,9 @@ OCP_POD_SECURITY_CONTEXT='
 
 # shellcheck disable=SC2089
 OCP_CONTAINER_SECURITY_CONTEXT='
-            readOnlyRootFilesystem: true
             runAsNonRoot: true
+            readOnlyRootFilesystem: true
 '
-
 
 if $CERTSUITE_NON_OCP_CLUSTER; then
 	# shellcheck disable=SC2090
