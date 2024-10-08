@@ -7,7 +7,7 @@ metadata:
   labels:
     redhat-best-practices-for-k8s.com/generic: target
 spec:
-  replicas: 2
+  replicas: {{ REPLICAS }}
   selector:
     matchLabels:
       app: special-dp
@@ -23,6 +23,7 @@ spec:
       terminationGracePeriodSeconds: 30
       automountServiceAccountToken: false
       serviceAccountName: test-pod-sa
+      securityContext: {{ POD_SECURITY_CONTEXT }}
       containers:
         - image: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
           imagePullPolicy: IfNotPresent
@@ -37,7 +38,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /tmp/message"]
+                command: ["/bin/sh", "-c", "echo Hello from the postStart handler"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "killall -0 tail"]
@@ -70,15 +71,14 @@ spec:
             periodSeconds: 5
           command: ["./bin/app"]
           terminationMessagePolicy: FallbackToLogsOnError
+          securityContext: {{ CONTAINER_SECURITY_CONTEXT}}
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
                   - key: node-role.kubernetes.io/worker
-                    operator: In
-                    values:
-                      - worker
+                    operator: Exists
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -86,7 +86,7 @@ metadata:
   name: special-pdb
   namespace: {{ CERTSUITE_EXAMPLE_NAMESPACE }}
 spec:
-  minAvailable: 1
+  maxUnavailable: 1
   selector:
     matchLabels:
       app: special-dp

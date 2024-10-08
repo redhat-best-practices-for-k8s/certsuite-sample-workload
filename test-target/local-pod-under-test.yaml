@@ -26,6 +26,7 @@ spec:
       terminationGracePeriodSeconds: 30
       automountServiceAccountToken: false
       serviceAccountName: test-pod-sa
+      securityContext: {{ POD_SECURITY_CONTEXT }}
       containers:
         - image: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
           imagePullPolicy: IfNotPresent
@@ -40,7 +41,7 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /tmp/message"]
+                command: ["/bin/sh", "-c", "echo Hello from the postStart handler"]
             preStop:
               exec:
                 command: ["/bin/sh", "-c", "killall -0 tail"]
@@ -73,6 +74,7 @@ spec:
             periodSeconds: 5
           command: ["./bin/app"]
           terminationMessagePolicy: FallbackToLogsOnError
+          securityContext: {{ CONTAINER_SECURITY_CONTEXT}}
       volumes:
         - name: test-volume
           persistentVolumeClaim:
