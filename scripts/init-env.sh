@@ -89,3 +89,58 @@ fi
 CPU_ARCH="$(uname -m)"
 export CPU_ARCH
 echo "CPU_ARCH=$CPU_ARCH"
+
+export REPLICAS=2
+
+# adjust replicas for possible SNO clusters
+NUM_NODES=$(oc get nodes --no-headers | wc -l)
+NUM_NODES="${NUM_NODES#"${NUM_NODES%%[![:space:]]*}"}"
+NUM_NODES="${NUM_NODES%"${NUM_NODES##*[![:space:]]}"}"
+if [[ $NUM_NODES == 1 ]]; then
+	export REPLICAS=1
+fi
+
+# adjust pod's securityContext.runAsUser field.
+# shellcheck disable=SC2089
+KIND_POD_SECURITY_CONTEXT='
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+        seLinuxOptions:
+          level: s0
+'
+
+# shellcheck disable=SC2089
+KIND_CONTAINER_SECURITY_CONTEXT='
+            runAsNonRoot: true
+            runAsUser: 1001
+            readOnlyRootFilesystem: true
+            seLinuxOptions:
+              level: s0
+            capabilities:
+              drop: [ "MKNOD", "SETUID", "SETGID", "KILL" ]
+'
+
+# shellcheck disable=SC2089
+OCP_POD_SECURITY_CONTEXT='
+        runAsNonRoot: true
+        runAsUser: 1000690000
+'
+
+# shellcheck disable=SC2089
+OCP_CONTAINER_SECURITY_CONTEXT='
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+'
+
+if $CERTSUITE_NON_OCP_CLUSTER; then
+	# shellcheck disable=SC2090
+	export POD_SECURITY_CONTEXT=$KIND_POD_SECURITY_CONTEXT
+	# shellcheck disable=SC2090
+	export CONTAINER_SECURITY_CONTEXT=$KIND_CONTAINER_SECURITY_CONTEXT
+else
+	# shellcheck disable=SC2090
+	export POD_SECURITY_CONTEXT=$OCP_POD_SECURITY_CONTEXT
+	# shellcheck disable=SC2090
+	export CONTAINER_SECURITY_CONTEXT=$OCP_CONTAINER_SECURITY_CONTEXT
+fi
