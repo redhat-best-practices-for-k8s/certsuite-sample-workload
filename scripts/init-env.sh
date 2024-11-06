@@ -37,6 +37,9 @@ export CERTSUITE_EXAMPLE_NAMESPACE="${CERTSUITE_EXAMPLE_NAMESPACE:-tnf}"
 # catalog source namespace
 export CATALOG_NAMESPACE="${CATALOG_NAMESPACE:-$CERTSUITE_EXAMPLE_NAMESPACE}"
 
+# custom catalog source namespace
+export CUSTOM_CATALOG_NAMESPACE="${CUSTOM_CATALOG_NAMESPACE:-$CERTSUITE_EXAMPLE_NAMESPACE}"
+
 # Creates namespace if it does not exist.
 oc create \
 	namespace "$CERTSUITE_EXAMPLE_NAMESPACE" \

@@ -1,0 +1,10 @@
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+ name: custom-catalog
+spec:
+ sourceType: grpc
+ image: quay.io/deliedit/test:catalog-index-test
+ displayName: Operator Catalog
+ publisher: Redhat
