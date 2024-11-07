@@ -24,6 +24,7 @@ install:
 	./scripts/deploy-network-policies.sh
 	./scripts/delete-standard-storageclass.sh
 	./scripts/deploy-cr-scale-operator.sh
+	./scripts/deploy-custom-catalogsource.sh
 
 # Creates an install path specifically for the Kind QE clusters to use
 install-for-qe:
