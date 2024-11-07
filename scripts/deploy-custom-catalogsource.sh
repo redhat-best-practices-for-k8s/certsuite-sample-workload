@@ -15,4 +15,6 @@ oc apply --filename ./test-target/custom-catalogsource.yaml --namespace "$CUSTOM
 # Patch the custom-catalog service to be IP Family Dual Stack
 # This is needed to pass the dual-stack service test
 oc patch service custom-catalog --namespace "$CUSTOM_CATALOG_NAMESPACE" --type='json' -p='[{"op": "add", "path": "/spec/ipFamilyPolicy", "value": "PreferDualStack"}]'
+sleep 5
 oc patch service custom-catalog --namespace "$CUSTOM_CATALOG_NAMESPACE" --type='json' -p='[{"op": "add", "path": "/spec/ipFamilies", "value": ["IPv4", "IPv6"]}]'
+sleep 5
