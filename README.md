@@ -100,6 +100,8 @@ Perform the post install ( https://docs.docker.com/engine/install/linux-postinst
  newgrp docker 
 ```
 
+test
+
 Configure IPv6 in docker ( https://docs.docker.com/config/daemon/ipv6/ ):
 
 ```shell-script
