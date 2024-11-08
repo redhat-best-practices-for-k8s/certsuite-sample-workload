@@ -12,6 +12,8 @@ oc create ns "$CUSTOM_CATALOG_NAMESPACE" --dry-run=client --output yaml | oc app
 # Apply the catalogsource YAML
 oc apply --filename ./test-target/custom-catalogsource.yaml --namespace "$CUSTOM_CATALOG_NAMESPACE"
 
+sleep 10
+
 # Patch the custom-catalog service to be IP Family Dual Stack
 # This is needed to pass the dual-stack service test
 oc patch service custom-catalog --namespace "$CUSTOM_CATALOG_NAMESPACE" --type='json' -p='[{"op": "add", "path": "/spec/ipFamilyPolicy", "value": "PreferDualStack"}]'
