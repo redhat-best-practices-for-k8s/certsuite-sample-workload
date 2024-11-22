@@ -127,7 +127,6 @@ KIND_CONTAINER_SECURITY_CONTEXT='
 # shellcheck disable=SC2089
 OCP_POD_SECURITY_CONTEXT='
         runAsNonRoot: true
-        runAsUser: 1000690000
 '
 
 # shellcheck disable=SC2089
