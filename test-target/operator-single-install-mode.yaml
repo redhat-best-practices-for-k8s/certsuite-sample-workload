@@ -26,8 +26,6 @@ kind: Subscription
 metadata:
   name: nginx-ingress-operator
   namespace: nginx-ops
-  labels: 
-    nginx-ingress-operator.v2.4.2
 spec:
   channel: alpha
   installPlanApproval: Automatic
