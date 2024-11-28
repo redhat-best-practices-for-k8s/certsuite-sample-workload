@@ -41,3 +41,6 @@ else
 	echo "ERROR: CSV not deployed. Operator deployment failed -- interrupting tests"
 	exit 1
 fi
+
+# deploy single namespace operator nginx in namespace nginx-ops
+oc apply --filename ./test-target/operator-single-install-mode.yaml
