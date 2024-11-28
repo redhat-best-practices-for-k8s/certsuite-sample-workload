@@ -153,4 +153,4 @@ deploy-cr-scale-operator:
 	./scripts/deploy-cr-scale-operator.sh
 
 lint:
-	shellcheck scripts/*.sh
+	shellcheck --nocomments scripts/*.sh

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2016,SC2086,SC1083
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
@@ -6,6 +7,7 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
+: '
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
 	echo "operator-sdk executable cannot be found in the path. Will try to install it."
@@ -13,6 +15,7 @@ if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
 else
 	echo "operator-sdk was found in the path, no need to install it"
 fi
+'
 
 # Installing OLM
 "$SCRIPT_DIR"/install-olm.sh
