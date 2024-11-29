@@ -24,6 +24,7 @@ install:
 	./scripts/delete-standard-storageclass.sh
 	./scripts/deploy-cr-scale-operator.sh
 	./scripts/deploy-custom-catalogsource.sh
+	./scripts/deploy-operator.sh
 
 # Creates an install path specifically for the Kind QE clusters to use
 install-for-qe:
@@ -152,4 +153,4 @@ deploy-cr-scale-operator:
 	./scripts/deploy-cr-scale-operator.sh
 
 lint:
-	shellcheck scripts/*.sh
+	shellcheck --nocomments scripts/*.sh

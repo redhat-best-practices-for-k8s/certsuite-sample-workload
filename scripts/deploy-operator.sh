@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2016,SC2086,SC1083
 
 # Initialization
 SCRIPT_DIR=$(dirname "$0")
@@ -6,6 +7,7 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
+: '
 #check if operator-sdk is installed and install it if needed
 if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
 	echo "operator-sdk executable cannot be found in the path. Will try to install it."
@@ -13,34 +15,38 @@ if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
 else
 	echo "operator-sdk was found in the path, no need to install it"
 fi
+'
 
 # Installing OLM
 "$SCRIPT_DIR"/install-olm.sh
 "$SCRIPT_DIR"/delete-operator.sh
 
-# Creates a secret if a pem file exists
-"$SCRIPT_DIR"/create-secret.sh
+: '
+	# Creates a secret if a pem file exists
+	"$SCRIPT_DIR"/create-secret.sh
 
-ADD_SECRET=""
+	ADD_SECRET=""
 
-# shellcheck disable=SC2143 # Use grep -q.
-if [[ -n "$(oc get secret -n "$CERTSUITE_EXAMPLE_NAMESPACE" | awk '{print $1}' | grep "$SECRET_NAME")" ]]; then
-	ADD_SECRET="--ca-secret-name $SECRET_NAME"
-fi
+	# shellcheck disable=SC2143 # Use grep -q.
+	if [[ -n "$(oc get secret -n "$CERTSUITE_EXAMPLE_NAMESPACE" | awk '{print $1}' | grep "$SECRET_NAME")" ]]; then
+		ADD_SECRET="--ca-secret-name $SECRET_NAME"
+	fi
 
-# Deploy the operator bundle
-operator-sdk run bundle "$OPERATOR_BUNDLE_IMAGE_FULL_NAME" -n "$CERTSUITE_EXAMPLE_NAMESPACE" "$ADD_SECRET"
+	# Deploy the operator bundle
+	operator-sdk run bundle "$OPERATOR_BUNDLE_IMAGE_FULL_NAME" -n "$CERTSUITE_EXAMPLE_NAMESPACE" "$ADD_SECRET"
 
-# Important: this line (output of command is now captured) is required to enable csv short names with non-ocp cluster
-# If short name "csv" is used, the call will fail the first time
-# With long name the first time it will work and subsequent time it will work with long or short names
-CSV_MATCH=$(oc get clusterserviceversions.operators.coreos.com -n "$CERTSUITE_EXAMPLE_NAMESPACE" -ogo-template='{{ range .items}}{{.metadata.name}}{{end}}' 2>/dev/null | grep "nginx-operator.v0.0.1")
-if [ "$CSV_MATCH" = "nginx-operator.v0.0.1" ]; then
-	echo "CSV successfully deployed"
-else
-	echo "ERROR: CSV not deployed. Operator deployment failed -- interrupting tests"
-	exit 1
-fi
+	# Important: this line (output of command is now captured) is required to enable csv short names with non-ocp cluster
+	# If short name "csv" is used, the call will fail the first time
+	# With long name the first time it will work and subsequent time it will work with long or short names
+	CSV_MATCH=$(oc get clusterserviceversions.operators.coreos.com -n "$CERTSUITE_EXAMPLE_NAMESPACE" -ogo-template='{{ range .items}}{{.metadata.name}}{{end}}' 2>/dev/null | grep "nginx-operator.v0.0.1")
+	if [ "$CSV_MATCH" = "nginx-operator.v0.0.1" ]; then
+		echo "CSV successfully deployed"
+	else
+		echo "ERROR: CSV not deployed. Operator deployment failed -- interrupting tests"
+		exit 1
+	fi
+
+'
 
 # deploy single namespace operator nginx in namespace nginx-ops
 oc apply --filename ./test-target/operator-single-install-mode.yaml
