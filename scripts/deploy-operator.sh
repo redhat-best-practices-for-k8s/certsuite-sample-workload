@@ -52,7 +52,7 @@ oc apply --filename ./test-target/operator-single-install-mode.yaml
 
 # Wait until operator pods is in running state
 OPERATOR_NS="nginx-ops"
-MAX_COUNT=10
+MAX_COUNT=20
 CURRENT_COUNT=0
 
 while [[ "$CURRENT_COUNT" -lt "$MAX_COUNT" ]]; do
