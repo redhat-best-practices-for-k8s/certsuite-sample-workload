@@ -72,9 +72,6 @@ jobs:
           repository: redhat-openshift-ecosystem/openshift-preflight
           path: openshift-preflight
 
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-
       - name: Run preflight
         working-directory: openshift-preflight
         run: |

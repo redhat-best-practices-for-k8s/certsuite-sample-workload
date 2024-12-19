@@ -27,8 +27,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Start the k8s cluster
-        uses: ./.github/actions/start-k8s-cluster
+      - name: Setup the k8s cluster
+        uses: palmsoftware/quick-k8s@v0.0.21
+        with:
+          disableDefaultCni: true
+          numControlPlaneNodes: 1
+          numWorkerNodes: 3
+          installOLM: true
+          removeDefaultStorageClass: true
+          removeControlPlaneTaint: true
 
       - name: Create `local-test-infra` OpenShift resources
         uses: ./.github/actions/create-local-test-infra-resources
