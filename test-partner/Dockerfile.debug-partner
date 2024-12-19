@@ -1,5 +1,5 @@
 # IMPORTANT: podman must be build from ubi8.x only. Do not upgrade it to ubi9.
-FROM registry.access.redhat.com/ubi8/ubi:8.10-1132.1733300785 as podman-builder
+FROM registry.access.redhat.com/ubi8/ubi:8.10-1161 as podman-builder
 
 # hadolint ignore=DL3041
 RUN \
