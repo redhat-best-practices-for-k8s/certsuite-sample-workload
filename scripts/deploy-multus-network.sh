@@ -30,7 +30,7 @@ if $CERTSUITE_NON_OCP_CLUSTER; then
 	./generate_yamls.sh
 	popd || exit
 
-	if [ "$CPU_ARCH" == arm64 ]; then
+	if [ "$CPU_ARCH" == arm64 ] || [ "$CPU_ARCH" == aarch64 ]; then
 		sed -i 's/amd64/arm64/g' temp/multus-cni/e2e/yamls/cni-install.yml
 	fi
 
