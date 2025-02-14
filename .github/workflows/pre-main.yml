@@ -79,10 +79,15 @@ jobs:
           sudo systemctl restart docker
           sudo ls -la /mnt/docker-storage
 
-      - name: Set up Go 1.23
+      - name: Check out `certsuite-sample-workload`
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.6
+          go-version-file: ./testapp/go.mod
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -92,11 +97,6 @@ jobs:
           mkdir -p /home/runner/.docker
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
-
-      - name: Check out `certsuite-sample-workload`
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
 
       - name: Start the k8s cluster
         uses: ./.github/actions/start-k8s-cluster
