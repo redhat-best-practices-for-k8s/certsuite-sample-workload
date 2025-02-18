@@ -18,7 +18,6 @@ install:
 	./scripts/deploy-pod-disruption-budget.sh
 	./scripts/deploy-special-resources.sh
 	./scripts/deploy-test-crds.sh
-	./scripts/install-olm.sh
 	./scripts/manage-service.sh deploy
 	./scripts/deploy-network-policies.sh
 	./scripts/delete-standard-storageclass.sh
@@ -31,7 +30,6 @@ install-for-qe:
 	sed --version >/dev/null 2>&1 || { printf >&2 'Install GNU sed.\n'; exit 1; }
 	./scripts/fix-node-labels.sh
 	./scripts/deploy-multus-network.sh
-	./scripts/install-olm.sh
 	./scripts/delete-standard-storageclass.sh
 	./scripts/deploy-cr-scale-operator.sh
 
