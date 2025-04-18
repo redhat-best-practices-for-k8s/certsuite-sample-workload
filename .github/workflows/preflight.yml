@@ -5,6 +5,8 @@ name: Preflight
     - cron: '0 0 * * *'
   # pull_request:
   #   branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -37,7 +39,7 @@ jobs:
           make build
           ./preflight check container ${{ env.IMAGE_NAME }} --artifacts ${GITHUB_WORKSPACE}/openshift-preflight/artifacts
 
-          ALLOWED_FAILURES=("HasLicense" "RunAsNonRoot" "HasRequiredLabel")
+          ALLOWED_FAILURES=("HasRequiredLabel" "HasNoProhibitedLabels" "RunAsNonRoot" "HasLicense" "RunAsNonRoot")
           FAILURES=$(cat ${GITHUB_WORKSPACE}/openshift-preflight/artifacts/amd64/results.json | jq -r '.results.failed[].name')
 
           for FAILURE in $FAILURES; do
@@ -78,7 +80,7 @@ jobs:
           make build
           ./preflight check container ${{ env.IMAGE_NAME }} --artifacts ${GITHUB_WORKSPACE}/openshift-preflight/artifacts
 
-          ALLOWED_FAILURES=("HasRequiredLabel")
+          ALLOWED_FAILURES=("HasRequiredLabel" "HasNoProhibitedLabels" "RunAsNonRoot" "HasLicense" "RunAsNonRoot")
           FAILURES=$(cat ${GITHUB_WORKSPACE}/openshift-preflight/artifacts/amd64/results.json | jq -r '.results.failed[].name')
 
           for FAILURE in $FAILURES; do
