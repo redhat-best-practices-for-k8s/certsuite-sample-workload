@@ -24,7 +24,7 @@ env:
 jobs:
   test-cnf-test-partner-image-legacy:
     name: 'Build and test the `cnf-test-partner` image'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: 'Push the new `cnf-test-partner` image to Quay.io'
     needs: test-cnf-test-partner-image-legacy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout the main branch
@@ -85,7 +85,7 @@ jobs:
 
   test-certsuite-sample-workload-image:
     name: 'Build and test the `certsuite-sample-workload` image'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -107,7 +107,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: 'Push the new `certsuite-sample-workload` image to Quay.io'
     needs: test-certsuite-sample-workload-image
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout the main branch

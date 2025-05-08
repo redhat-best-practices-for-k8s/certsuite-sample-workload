@@ -17,7 +17,7 @@ env:
   SMOKE_TESTS_LABELS_FILTER: all
 jobs:
   linters:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: hadolint/hadolint-action@v3.1.0
@@ -52,7 +52,7 @@ jobs:
                 level: warning
   smoke-tests-k8s:
     name: Run Smoke Tests on k8s
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
