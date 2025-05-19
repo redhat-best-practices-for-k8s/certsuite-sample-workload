@@ -2,7 +2,7 @@
 # shellcheck disable=SC2207
 
 # Download and install Kubernetes In Docker (Kind):
-sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.27.0/kind-linux-amd64
+sudo curl -Lo /usr/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/v0.28.0/kind-linux-amd64
 sudo chmod +x /usr/bin/kind
 
 # download the latest openshift client at a certain release level
