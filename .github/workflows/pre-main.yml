@@ -73,7 +73,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Setup quick-k8s cluster
-        uses: palmsoftware/quick-k8s@v0.0.34
+        uses: palmsoftware/quick-k8s@v0.0.35
         with:
           disableDefaultCni: true
           numControlPlaneNodes: 1
