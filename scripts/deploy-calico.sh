@@ -2,7 +2,7 @@
 set -x
 
 # Download the calico YAML and change the image source to quay
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/calico.yaml |
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/calico.yaml |
 	sed s/docker.io/quay.io/g >temp-calico.yaml
 
 # Deploy calico
