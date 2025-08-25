@@ -17,7 +17,7 @@ jobs:
       IMAGE_NAME: quay.io/testnetworkfunction/debug-partner:latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -28,7 +28,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Clone the preflight repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: redhat-openshift-ecosystem/openshift-preflight
           path: openshift-preflight
@@ -58,7 +58,7 @@ jobs:
       IMAGE_NAME: quay.io/redhat-best-practices-for-k8s/certsuite-sample-workload:latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -69,7 +69,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Clone the preflight repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: redhat-openshift-ecosystem/openshift-preflight
           path: openshift-preflight
