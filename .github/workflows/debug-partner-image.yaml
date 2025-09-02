@@ -67,10 +67,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           labels: |
-            maintainer=Red Hat, Inc.
+            maintainer=certsuite maintainers
             org.opencontainers.image.title=Debug Partner
             org.opencontainers.image.description=CNF Certification Test uses it.
-            org.opencontainers.image.vendor=Red Hat, Inc.
+            org.opencontainers.image.vendor=certsuite
           tags: |
             type=raw,value=latest
             type=schedule,pattern=nightly
