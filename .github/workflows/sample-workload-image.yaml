@@ -136,6 +136,10 @@ jobs:
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
           tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.SPECIFIC_IMAGE_TAG }}'
           platforms: linux/amd64,linux/arm64
+          labels: |
+            name=certsuite-sample-workload
+            vendor=certsuite
+            maintainer=certsuite maintainers
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}
