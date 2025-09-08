@@ -71,6 +71,8 @@ jobs:
             org.opencontainers.image.title=Debug Partner
             org.opencontainers.image.description=CNF Certification Test uses it.
             org.opencontainers.image.vendor=certsuite
+            name=debug-partner
+            vendor=certsuite
           tags: |
             type=raw,value=latest
             type=schedule,pattern=nightly
