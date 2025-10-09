@@ -75,6 +75,8 @@ jobs:
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
           tags: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}:${{ env.IMAGE_TAG }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LEGACY }}:${{ env.SPECIFIC_IMAGE_TAG }}'
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha,scope=cnf-test-partner
+          cache-to: type=gha,mode=max,scope=cnf-test-partner
 
       - name: If failed to create the image, send alert msg to dev team.
         if: ${{ failure() }}
