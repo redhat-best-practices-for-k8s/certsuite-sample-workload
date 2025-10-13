@@ -6,7 +6,7 @@ SCRIPT_DIR=$(dirname "$0")
 # shellcheck disable=SC1091 # Not following.
 source "$SCRIPT_DIR"/init-env.sh
 
-ISTIO_VERSION=1.25.2
+ISTIO_VERSION=1.27.1
 ISTIO_DIR=istio-$ISTIO_VERSION
 
 # Check if required environment variables are set
