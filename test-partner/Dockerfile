@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.6
+FROM registry.access.redhat.com/ubi10/ubi:10.0-1760519443@sha256:9bd3aebdfdf6eebb6a18541d838cac9e9a35d2f807aa8e36d9518978cc86371f
 ARG USERNAME=tnf-user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
