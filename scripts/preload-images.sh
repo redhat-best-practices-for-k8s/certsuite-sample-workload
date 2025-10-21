@@ -26,8 +26,8 @@ IMAGES_TO_PRELOAD=(
 	quay.io/calico/node:v3.30.3
 	quay.io/testnetworkfunction/nginx-operator-bundle:v0.0.1
 	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
-	registry.access.redhat.com/ubi9/ubi:latest
-	registry.access.redhat.com/ubi9/ubi-minimal:latest
+	registry.access.redhat.com/ubi10/ubi:latest
+	registry.access.redhat.com/ubi10/ubi-minimal:latest
 	quay.io/operator-framework/configmap-operator-registry:latest
 	ghcr.io/k8snetworkplumbingwg/whereabouts:latest
 	quay.io/jitesoft/alpine:latest
