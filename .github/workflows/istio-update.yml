@@ -1,0 +1,97 @@
+name: Update Istio Version
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      istio_version:
+        description: 'Istio version to update to (e.g., 1.27.1)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-istio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest Istio version
+        id: istio
+        run: |
+          if [ -n "${{ github.event.inputs.istio_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.istio_version }}"
+          else
+            # Get the latest release from Istio GitHub
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/istio/istio/releases/latest | jq -r .tag_name)
+          fi
+          
+          echo "Latest Istio version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from install-istio.sh
+          CURRENT_VERSION=$(grep -oP 'ISTIO_VERSION=\K[0-9]+\.[0-9]+\.[0-9]+' scripts/install-istio.sh | head -1)
+          echo "Current version: $CURRENT_VERSION"
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if update is needed
+        id: check
+        run: |
+          if [ "${{ steps.istio.outputs.version }}" == "${{ steps.istio.outputs.current }}" ]; then
+            echo "No update needed. Already at ${{ steps.istio.outputs.version }}"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Update needed: ${{ steps.istio.outputs.current }} -> ${{ steps.istio.outputs.version }}"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Istio version in files
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          NEW_VERSION="${{ steps.istio.outputs.version }}"
+          OLD_VERSION="${{ steps.istio.outputs.current }}"
+          
+          echo "Updating from $OLD_VERSION to $NEW_VERSION"
+          
+          # Update scripts/install-istio.sh
+          sed -i "s|ISTIO_VERSION=$OLD_VERSION|ISTIO_VERSION=$NEW_VERSION|g" scripts/install-istio.sh
+          
+          # Update scripts/delete-istio.sh
+          sed -i "s|ISTIO_VERSION=$OLD_VERSION|ISTIO_VERSION=$NEW_VERSION|g" scripts/delete-istio.sh
+          
+          echo "Files updated successfully"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Update Istio to ${{ steps.istio.outputs.version }}"
+          title: "Update Istio to ${{ steps.istio.outputs.version }}"
+          body: |
+            ## Update Istio Version
+            
+            This PR updates Istio from ${{ steps.istio.outputs.current }} to ${{ steps.istio.outputs.version }}.
+            
+            ### Files Updated:
+            - `scripts/install-istio.sh`
+            - `scripts/delete-istio.sh`
+            
+            ### Istio Release Notes
+            https://github.com/istio/istio/releases/tag/${{ steps.istio.outputs.version }}
+            
+            ---
+            *This PR was automatically created by the Istio update workflow*
+          branch: update-istio-${{ steps.istio.outputs.version }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automation
+          assignees: sebrandon1
+
