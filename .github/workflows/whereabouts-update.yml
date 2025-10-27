@@ -1,0 +1,93 @@
+name: Update Whereabouts Version
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      whereabouts_version:
+        description: 'Whereabouts version to update to (e.g., v0.9.2)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-whereabouts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest Whereabouts version
+        id: whereabouts
+        run: |
+          if [ -n "${{ github.event.inputs.whereabouts_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.whereabouts_version }}"
+          else
+            # Get the latest release from Whereabouts GitHub
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/k8snetworkplumbingwg/whereabouts/releases/latest | jq -r .tag_name)
+          fi
+          
+          echo "Latest Whereabouts version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from deploy-multus-network.sh
+          CURRENT_VERSION=$(grep -oP 'WHEREABOUTS_VERSION="\K[v0-9.]+' scripts/deploy-multus-network.sh | head -1)
+          echo "Current version: $CURRENT_VERSION"
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if update is needed
+        id: check
+        run: |
+          if [ "${{ steps.whereabouts.outputs.version }}" == "${{ steps.whereabouts.outputs.current }}" ]; then
+            echo "No update needed. Already at ${{ steps.whereabouts.outputs.version }}"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Update needed: ${{ steps.whereabouts.outputs.current }} -> ${{ steps.whereabouts.outputs.version }}"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Whereabouts version in files
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          NEW_VERSION="${{ steps.whereabouts.outputs.version }}"
+          OLD_VERSION="${{ steps.whereabouts.outputs.current }}"
+          
+          echo "Updating from $OLD_VERSION to $NEW_VERSION"
+          
+          # Update scripts/deploy-multus-network.sh
+          sed -i "s|WHEREABOUTS_VERSION=\"$OLD_VERSION\"|WHEREABOUTS_VERSION=\"$NEW_VERSION\"|g" scripts/deploy-multus-network.sh
+          
+          echo "Files updated successfully"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Update Whereabouts to ${{ steps.whereabouts.outputs.version }}"
+          title: "Update Whereabouts to ${{ steps.whereabouts.outputs.version }}"
+          body: |
+            ## Update Whereabouts Version
+            
+            This PR updates Whereabouts from ${{ steps.whereabouts.outputs.current }} to ${{ steps.whereabouts.outputs.version }}.
+            
+            ### Files Updated:
+            - `scripts/deploy-multus-network.sh`
+            
+            ### Whereabouts Release Notes
+            https://github.com/k8snetworkplumbingwg/whereabouts/releases/tag/${{ steps.whereabouts.outputs.version }}
+            
+            ---
+            *This PR was automatically created by the Whereabouts update workflow*
+          branch: update-whereabouts-${{ steps.whereabouts.outputs.version }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automation
+          assignees: sebrandon1
+

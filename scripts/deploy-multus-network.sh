@@ -7,7 +7,10 @@ SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
 MULTUS_GIT_URL="https://github.com/k8snetworkplumbingwg/multus-cni.git"
+MULTUS_VERSION="v4.2.2"
 WHEREABOUTS_GIT_URL="https://github.com/k8snetworkplumbingwg/whereabouts"
+WHEREABOUTS_VERSION="v0.9.2"
+
 if $CERTSUITE_NON_OCP_CLUSTER; then
 	echo "non ocp cluster detected, deploying Multus"
 
@@ -15,7 +18,7 @@ if $CERTSUITE_NON_OCP_CLUSTER; then
 	oc rollout status daemonset calico-node -n kube-system --timeout="$CERTSUITE_DEPLOYMENT_TIMEOUT"
 
 	rm -rf ./temp
-	git clone --depth 1 $MULTUS_GIT_URL -b v4.2.2 ./temp/multus-cni
+	git clone --depth 1 $MULTUS_GIT_URL -b $MULTUS_VERSION ./temp/multus-cni
 	oc apply --filename ./temp/multus-cni/deployments/multus-daemonset.yml
 
 	# Wait for all multus daemonset pods to be running
@@ -43,10 +46,10 @@ if $CERTSUITE_NON_OCP_CLUSTER; then
 	rm -rf whereabouts
 
 	# Install whereabouts at specific released version
-	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.9.2
+	git clone $WHEREABOUTS_GIT_URL --depth 1 -b $WHEREABOUTS_VERSION
 
-	# sed replace whereabouts:latest with whereabouts:v0.9.2
-	sed 's/whereabouts:latest/whereabouts:v0.9.2/g' whereabouts/doc/crds/daemonset-install.yaml -i
+	# sed replace whereabouts:latest with whereabouts version
+	sed "s/whereabouts:latest/whereabouts:$WHEREABOUTS_VERSION/g" whereabouts/doc/crds/daemonset-install.yaml -i
 
 	oc apply \
 		-f whereabouts/doc/crds/daemonset-install.yaml \
