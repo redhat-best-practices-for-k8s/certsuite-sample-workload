@@ -45,8 +45,8 @@ if $CERTSUITE_NON_OCP_CLUSTER; then
 	# Install whereabouts at specific released version
 	git clone $WHEREABOUTS_GIT_URL --depth 1 -b v0.9.2
 
-	# sed replace whereabouts:latest with whereabouts:v0.9.2
-	sed 's/whereabouts:latest/whereabouts:v0.9.2/g' whereabouts/doc/crds/daemonset-install.yaml -i
+	# sed replace whereabouts:v0.9.2latest with whereabouts:v0.9.2v0.9.2
+	sed 's/whereabouts:v0.9.2latest/whereabouts:v0.9.2v0.9.2/g' whereabouts/doc/crds/daemonset-install.yaml -i
 
 	oc apply \
 		-f whereabouts/doc/crds/daemonset-install.yaml \
