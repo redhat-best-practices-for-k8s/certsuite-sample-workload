@@ -1,0 +1,143 @@
+name: Update Multus Version
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      multus_version:
+        description: 'Multus CNI version to update to (e.g., v4.2.2)'
+        required: false
+        type: string
+      whereabouts_version:
+        description: 'Whereabouts version to update to (e.g., v0.9.2)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-multus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest Multus CNI version
+        id: multus
+        run: |
+          if [ -n "${{ github.event.inputs.multus_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.multus_version }}"
+          else
+            # Get the latest release from Multus CNI GitHub
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/k8snetworkplumbingwg/multus-cni/releases/latest | jq -r .tag_name)
+          fi
+          
+          echo "Latest Multus CNI version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from deploy-multus-network.sh
+          CURRENT_VERSION=$(grep -oP 'multus-cni\.git -b \K[v0-9.]+' scripts/deploy-multus-network.sh | head -1)
+          echo "Current version: $CURRENT_VERSION"
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get latest Whereabouts version
+        id: whereabouts
+        run: |
+          if [ -n "${{ github.event.inputs.whereabouts_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.whereabouts_version }}"
+          else
+            # Get the latest release from Whereabouts GitHub
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/k8snetworkplumbingwg/whereabouts/releases/latest | jq -r .tag_name)
+          fi
+          
+          echo "Latest Whereabouts version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from deploy-multus-network.sh
+          CURRENT_VERSION=$(grep -oP 'whereabouts --depth 1 -b \K[v0-9.]+' scripts/deploy-multus-network.sh | head -1)
+          echo "Current version: $CURRENT_VERSION"
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if update is needed
+        id: check
+        run: |
+          NEEDS_UPDATE=false
+          
+          if [ "${{ steps.multus.outputs.version }}" != "${{ steps.multus.outputs.current }}" ]; then
+            echo "Multus CNI update needed: ${{ steps.multus.outputs.current }} -> ${{ steps.multus.outputs.version }}"
+            NEEDS_UPDATE=true
+          fi
+          
+          if [ "${{ steps.whereabouts.outputs.version }}" != "${{ steps.whereabouts.outputs.current }}" ]; then
+            echo "Whereabouts update needed: ${{ steps.whereabouts.outputs.current }} -> ${{ steps.whereabouts.outputs.version }}"
+            NEEDS_UPDATE=true
+          fi
+          
+          if [ "$NEEDS_UPDATE" = false ]; then
+            echo "No updates needed. Already at Multus CNI ${{ steps.multus.outputs.version }} and Whereabouts ${{ steps.whereabouts.outputs.version }}"
+          fi
+          
+          echo "needs_update=$NEEDS_UPDATE" >> $GITHUB_OUTPUT
+
+      - name: Update Multus and Whereabouts versions in files
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          # Update Multus CNI version
+          if [ "${{ steps.multus.outputs.version }}" != "${{ steps.multus.outputs.current }}" ]; then
+            MULTUS_NEW="${{ steps.multus.outputs.version }}"
+            MULTUS_OLD="${{ steps.multus.outputs.current }}"
+            
+            echo "Updating Multus CNI from $MULTUS_OLD to $MULTUS_NEW"
+            sed -i "s|multus-cni.git -b $MULTUS_OLD|multus-cni.git -b $MULTUS_NEW|g" scripts/deploy-multus-network.sh
+          fi
+          
+          # Update Whereabouts version
+          if [ "${{ steps.whereabouts.outputs.version }}" != "${{ steps.whereabouts.outputs.current }}" ]; then
+            WHEREABOUTS_NEW="${{ steps.whereabouts.outputs.version }}"
+            WHEREABOUTS_OLD="${{ steps.whereabouts.outputs.current }}"
+            
+            echo "Updating Whereabouts from $WHEREABOUTS_OLD to $WHEREABOUTS_NEW"
+            sed -i "s|whereabouts --depth 1 -b $WHEREABOUTS_OLD|whereabouts --depth 1 -b $WHEREABOUTS_NEW|g" scripts/deploy-multus-network.sh
+            sed -i "s|whereabouts:$WHEREABOUTS_OLD|whereabouts:$WHEREABOUTS_NEW|g" scripts/deploy-multus-network.sh
+          fi
+          
+          echo "Files updated successfully"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Update Multus CNI to ${{ steps.multus.outputs.version }} and Whereabouts to ${{ steps.whereabouts.outputs.version }}"
+          title: "Update Multus CNI to ${{ steps.multus.outputs.version }} and Whereabouts to ${{ steps.whereabouts.outputs.version }}"
+          body: |
+            ## Update Multus CNI and Whereabouts Versions
+            
+            This PR updates networking components:
+            
+            ### Multus CNI
+            - **Current:** ${{ steps.multus.outputs.current }}
+            - **New:** ${{ steps.multus.outputs.version }}
+            - **Release Notes:** https://github.com/k8snetworkplumbingwg/multus-cni/releases/tag/${{ steps.multus.outputs.version }}
+            
+            ### Whereabouts
+            - **Current:** ${{ steps.whereabouts.outputs.current }}
+            - **New:** ${{ steps.whereabouts.outputs.version }}
+            - **Release Notes:** https://github.com/k8snetworkplumbingwg/whereabouts/releases/tag/${{ steps.whereabouts.outputs.version }}
+            
+            ### Files Updated:
+            - `scripts/deploy-multus-network.sh`
+            
+            ---
+            *This PR was automatically created by the Multus update workflow*
+          branch: update-multus-${{ steps.multus.outputs.version }}-whereabouts-${{ steps.whereabouts.outputs.version }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automation
+          assignees: sebrandon1
+

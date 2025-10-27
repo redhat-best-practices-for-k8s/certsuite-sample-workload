@@ -1,0 +1,101 @@
+name: Update Calico Version
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      calico_version:
+        description: 'Calico version to update to (e.g., v3.30.3)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-calico:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest Calico version
+        id: calico
+        run: |
+          if [ -n "${{ github.event.inputs.calico_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.calico_version }}"
+          else
+            # Get the latest release from Calico GitHub
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/projectcalico/calico/releases/latest | jq -r .tag_name)
+          fi
+          
+          echo "Latest Calico version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from deploy-calico.sh
+          CURRENT_VERSION=$(grep -oP 'calico/v\K[0-9]+\.[0-9]+\.[0-9]+' scripts/deploy-calico.sh | head -1)
+          echo "Current version: v$CURRENT_VERSION"
+          echo "current=v$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if update is needed
+        id: check
+        run: |
+          if [ "${{ steps.calico.outputs.version }}" == "${{ steps.calico.outputs.current }}" ]; then
+            echo "No update needed. Already at ${{ steps.calico.outputs.version }}"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Update needed: ${{ steps.calico.outputs.current }} -> ${{ steps.calico.outputs.version }}"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Calico version in files
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          NEW_VERSION="${{ steps.calico.outputs.version }}"
+          OLD_VERSION="${{ steps.calico.outputs.current }}"
+          
+          echo "Updating from $OLD_VERSION to $NEW_VERSION"
+          
+          # Update scripts/deploy-calico.sh
+          sed -i "s|calico/$OLD_VERSION/|calico/$NEW_VERSION/|g" scripts/deploy-calico.sh
+          
+          # Update scripts/delete-calico.sh
+          sed -i "s|calico/$OLD_VERSION/|calico/$NEW_VERSION/|g" scripts/delete-calico.sh
+          
+          # Update scripts/preload-images.sh
+          sed -i "s|quay.io/calico/node:$OLD_VERSION|quay.io/calico/node:$NEW_VERSION|g" scripts/preload-images.sh
+          
+          echo "Files updated successfully"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Update Calico to ${{ steps.calico.outputs.version }}"
+          title: "Update Calico to ${{ steps.calico.outputs.version }}"
+          body: |
+            ## Update Calico Version
+            
+            This PR updates Calico from ${{ steps.calico.outputs.current }} to ${{ steps.calico.outputs.version }}.
+            
+            ### Files Updated:
+            - `scripts/deploy-calico.sh`
+            - `scripts/delete-calico.sh`
+            - `scripts/preload-images.sh`
+            
+            ### Calico Release Notes
+            https://github.com/projectcalico/calico/releases/tag/${{ steps.calico.outputs.version }}
+            
+            ---
+            *This PR was automatically created by the Calico update workflow*
+          branch: update-calico-${{ steps.calico.outputs.version }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automation
+          assignees: sebrandon1
+
