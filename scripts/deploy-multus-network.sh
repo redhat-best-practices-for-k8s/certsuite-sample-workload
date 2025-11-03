@@ -7,7 +7,7 @@ SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
 MULTUS_GIT_URL="https://github.com/k8snetworkplumbingwg/multus-cni.git"
-MULTUS_VERSION="v4.2.2"
+MULTUS_VERSION="v4.2.3"
 WHEREABOUTS_GIT_URL="https://github.com/k8snetworkplumbingwg/whereabouts"
 WHEREABOUTS_VERSION="v0.9.2"
 
