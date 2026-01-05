@@ -25,16 +25,59 @@ jobs:
       - name: Get latest Istio version
         id: istio
         run: |
+          # Function to get version with retries
+          get_version() {
+            local retries=3
+            local delay=5
+
+            for ((i=1; i<=retries; i++)); do
+              echo "Attempt $i to fetch Istio version..."
+
+              response=$(curl -s --max-time 30 https://api.github.com/repos/istio/istio/releases/latest)
+
+              if [ $? -eq 0 ] && [ -n "$response" ]; then
+                version=$(echo "$response" | jq -r '.tag_name // empty')
+
+                # Istio uses version format without 'v' prefix (e.g., 1.27.1)
+                if [ -n "$version" ] && [ "$version" != "null" ] && [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "Successfully fetched Istio version: $version"
+                  echo "$version"
+                  return 0
+                else
+                  echo "Invalid version format: '$version'"
+                fi
+              else
+                echo "API call failed or returned empty response"
+              fi
+
+              if [ $i -lt $retries ]; then
+                echo "Retrying in $delay seconds..."
+                sleep $delay
+              fi
+            done
+
+            echo "Failed to fetch valid Istio version after $retries attempts"
+            return 1
+          }
+
           if [ -n "${{ github.event.inputs.istio_version }}" ]; then
             LATEST_VERSION="${{ github.event.inputs.istio_version }}"
+            # Validate manually provided version (Istio uses format without 'v' prefix)
+            if ! [[ "$LATEST_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Error: Invalid version format '$LATEST_VERSION' - expected format: X.Y.Z"
+              exit 1
+            fi
           else
-            # Get the latest release from Istio GitHub
-            LATEST_VERSION=$(curl -s https://api.github.com/repos/istio/istio/releases/latest | jq -r .tag_name)
+            LATEST_VERSION=$(get_version)
+            if [ $? -ne 0 ] || [ -z "$LATEST_VERSION" ]; then
+              echo "Error: Failed to fetch valid Istio version"
+              exit 1
+            fi
           fi
-          
+
           echo "Latest Istio version: $LATEST_VERSION"
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          
+
           # Get current version from install-istio.sh
           CURRENT_VERSION=$(grep -oP 'ISTIO_VERSION=\K[0-9]+\.[0-9]+\.[0-9]+' scripts/install-istio.sh | head -1)
           echo "Current version: $CURRENT_VERSION"
