@@ -25,16 +25,58 @@ jobs:
       - name: Get latest Whereabouts version
         id: whereabouts
         run: |
+          # Function to get version with retries
+          get_version() {
+            local retries=3
+            local delay=5
+
+            for ((i=1; i<=retries; i++)); do
+              echo "Attempt $i to fetch Whereabouts version..."
+
+              response=$(curl -s --max-time 30 https://api.github.com/repos/k8snetworkplumbingwg/whereabouts/releases/latest)
+
+              if [ $? -eq 0 ] && [ -n "$response" ]; then
+                version=$(echo "$response" | jq -r '.tag_name // empty')
+
+                if [ -n "$version" ] && [ "$version" != "null" ] && [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "Successfully fetched Whereabouts version: $version"
+                  echo "$version"
+                  return 0
+                else
+                  echo "Invalid version format: '$version'"
+                fi
+              else
+                echo "API call failed or returned empty response"
+              fi
+
+              if [ $i -lt $retries ]; then
+                echo "Retrying in $delay seconds..."
+                sleep $delay
+              fi
+            done
+
+            echo "Failed to fetch valid Whereabouts version after $retries attempts"
+            return 1
+          }
+
           if [ -n "${{ github.event.inputs.whereabouts_version }}" ]; then
             LATEST_VERSION="${{ github.event.inputs.whereabouts_version }}"
+            # Validate manually provided version
+            if ! [[ "$LATEST_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Error: Invalid version format '$LATEST_VERSION' - expected format: vX.Y.Z"
+              exit 1
+            fi
           else
-            # Get the latest release from Whereabouts GitHub
-            LATEST_VERSION=$(curl -s https://api.github.com/repos/k8snetworkplumbingwg/whereabouts/releases/latest | jq -r .tag_name)
+            LATEST_VERSION=$(get_version)
+            if [ $? -ne 0 ] || [ -z "$LATEST_VERSION" ]; then
+              echo "Error: Failed to fetch valid Whereabouts version"
+              exit 1
+            fi
           fi
-          
+
           echo "Latest Whereabouts version: $LATEST_VERSION"
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          
+
           # Get current version from deploy-multus-network.sh
           CURRENT_VERSION=$(grep -oP 'WHEREABOUTS_VERSION="\K[v0-9.]+' scripts/deploy-multus-network.sh | head -1)
           echo "Current version: $CURRENT_VERSION"
