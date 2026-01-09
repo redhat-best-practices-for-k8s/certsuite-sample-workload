@@ -26,7 +26,7 @@ RUN \
 
 # Install Go binary and set the PATH
 ENV \
-	GO_DL_URL=https://golang.org/dl \
+	GO_DL_URL=https://go.dev/dl \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.25.5.linux-amd64.tar.gz
 ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.25.5.linux-arm64.tar.gz
@@ -35,13 +35,13 @@ ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.25.5.linux-arm64.tar.gz
 # hadolint ignore=SC2086
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
-		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
+		wget ${GO_BIN_URL_x86_64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.25.5.linux-amd64.tar.gz; \
+		&& tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz; \
 	elif [ "$(uname -m)" = aarch64 ]; then \
-		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_aarch64} --quiet \
+		wget ${GO_BIN_URL_aarch64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf ${TEMP_DIR}/go1.25.5.linux-arm64.tar.gz; \
+		&& tar -C /usr/local -xzf go1.25.5.linux-arm64.tar.gz; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
