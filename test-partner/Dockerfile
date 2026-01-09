@@ -35,11 +35,11 @@ ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.25.5.linux-arm64.tar.gz
 # hadolint ignore=SC2086
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
-		wget ${GO_BIN_URL_x86_64} \
+		wget ${GO_BIN_URL_x86_64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
 		&& tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz; \
 	elif [ "$(uname -m)" = aarch64 ]; then \
-		wget ${GO_BIN_URL_aarch64} \
+		wget ${GO_BIN_URL_aarch64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
 		&& tar -C /usr/local -xzf go1.25.5.linux-arm64.tar.gz; \
 	else \
