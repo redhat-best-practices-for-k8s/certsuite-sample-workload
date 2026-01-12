@@ -32,16 +32,17 @@ ENV GO_BIN_URL_x86_64=${GO_DL_URL}/go1.25.5.linux-amd64.tar.gz
 ENV GO_BIN_URL_aarch64=${GO_DL_URL}/go1.25.5.linux-arm64.tar.gz
 
 # Determine the CPU architecture and download the appropriate Go binary
+# Exclude go/test directory to avoid QEMU emulation issues during cross-platform builds
 # hadolint ignore=SC2086
 RUN \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget ${GO_BIN_URL_x86_64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz; \
+		&& tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz --exclude='go/test'; \
 	elif [ "$(uname -m)" = aarch64 ]; then \
 		wget ${GO_BIN_URL_aarch64} --progress=dot:giga \
 		&& rm -rf /usr/local/go \
-		&& tar -C /usr/local -xzf go1.25.5.linux-arm64.tar.gz; \
+		&& tar -C /usr/local -xzf go1.25.5.linux-arm64.tar.gz --exclude='go/test'; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
 	fi
