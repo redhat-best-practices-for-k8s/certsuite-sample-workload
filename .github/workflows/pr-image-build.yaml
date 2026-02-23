@@ -9,6 +9,8 @@ on:
       - '.github/workflows/pr-image-build.yaml'
   workflow_dispatch:
 
+permissions: read-all
+
 defaults:
   run:
     shell: bash

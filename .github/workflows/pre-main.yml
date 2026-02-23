@@ -6,6 +6,9 @@ name: Test Incoming Changes
   pull_request:
     branches: [main]
   workflow_dispatch:
+
+permissions: read-all
+
 env:
   REGISTRY: quay.io
   CERTSUITE_IMAGE_NAME: redhat-best-practices-for-k8s/certsuite
