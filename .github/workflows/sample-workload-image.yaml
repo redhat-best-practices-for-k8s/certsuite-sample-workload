@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: 'Build the `cnf-test-partner` image'
         run: docker build  -t $IMAGE_NAME_LEGACY:$IMAGE_TAG -t $IMAGE_NAME_LEGACY:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
@@ -53,7 +53,7 @@ jobs:
 
     steps:
       - name: Checkout the main branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: main
 
@@ -97,7 +97,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: 'Build the `certsuite-sample-workload` image'
         run: docker build  -t $IMAGE_NAME:$IMAGE_TAG -t $IMAGE_NAME:$SPECIFIC_IMAGE_TAG . --no-cache -f $IMAGE_CONTAINER_FILE_PATH
@@ -120,7 +120,7 @@ jobs:
 
     steps:
       - name: Checkout the main branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: main
 
@@ -145,7 +145,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
 
       - name: 'Build and push the new `certsuite-sample-workload` image(s)'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}

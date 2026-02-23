@@ -12,9 +12,9 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
         with:
           scandir: './scripts'
           severity: error
@@ -28,10 +28,10 @@ jobs:
       DEFAULT_TIMEOUT: 90s
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup the k8s cluster
-        uses: palmsoftware/quick-k8s@v0.0.51
+        uses: palmsoftware/quick-k8s@bf2b7deaf3ac1bc6e857c9fa1ebaa6ccfc23b86b # v0.0.51
         with:
           disableDefaultCni: true
           numControlPlaneNodes: 1
