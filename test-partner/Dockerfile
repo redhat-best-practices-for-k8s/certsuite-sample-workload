@@ -1,6 +1,6 @@
 # Build stage: Use official Go image to build the testapp
 # This avoids QEMU emulation issues when extracting Go tarball during cross-platform builds
-FROM docker.io/library/golang:1.25 AS builder
+FROM docker.io/library/golang:1.26 AS builder
 WORKDIR /app
 COPY ./testapp /app/testapp
 WORKDIR /app/testapp
