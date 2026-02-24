@@ -22,23 +22,23 @@ jobs:
   linters:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
-      - uses: hadolint/hadolint-action@v3.3.0
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
         with:
           dockerfile: "Dockerfile*"
           recursive: true
-      - uses: nosborn/github-action-markdown-cli@v3.5.0
+      - uses: nosborn/github-action-markdown-cli@508d6cefd8f0cc99eab5d2d4685b1d5f470042c1 # v3.5.0
         with:
           files: .
-      - uses: ludeeus/action-shellcheck@master
+      - uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
         env:
           SHELLCHECK_OPTS: --external-sources
         with:
           ignore_names: mo
-      - uses: mfinelli/setup-shfmt@v4
+      - uses: mfinelli/setup-shfmt@a25fda4c1fe115aec0f85e04126610841bc3141d # v4
       - run: shfmt -d scripts/*.sh
       # - uses: crate-ci/typos@master # Temporarily disabled
-      - uses: ibiqlik/action-yamllint@v3
+      - uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3
         with:
           config_data: |
             extends: default
@@ -63,12 +63,12 @@ jobs:
 
     steps:
       - name: Check out `certsuite-sample-workload`
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ github.sha }}
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
         with:
           go-version-file: ./testapp/go.mod
 
@@ -76,7 +76,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Setup quick-k8s cluster
-        uses: palmsoftware/quick-k8s@v0.0.51
+        uses: palmsoftware/quick-k8s@bf2b7deaf3ac1bc6e857c9fa1ebaa6ccfc23b86b # v0.0.51
         with:
           disableDefaultCni: true
           numControlPlaneNodes: 1
@@ -89,7 +89,7 @@ jobs:
         uses: ./.github/actions/create-local-test-infra-resources
 
       - name: Check out `certsuite`
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: redhat-best-practices-for-k8s/certsuite
           path: certsuite
