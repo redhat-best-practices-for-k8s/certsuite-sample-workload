@@ -78,7 +78,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: 'Build and push the new `cnf-test-partner` image(s)'
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
@@ -145,7 +145,7 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN_K8S }}
 
       - name: 'Build and push the new `certsuite-sample-workload` image(s)'
-        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
         with:
           push: true
           file: ${{ env.IMAGE_CONTAINER_FILE_PATH }}
