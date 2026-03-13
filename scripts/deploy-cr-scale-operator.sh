@@ -22,6 +22,16 @@ git clone "$CR_SCALE_OPERATOR_GIT_REPO" -b "$TAG" "${CR_SCALE_OPERATOR_DIR}" || 
 ## Change to checkout folder first.
 pushd "${CR_SCALE_OPERATOR_DIR}" || exit 1
 
+# Ensure the image is available in Kind clusters
+if kind get clusters 2>/dev/null | grep -q .; then
+	log_info "Kind cluster detected. Loading image $IMG into Kind."
+	if docker pull "$IMG" && kind load docker-image "$IMG"; then
+		log_info "Image $IMG loaded into Kind successfully."
+	else
+		log_info "Warning: failed to preload image, pod may need to pull it."
+	fi
+fi
+
 # Deploy cr-scale-operator
 make deploy IMG=$IMG
 
