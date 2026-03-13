@@ -10,7 +10,7 @@ namespaces=$(kubectl get ns --no-headers | awk '{ print $1 }')
 for namespace in $namespaces; do
 	echo "Waiting for pods in namespace $namespace to be running..."
 	while [ "$(kubectl get pods --field-selector=status.phase=Running -n "$namespace" 2>/dev/null | wc -l)" != "$(kubectl get pods -n "$namespace" 2>/dev/null | wc -l)" ]; do
-		ELAPSED=$(( $(date +%s) - START_TIME ))
+		ELAPSED=$(($(date +%s) - START_TIME))
 		if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
 			echo "ERROR: Timed out after ${TIMEOUT}s waiting for all pods to be running"
 			echo "Pods not in Running state:"
