@@ -12,6 +12,7 @@ source "$SCRIPT_DIR"/logging.sh
 CR_SCALE_OPERATOR_GIT_REPO="https://github.com/test-network-function/cr-scale-operator.git"
 TAG="main"
 IMG="quay.io/testnetworkfunction/cr-scale-operator:latest"
+KUBE_RBAC_PROXY_IMG="gcr.io/kubebuilder/kube-rbac-proxy:v0.13.1"
 CR_SCALE_OPERATOR_DIR=cr-scale-operator
 
 # Clone the repo.
@@ -22,14 +23,16 @@ git clone "$CR_SCALE_OPERATOR_GIT_REPO" -b "$TAG" "${CR_SCALE_OPERATOR_DIR}" || 
 ## Change to checkout folder first.
 pushd "${CR_SCALE_OPERATOR_DIR}" || exit 1
 
-# Ensure the image is available in Kind clusters
+# Ensure images are available in Kind clusters
 if kind get clusters 2>/dev/null | grep -q .; then
-	log_info "Kind cluster detected. Loading image $IMG into Kind."
-	if docker pull "$IMG" && kind load docker-image "$IMG"; then
-		log_info "Image $IMG loaded into Kind successfully."
-	else
-		log_info "Warning: failed to preload image, pod may need to pull it."
-	fi
+	log_info "Kind cluster detected. Loading images into Kind."
+	for img in "$IMG" "$KUBE_RBAC_PROXY_IMG"; do
+		if docker pull "$img" && kind load docker-image "$img"; then
+			log_info "Image $img loaded into Kind successfully."
+		else
+			log_info "Warning: failed to preload $img, pod may need to pull it."
+		fi
+	done
 fi
 
 # Deploy cr-scale-operator
