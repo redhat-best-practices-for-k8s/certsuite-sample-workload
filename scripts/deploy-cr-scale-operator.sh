@@ -12,7 +12,7 @@ source "$SCRIPT_DIR"/logging.sh
 CR_SCALE_OPERATOR_GIT_REPO="https://github.com/test-network-function/cr-scale-operator.git"
 TAG="main"
 IMG="quay.io/testnetworkfunction/cr-scale-operator:latest"
-KUBE_RBAC_PROXY_IMG="gcr.io/kubebuilder/kube-rbac-proxy:v0.13.1"
+KUBE_RBAC_PROXY_IMG="registry.k8s.io/kubebuilder/kube-rbac-proxy:v0.13.1"
 CR_SCALE_OPERATOR_DIR=cr-scale-operator
 
 # Clone the repo.
