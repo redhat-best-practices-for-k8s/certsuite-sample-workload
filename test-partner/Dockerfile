@@ -22,6 +22,7 @@ RUN \
 		openssh-clients \
 		podman \
 		psmisc \
+		util-linux \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
 	&& rm -rf /var/cache/yum
 
