@@ -6,7 +6,7 @@ COPY ./testapp /app/testapp
 WORKDIR /app/testapp
 RUN go build -o bin/app cmd/web/main.go
 
-FROM registry.access.redhat.com/ubi9/ubi:9.7
+FROM registry.access.redhat.com/ubi9/ubi:9.8
 ARG USERNAME=tnf-user
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
