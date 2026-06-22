@@ -12,7 +12,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@00b27aa7cb85167568cb48a3838b75f4265f2bca # master
         with:
@@ -28,7 +28,7 @@ jobs:
       DEFAULT_TIMEOUT: 90s
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
 
       - name: Setup the k8s cluster
         uses: palmsoftware/quick-k8s@3f1a66e38ed85b43c2d6875773e050bb3ad5596d # v0.0.72
