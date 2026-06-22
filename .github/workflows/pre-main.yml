@@ -22,7 +22,7 @@ jobs:
   linters:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
       - uses: hadolint/hadolint-action@2332a7b74a6de0dda2e2221d575162eba76ba5e5 # v3.3.0
         with:
           dockerfile: "Dockerfile*"
@@ -63,7 +63,7 @@ jobs:
 
     steps:
       - name: Check out `certsuite-sample-workload`
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
         with:
           ref: ${{ github.sha }}
 
@@ -89,7 +89,7 @@ jobs:
         uses: ./.github/actions/create-local-test-infra-resources
 
       - name: Check out `certsuite`
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
         with:
           repository: redhat-best-practices-for-k8s/certsuite
           path: certsuite
