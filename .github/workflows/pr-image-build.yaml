@@ -39,7 +39,7 @@ jobs:
         uses: ./.github/actions/setup-docker-storage
 
       - name: 'Build multi-arch `certsuite-sample-workload` image (no push)'
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           push: false
           file: ./test-partner/Dockerfile
@@ -65,7 +65,7 @@ jobs:
         uses: ./.github/actions/setup-docker-storage
 
       - name: 'Build multi-arch `debug-partner` image (no push)'
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           push: false
           file: ./test-partner/Dockerfile.debug-partner
