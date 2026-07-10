@@ -27,19 +27,50 @@ make rebuild-cluster      # Create new kind cluster with Calico CNI
 make delete-cluster       # Delete kind cluster
 ```
 
+### QE-Specific Install
+```bash
+make install-for-qe       # Minimal install path for Kind QE clusters
+```
+
 ### Specific Components
 ```bash
 make install-operator     # Deploy the Hazelcast operator
+make install-community-operator   # Deploy a community operator
+make delete-community-operator    # Remove the community operator
 make install-crds         # Deploy test CRDs
 make install-prometheus   # Deploy Prometheus operator
+make delete-prometheus    # Remove Prometheus operator
 make install-istio        # Deploy Istio service mesh
+make delete-istio         # Remove Istio service mesh
+make deploy-cr-scale-operator     # Deploy CR scale operator
+```
+
+### Individual Resource Management
+```bash
+make delete-deployment    # Delete deployment test pods
+make create-statefulset   # Create statefulset test pods
+make deploy-services      # Deploy services
+make delete-services      # Delete services
 ```
 
 ### Vagrant Environment (MacOS)
 ```bash
 make vagrant-build        # Build and provision Vagrant VM with cluster
 make vagrant-destroy      # Destroy Vagrant environment
+make vagrant-suspend      # Suspend the Vagrant VM
+make vagrant-resume       # Resume a suspended Vagrant VM
+make vagrant-update       # Update the Vagrant box
 make vagrant-recreate     # Destroy and rebuild
+```
+
+### Bootstrap Scripts (local setup)
+```bash
+make bootstrap-docker-fedora-local   # Bootstrap Docker on Fedora
+make bootstrap-docker-ubuntu-local   # Bootstrap Docker on Ubuntu
+make bootstrap-python-fedora-local   # Bootstrap Python on Fedora
+make bootstrap-python-ubuntu-local   # Bootstrap Python on Ubuntu
+make bootstrap-golang-fedora-local   # Bootstrap Go on Fedora
+make bootstrap-cluster               # Bootstrap Kubernetes/Kind cluster
 ```
 
 ### Linting
