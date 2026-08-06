@@ -8,7 +8,7 @@ source "$SCRIPT_DIR"/init-env.sh
 source "$SCRIPT_DIR"/logging.sh
 
 # Variables for deployment.
-CR_SCALE_OPERATOR_GIT_REPO="https://github.com/test-network-function/cr-scale-operator.git"
+CR_SCALE_OPERATOR_GIT_REPO="https://github.com/redhat-best-practices-for-k8s/cr-scale-operator.git"
 TAG="main"
 CR_SCALE_OPERATOR_DIR=cr-scale-operator
 
