@@ -6,7 +6,7 @@ set -x
 REGISTRY_NAME=quay.io
 #REGISTRY_NAME=cnfcert-local.redhat.com
 REGISTRY=$REGISTRY_NAME/
-DIRECTORY=testnetworkfunction/
+DIRECTORY=redhat-best-practices-for-k8s/
 OPERATOR_BUNDLE_BASE_IMAGE=nginx-operator
 OPERATOR_IMAGE=$OPERATOR_BUNDLE_BASE_IMAGE:v0.0.1
 OPERATOR_BUNDLE_IMAGE=$OPERATOR_BUNDLE_BASE_IMAGE-bundle:v0.0.1
@@ -51,7 +51,7 @@ oc create \
 export ON_DEMAND_DEBUG_PODS="${ON_DEMAND_DEBUG_PODS:-true}"
 
 #Partner repo
-export CERTSUITE_PARTNER_REPO="${CERTSUITE_PARTNER_REPO:-quay.io/testnetworkfunction}"
+export CERTSUITE_PARTNER_REPO="${CERTSUITE_PARTNER_REPO:-quay.io/redhat-best-practices-for-k8s}"
 export CERTSUITE_DEPLOYMENT_TIMEOUT="${CERTSUITE_DEPLOYMENT_TIMEOUT:-240s}"
 
 # Number of multus interfaces to create

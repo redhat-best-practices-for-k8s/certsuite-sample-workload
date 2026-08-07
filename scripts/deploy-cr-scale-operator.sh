@@ -9,9 +9,9 @@ source "$SCRIPT_DIR"/init-env.sh
 source "$SCRIPT_DIR"/logging.sh
 
 # Variables for deployment
-CR_SCALE_OPERATOR_GIT_REPO="https://github.com/test-network-function/cr-scale-operator.git"
+CR_SCALE_OPERATOR_GIT_REPO="https://github.com/redhat-best-practices-for-k8s/cr-scale-operator.git"
 TAG="main"
-IMG="quay.io/testnetworkfunction/cr-scale-operator:latest"
+IMG="quay.io/redhat-best-practices-for-k8s/cr-scale-operator:latest"
 KUBE_RBAC_PROXY_IMG="quay.io/redhat-best-practices-for-k8s/kube-rbac-proxy:v0.13.1"
 CR_SCALE_OPERATOR_DIR=cr-scale-operator
 

@@ -7,7 +7,7 @@ SCRIPT_DIR=$(dirname "$0")
 source "$SCRIPT_DIR"/init-env.sh
 
 # Login to the registry
-docker login quay.io/testnetworkfunction
+docker login quay.io/redhat-best-practices-for-k8s
 
 # create the test operator
 rm -rf nginx-operator
