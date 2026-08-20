@@ -18,9 +18,11 @@ if [[ -z "$(which operator-sdk 2>/dev/null)" ]]; then
 else
 	echo "operator-sdk was found in the path, no need to install it"
 fi
-curl -L https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.36.0/install.sh -o install.sh
+
+OLM_VERSION=v0.46.0
+curl -L "https://github.com/operator-framework/operator-lifecycle-manager/releases/download/${OLM_VERSION}/install.sh" -o install.sh
 chmod +x install.sh
-./install.sh v0.36.0
+./install.sh "${OLM_VERSION}"
 rm install.sh
 
 # Wait for all OLM pods to be ready

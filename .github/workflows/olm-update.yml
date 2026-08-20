@@ -1,0 +1,134 @@
+name: Update OLM Version
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      olm_version:
+        description: 'OLM version to update to (e.g., v0.46.0)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-olm:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Get latest OLM version
+        id: olm
+        run: |
+          # Function to get version with retries
+          get_version() {
+            local retries=3
+            local delay=5
+
+            for ((i=1; i<=retries; i++)); do
+              echo "Attempt $i to fetch OLM version..." >&2
+
+              response=$(curl -s --max-time 30 https://api.github.com/repos/operator-framework/operator-lifecycle-manager/releases/latest)
+
+              if [ $? -eq 0 ] && [ -n "$response" ]; then
+                version=$(echo "$response" | jq -r '.tag_name // empty')
+
+                if [ -n "$version" ] && [ "$version" != "null" ] && [[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "Successfully fetched OLM version: $version" >&2
+                  echo "$version"
+                  return 0
+                else
+                  echo "Invalid version format: '$version'" >&2
+                fi
+              else
+                echo "API call failed or returned empty response" >&2
+              fi
+
+              if [ $i -lt $retries ]; then
+                echo "Retrying in $delay seconds..." >&2
+                sleep $delay
+              fi
+            done
+
+            echo "Failed to fetch valid OLM version after $retries attempts" >&2
+            return 1
+          }
+
+          if [ -n "${{ github.event.inputs.olm_version }}" ]; then
+            LATEST_VERSION="${{ github.event.inputs.olm_version }}"
+            # Validate manually provided version
+            if ! [[ "$LATEST_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Error: Invalid version format '$LATEST_VERSION' - expected format: vX.Y.Z"
+              exit 1
+            fi
+          else
+            LATEST_VERSION=$(get_version)
+            if [ $? -ne 0 ] || [ -z "$LATEST_VERSION" ]; then
+              echo "Error: Failed to fetch valid OLM version"
+              exit 1
+            fi
+          fi
+
+          echo "Latest OLM version: $LATEST_VERSION"
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+          # Get current version from install-olm.sh
+          CURRENT_VERSION=$(grep -oP 'OLM_VERSION=\K[v0-9.]+' scripts/install-olm.sh | head -1)
+          echo "Current version: $CURRENT_VERSION"
+          echo "current=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if update is needed
+        id: check
+        run: |
+          if [ "${{ steps.olm.outputs.version }}" == "${{ steps.olm.outputs.current }}" ]; then
+            echo "No update needed. Already at ${{ steps.olm.outputs.version }}"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Update needed: ${{ steps.olm.outputs.current }} -> ${{ steps.olm.outputs.version }}"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update OLM version in files
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          NEW_VERSION="${{ steps.olm.outputs.version }}"
+          OLD_VERSION="${{ steps.olm.outputs.current }}"
+          
+          echo "Updating from $OLD_VERSION to $NEW_VERSION"
+          
+          # Update scripts/install-olm.sh
+          sed -i "s|OLM_VERSION=$OLD_VERSION|OLM_VERSION=$NEW_VERSION|g" scripts/install-olm.sh
+          
+          echo "Files updated successfully"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "Update OLM to ${{ steps.olm.outputs.version }}"
+          title: "Update OLM to ${{ steps.olm.outputs.version }}"
+          body: |
+            ## Update OLM Version
+            
+            This PR updates OLM from ${{ steps.olm.outputs.current }} to ${{ steps.olm.outputs.version }}.
+            
+            ### Files Updated:
+            - `scripts/install-olm.sh`
+            
+            ### OLM Release Notes
+            https://github.com/operator-framework/operator-lifecycle-manager/releases/tag/${{ steps.olm.outputs.version }}
+            
+            ---
+            *This PR was automatically created by the OLM update workflow*
+          branch: update-olm-${{ steps.olm.outputs.version }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automation
+          assignees: sebrandon1
