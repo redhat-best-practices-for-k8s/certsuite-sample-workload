@@ -23,7 +23,7 @@ IMAGES_TO_PRELOAD=(
 	quay.io/redhat-best-practices-for-k8s/debug-partner:latest
 	quay.io/testnetworkfunction/cr-scale-operator:latest
 	gcr.io/distroless/static:nonroot
-	quay.io/calico/node:v3.32.1
+	quay.io/calico/node:v3.32.2
 	quay.io/redhat-best-practices-for-k8s/nginx-operator-bundle:v0.0.1
 	ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot
 	registry.access.redhat.com/ubi9/ubi:latest
