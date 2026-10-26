@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v6
 
       - name: Setup the k8s cluster
-        uses: palmsoftware/quick-k8s@b82dc74dd7591043cec51412521cda7490f04c02 # v1.0.7
+        uses: palmsoftware/quick-k8s@a3fb344d489e5cadf379208a80f291cbcdbd0a0d # v1.0.9
         with:
           disableDefaultCni: true
           numControlPlaneNodes: 1
