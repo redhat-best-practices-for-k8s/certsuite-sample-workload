@@ -32,7 +32,7 @@ COPY ./testapp /app/testapp
 WORKDIR /app/testapp
 RUN go build -o bin/app cmd/web/main.go
 
-FROM registry.access.redhat.com/ubi9/ubi:9.8
+FROM registry.access.redhat.com/ubi9/ubi:9.9
 # hadolint ignore=DL3064
 ARG USERNAME=tnf-user
 ARG USER_UID=1000
